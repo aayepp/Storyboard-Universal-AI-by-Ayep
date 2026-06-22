@@ -473,7 +473,6 @@
         <div class="header">
             <h1>🎬 Storyboard Iklan AI v8</h1>
             <p>Creative Director AI untuk Video Iklan Profesional</p>
-            <button id="apiKeyBtn" style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;" onclick="promptApiKey()">⚙️ API Key</button>
         </div>
 
         <div class="content" id="mainContent">
@@ -574,6 +573,9 @@
             musicStyle: ''
         };
 
+        // ⭐ IMPORTANT: Set your Railway backend URL here
+        const BACKEND_URL = 'storyboard-backend-production-d56d.up.railway.app';
+
         const questions = {
             A: {
                 title: 'Soalan 1 dari 6 — Apa tema storyboard anda?',
@@ -616,7 +618,7 @@
                 emoji: '⏱️',
                 options: [
                     '10 saat — pantas, bumper ad (8 panel)',
-                    '15 seat — pendek, iklan media sosial (8 panel)',
+                    '15 saat — pendek, iklan media sosial (8 panel)',
                     '30 saat — sederhana, TVC standard (12 panel)',
                     '60 saat — panjang, video long-form (12 panel)'
                 ]
@@ -646,7 +648,7 @@
             }
         };
 
-        // File input handler - PENTING: Direct function tanpa event listener complex
+        // File input handler
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('productImageInput');
 
@@ -880,7 +882,7 @@
             const themes = ['Lifestyle & Aspirational', 'Problem-Solution', 'Testimoni/Social Proof', 'Storytelling/Emosional', 'Komedi/Lighthearted', 'Product Demo/Showcase', 'Before-After', 'Unboxing/Reveal', 'ASMR'];
             const styles = ['Sketch Klasik', 'Comic/Berwarna', 'Cinematic Realistic', 'Flat Illustration', 'Minimalist Line Art', 'Stop Motion'];
             const languages = ['Bahasa Melayu', 'English', 'Campur BM+EN'];
-            const durations = ['10 saat (8 panel)', '15 saat (8 panel)', '30 seat (12 panel)', '60 saat (12 panel)'];
+            const durations = ['10 saat (8 panel)', '15 seat (8 panel)', '30 seat (12 panel)', '60 saat (12 panel)'];
             const aspectRatios = ['16:9 Landscape', '9:16 Vertical', '1:1 Square', '4:5 Tall Square', '21:9 Ultrawide'];
             const casts = ['Female Lead (20-40)', 'Male Lead (20-40)', 'Mixed Couple/Pair', 'Family/Group', 'Use Upload Image', 'No Human Cast'];
 
@@ -933,76 +935,46 @@ Pastikan scene terakhir adalah HERO SHOT dengan produk menonjol.`;
 
         async function generateStoryboard(prompt) {
             try {
-                const apiKey = localStorage.getItem('geminiApiKey');
-                if (!apiKey) {
-                    throw new Error('API key tidak ditemukan. Sila set API key terlebih dahulu.');
-                }
-
-                const response = await fetch(
-                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            contents: [
-                                {
-                                    parts: [
-                                        {
-                                            text: prompt
-                                        }
-                                    ]
-                                }
-                            ],
-                            generationConfig: {
-                                maxOutputTokens: 2048,
-                                temperature: 0.7,
-                            }
-                        })
-                    }
-                );
+                // ⭐ NEW: Call backend API instead of direct Gemini API
+                const response = await fetch(`${BACKEND_URL}/api/generate-storyboard`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: prompt })
+                });
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(`API error: ${errorData.error?.message || response.status}`);
+                    throw new Error(errorData.error || `HTTP ${response.status}`);
                 }
 
                 const data = await response.json();
-                const responseText = data.candidates[0].content.parts[0].text;
-                
-                const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-                if (!jsonMatch) {
-                    throw new Error('Could not parse storyboard');
+
+                if (!data.success) {
+                    throw new Error(data.error || 'API error');
                 }
 
-                const storyboard = JSON.parse(jsonMatch[0]);
+                const storyboard = data.storyboard;
                 displayStoryboardResult(storyboard);
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('step3').classList.add('hidden');
                 document.getElementById('step4').classList.remove('hidden');
+                
+                let errorMsg = error.message || 'Unknown error';
+                if (errorMsg.includes('Failed to fetch')) {
+                    errorMsg = 'Backend server not accessible. Check URL sa code.';
+                }
+
                 document.getElementById('resultContent').innerHTML = `
                     <div style="padding: 20px; background: rgba(220, 38, 38, 0.1); border-radius: 8px; color: var(--danger); border-left: 4px solid var(--danger);">
-                        <strong>⚠️ Error:</strong> ${error.message}
+                        <strong>⚠️ Error:</strong> ${errorMsg}
                         <p style="margin-top: 10px; font-size: 13px;">
-                            ${error.message.includes('API key') ? 
-                            'Sila klik button di bawah untuk set API key anda' :
-                            'Sila pastikan API key valid atau cuba sekali lagi.'}
+                            Pastikan backend server running sa Railway.
                         </p>
-                        ${error.message.includes('API key') ? 
-                        '<button class="btn btn-primary" onclick="promptApiKey()" style="margin-top: 10px;">⚙️ Set API Key</button>' :
-                        ''}
                     </div>
                 `;
-            }
-        }
-
-        function promptApiKey() {
-            const apiKey = prompt('Masukkan Gemini API Key anda:\n\n(Dapatkan dari: https://aistudio.google.com/apikey)');
-            if (apiKey && apiKey.trim()) {
-                localStorage.setItem('geminiApiKey', apiKey.trim());
-                alert('✅ API Key disimpan! Sila cuba generate storyboard lagi.');
             }
         }
 
@@ -1111,19 +1083,7 @@ Pastikan scene terakhir adalah HERO SHOT dengan produk menonjol.`;
 
         // Initialize
         window.addEventListener('load', function() {
-            console.log('Storyboard Iklan AI v8 - Ready');
-            
-            // Check API key status
-            const apiKey = localStorage.getItem('geminiApiKey');
-            const apiKeyBtn = document.getElementById('apiKeyBtn');
-            
-            if (apiKey) {
-                apiKeyBtn.textContent = '✅ API Key Set';
-                apiKeyBtn.style.background = 'rgba(5, 150, 105, 0.3)';
-            } else {
-                apiKeyBtn.textContent = '⚠️ Set API Key';
-                apiKeyBtn.style.background = 'rgba(217, 119, 6, 0.3)';
-            }
+            console.log('Storyboard Iklan AI v8 - Connected to Backend');
         });
     </script>
 </body>
