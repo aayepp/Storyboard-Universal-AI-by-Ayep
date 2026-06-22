@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storyboard Iklan AI v8 - Creative Director</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-dark: #0f172a;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border-gray: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-gray: #64748b;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 8px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        /* Upload Section */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 24px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--primary-light);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            margin: 25px 0;
+            position: relative;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.15);
+        }
+
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            transition: transform 0.3s;
+        }
+
+        .upload-area:hover .upload-icon {
+            transform: scale(1.1);
+        }
+
+        .upload-text {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .progress-bar {
+            background: var(--border-gray);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .question-container {
+            margin-bottom: 35px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.02) 0%, rgba(139, 92, 246, 0.02) 100%);
+            padding: 30px;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .question-title {
+            flex: 1;
+            color: var(--text-dark);
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-left: 55px;
+            font-weight: 500;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .option-button {
+            padding: 16px 18px;
+            border: 2px solid var(--border-gray);
+            background: var(--bg-white);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .option-button:hover {
+            border-color: var(--primary-light);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            transform: translateX(4px);
+        }
+
+        .option-button.selected {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .option-number {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            color: currentColor;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            margin-right: 10px;
+            font-size: 13px;
+        }
+
+        .option-button.selected .option-number {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 2px solid var(--border-gray);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-gray);
+            border-color: var(--primary);
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(34, 197, 94, 0.08) 100%);
+            border-left: 4px solid var(--success);
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .summary-box h3 {
+            color: var(--success);
+            margin-bottom: 20px;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+
+        .summary-value {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .status-message {
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .product-preview {
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-radius: 14px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            border: 1px solid var(--border-gray);
+        }
+
+        .product-preview img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid var(--bg-white);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 17px;
+            margin-bottom: 4px;
+        }
+
+        .product-category {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%);
+            border-left: 4px solid var(--warning);
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input[type="text"], textarea, select {
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-gray);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            background: var(--bg-white);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 15px;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: var(--text-dark);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        h3 {
+            margin-bottom: 18px;
+            color: var(--text-dark);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            margin: 0 4px;
+            animation: blink 1.3s infinite;
+        }
+
+        .loading:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 60%, 100% { opacity: 0.4; }
+            30% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-0, .step-1 {
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 14px;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid var(--border-gray);
+        }
+
+        .result-table thead {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+            border-bottom: 2px solid var(--border-gray);
+        }
+
+        .result-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .result-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .result-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .result-table tbody tr:nth-child(even) {
+            background: rgba(37, 99, 235, 0.02);
+        }
+
+        .scene-detail {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .scene-detail h4 {
+            margin: 0 0 12px 0;
+            color: var(--text-dark);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .scene-detail p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        .scene-detail strong {
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+
+            .header {
+                padding: 40px 20px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .product-preview {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .question-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="header-icon">🎬</div>
+                <h1>Storyboard Iklan AI</h1>
+                <p>Creative Director Powered by AI</p>
+                <div class="header-subtitle">Generate professional video advertisement storyboards in seconds</div>
+            </div>
+        </div>
+
+        <div class="content" id="mainContent">
+            <!-- Langkah 0: Product Identification -->
+            <div id="step0" class="step-0">
+                <h2>📝 Step 1: Kenal Pasti Produk Anda</h2>
+                
+                <div class="info-box">
+                    <strong>💡 Info:</strong> Nama produk wajib. Gambar produk optional untuk hasil lebih tepat.
+                </div>
+
+                <label>Nama & Jenis Produk *</label>
+                <input 
+                    type="text" 
+                    id="productName" 
+                    placeholder="Contoh: Nescafé Latte (Minuman Kopi)"
+                >
+
+                <h3 style="margin-top: 30px;">📸 Upload Gambar Produk (Pilihan)</h3>
+                
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('productImageInput').click();">
+                    <div class="upload-icon">🖼️</div>
+                    <div class="upload-text">Klik atau tarik gambar ke sini</div>
+                    <div class="upload-hint">Format: JPG, PNG, WebP • Max: 5MB</div>
+                </div>
+
+                <input 
+                    type="file" 
+                    id="productImageInput" 
+                    accept="image/*"
+                >
+
+                <div id="imagePreview"></div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="startStep1()">
+                        Seterusnya: 6 Soalan →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Langkah 1: 6 Questions -->
+            <div id="step1" class="step-1 hidden">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+
+                <div id="statusMessage"></div>
+                <div id="questionContainer"></div>
+
+                <!-- Summary Section -->
+                <div id="summarySection" class="hidden">
+                    <div class="summary-box">
+                        <h3>✅ Ringkasan Pilihan Anda (6/6 Selesai)</h3>
+                        <div id="summaryContent"></div>
+                    </div>
+                    <div class="button-group" style="margin-top: 25px;">
+                        <button class="btn btn-primary" onclick="proceedToGenerate()">
+                            🚀 Generate Storyboard
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetToStep0()">
+                            ← Ubah Produk
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Langkah 3: Generating -->
+            <div id="step3" class="hidden">
+                <div style="text-align: center; padding: 50px 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">⚡</div>
+                    <h2 style="margin-bottom: 15px;">Sedang Menjana Storyboard...</h2>
+                    <div style="font-size: 24px; margin: 30px 0; letter-spacing: 3px;">
+                        <span class="loading"></span>
+                        <span class="loading"></span>
+                        <span class="loading"></span>
+                    </div>
+                    <p style="color: var(--text-gray); font-size: 15px;">
+                        Ini mungkin mengambil 20-60 saat. Harap bersabar...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Langkah 4: Result -->
+            <div id="step4" class="hidden">
+                <div id="resultContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const state = {
+            productName: '',
+            productImage: null,
+            productImageFile: null,
+            answers: {
+                A: null,
+                B: null,
+                C: null,
+                D: null,
+                E: null,
+                F: null
+            },
+            musicStyle: ''
+        };
+
+        const BACKEND_URL = 'https://storyboard-backend-production-d56d.up.railway.app';
+
+        const questions = {
+            A: {
+                title: 'Soalan 1 dari 6 — Apa tema storyboard anda?',
+                emoji: '🎬',
+                options: [
+                    'Lifestyle & Aspirational — kehidupan ideal, aspirasi',
+                    'Problem-Solution — masalah → solusi',
+                    'Testimoni/Social Proof — pelanggan berkongsi pengalaman',
+                    'Storytelling/Emosional — naratif, perasaan',
+                    'Komedi/Lighthearted — ringan, menghiburkan',
+                    'Product Demo/Showcase — tunjuk ciri & fungsi',
+                    'Before-After — transformasi, perubahan',
+                    'Unboxing/Reveal — pendedahan, dramatik',
+                    'ASMR — tekstur, bunyi, sensori'
+                ]
+            },
+            B: {
+                title: 'Soalan 2 dari 6 — Pilih style visual imej:',
+                emoji: '🎨',
+                options: [
+                    'Sketch Klasik — garis tradisional, hitam putih',
+                    'Comic/Berwarna — garis jelas, warna flat',
+                    'Cinematic Realistic — fotorealistik, profesional',
+                    'Flat Illustration — vektor modern, bersih',
+                    'Minimalist Line Art — garis ringkas, simple',
+                    'Stop Motion — animasi frame-by-frame, tekstur handmade'
+                ]
+            },
+            C: {
+                title: 'Soalan 3 dari 6 — Bahasa yang digunakan:',
+                emoji: '📝',
+                options: [
+                    'Bahasa Melayu — sepenuhnya',
+                    'English — sepenuhnya',
+                    'Campur — BM + English'
+                ]
+            },
+            D: {
+                title: 'Soalan 4 dari 6 — Berapa lama video?',
+                emoji: '⏱️',
+                options: [
+                    '10 saat — pantas, bumper ad (8 panel)',
+                    '15 saat — pendek, iklan media sosial (8 panel)',
+                    '30 saat — sederhana, TVC standard (12 panel)',
+                    '60 saat — panjang, video long-form (12 panel)'
+                ]
+            },
+            E: {
+                title: 'Soalan 5 dari 6 — Format/Aspect Ratio:',
+                emoji: '📐',
+                options: [
+                    '16:9 — landscape (TV, desktop)',
+                    '9:16 — vertical (TikTok, Instagram Reels, mobile)',
+                    '1:1 — square (Instagram feed, Facebook)',
+                    '4:5 — tall square (Instagram Stories)',
+                    '21:9 — ultrawide (cinema, YouTube trailer)'
+                ]
+            },
+            F: {
+                title: 'Soalan 6 dari 6 — Watak/Cast:',
+                emoji: '👥',
+                options: [
+                    'Female Lead (20-40 tahun, aspirational)',
+                    'Male Lead (20-40 tahun, confident)',
+                    'Mixed Couple / Pair',
+                    'Family or Group',
+                    'Guna Gambar Upload (produk/brand ambassador anda)',
+                    'Tiada Watak Manusia — fokus produk/packshot sahaja'
+                ]
+            }
+        };
+
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('productImageInput');
+
+        fileInput.addEventListener('change', function(e) {
+            handleFileSelect(e.target.files[0]);
+        });
+
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.borderColor = 'var(--primary)';
+            this.style.background = 'linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%)';
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.borderColor = 'var(--primary-light)';
+            this.style.background = 'linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)';
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.borderColor = 'var(--primary-light)';
+            this.style.background = 'linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('image/')) {
+                handleFileSelect(files[0]);
+            } else {
+                showError('Sila gunakan file gambar (JPG, PNG, WebP)');
+            }
+        });
+
+        function handleFileSelect(file) {
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                showError('Saiz gambar terlalu besar. Max 5MB.');
+                return;
+            }
+
+            if (!file.type.startsWith('image/')) {
+                showError('Sila pilih file gambar sahaja.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                state.productImage = event.target.result;
+                state.productImageFile = file;
+                showImagePreview();
+            };
+            reader.onerror = function() {
+                showError('Error membaca file. Sila cuba lagi.');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function showImagePreview() {
+            const container = document.getElementById('imagePreview');
+            if (!state.productImage) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="product-preview">
+                    <img src="${state.productImage}" alt="Product">
+                    <div class="product-info">
+                        <p class="product-name">✅ Gambar Dimuat</p>
+                        <p class="product-category">${state.productImageFile ? state.productImageFile.name : 'Unknown'}</p>
+                        <p style="font-size: 13px; margin-top: 10px; cursor: pointer; color: var(--primary);" onclick="clearImage()">🗑️ Tukar gambar</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function clearImage() {
+            state.productImage = null;
+            state.productImageFile = null;
+            document.getElementById('productImageInput').value = '';
+            document.getElementById('imagePreview').innerHTML = '';
+        }
+
+        function showError(message) {
+            const container = document.getElementById('imagePreview');
+            container.innerHTML = `
+                <div class="status-message status-error">
+                    ⚠️ ${message}
+                </div>
+            `;
+        }
+
+        function startStep1() {
+            const productName = document.getElementById('productName').value.trim();
+            if (!productName) {
+                alert('Sila masukkan nama produk');
+                return;
+            }
+
+            state.productName = productName;
+            document.getElementById('step0').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+            displayQuestion('A');
+        }
+
+        function displayQuestion(slot) {
+            const question = questions[slot];
+            const questionNum = Object.keys(questions).indexOf(slot) + 1;
+            const questionsArray = Object.keys(questions);
+            let completedCount = questionsArray.filter(s => state.answers[s] !== null).length;
+
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = `
+                <div class="question-container">
+                    <div class="question-header">
+                        <div class="question-number">${questionNum}</div>
+                        <div class="question-title">${question.emoji} ${question.title}</div>
+                    </div>
+                    <div class="progress-text">(${completedCount}/6 selesai, ${6 - completedCount} lagi)</div>
+                    <div class="options-grid" id="optionsGrid"></div>
+                </div>
+            `;
+
+            const optionsGrid = document.getElementById('optionsGrid');
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('button');
+                optionDiv.className = 'option-button';
+                optionDiv.innerHTML = `<span class="option-number">${index + 1}</span> ${option}`;
+                optionDiv.onclick = () => selectOption(slot, index + 1);
+                optionsGrid.appendChild(optionDiv);
+            });
+
+            updateProgressBar();
+        }
+
+        function selectOption(slot, number) {
+            state.answers[slot] = number;
+            const questionsArray = Object.keys(questions);
+            const currentIndex = questionsArray.indexOf(slot);
+
+            const question = questions[slot];
+            const selectedOption = question.options[number - 1];
+            const completedCount = questionsArray.filter(s => state.answers[s] !== null).length;
+
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.innerHTML = `
+                <div class="status-success">
+                    ✅ Soalan ${slot}: ${selectedOption.split('—')[0].trim()} • (${completedCount}/6 selesai)
+                </div>
+            `;
+
+            setTimeout(() => {
+                if (completedCount === 6) {
+                    showSummary();
+                } else {
+                    const nextSlot = questionsArray[currentIndex + 1];
+                    displayQuestion(nextSlot);
+                }
+            }, 600);
+        }
+
+        function updateProgressBar() {
+            const questionsArray = Object.keys(questions);
+            const completedCount = questionsArray.filter(s => state.answers[s] !== null).length;
+            const progress = (completedCount / 6) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showSummary() {
+            const themeIndex = state.answers['A'] - 1;
+            const themeNames = ['Lifestyle', 'Problem-Solution', 'Testimonial', 'Emotional', 'Comedy', 'Product Demo', 'Before-After', 'Unboxing', 'ASMR'];
+            const themeName = themeNames[themeIndex] || 'Lifestyle';
+            
+            const musicMap = {
+                'Lifestyle': 'Uplifting, modern pop/indie',
+                'Problem-Solution': 'Motivational, corporate',
+                'Testimonial': 'Warm, acoustic/organic',
+                'Emotional': 'Emotional strings, cinematic',
+                'Comedy': 'Quirky, playful, pop',
+                'Product Demo': 'Tech, modern, energetic',
+                'Before-After': 'Triumphant, epic',
+                'Unboxing': 'Exciting, dynamic, modern',
+                'ASMR': 'Ambient, minimalist, lo-fi'
+            };
+            
+            state.musicStyle = musicMap[themeName];
+
+            const summaryContent = document.getElementById('summaryContent');
+            const questionsArray = Object.keys(questions);
+            
+            let summaryHTML = '';
+            questionsArray.forEach(slot => {
+                const question = questions[slot];
+                const answerIndex = state.answers[slot] - 1;
+                const selectedOption = question.options[answerIndex];
+                summaryHTML += `
+                    <div class="summary-item">
+                        <span class="summary-label">${slot}: ${state.answers[slot]}.</span>
+                        <span class="summary-value">${selectedOption.split('—')[0].trim()}</span>
+                    </div>
+                `;
+            });
+
+            summaryHTML += `
+                <div class="summary-item">
+                    <span class="summary-label">🎵 Music Style:</span>
+                    <span class="summary-value">${state.musicStyle}</span>
+                </div>
+            `;
+
+            summaryContent.innerHTML = summaryHTML;
+            
+            document.getElementById('questionContainer').classList.add('hidden');
+            document.getElementById('statusMessage').classList.add('hidden');
+            document.getElementById('summarySection').classList.remove('hidden');
+        }
+
+        function proceedToGenerate() {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            
+            setTimeout(() => {
+                generateStoryboardPrompt();
+            }, 1500);
+        }
+
+        function generateStoryboardPrompt() {
+            const themes = ['Lifestyle & Aspirational', 'Problem-Solution', 'Testimoni/Social Proof', 'Storytelling/Emosional', 'Komedi/Lighthearted', 'Product Demo/Showcase', 'Before-After', 'Unboxing/Reveal', 'ASMR'];
+            const styles = ['Sketch Klasik', 'Comic/Berwarna', 'Cinematic Realistic', 'Flat Illustration', 'Minimalist Line Art', 'Stop Motion'];
+            const languages = ['Bahasa Melayu', 'English', 'Campur BM+EN'];
+            const durations = ['10 saat (8 panel)', '15 saat (8 panel)', '30 saat (12 panel)', '60 saat (12 panel)'];
+            const aspectRatios = ['16:9 Landscape', '9:16 Vertical', '1:1 Square', '4:5 Tall Square', '21:9 Ultrawide'];
+            const casts = ['Female Lead (20-40)', 'Male Lead (20-40)', 'Mixed Couple/Pair', 'Family/Group', 'Use Upload Image', 'No Human Cast'];
+
+            const answers = state.answers;
+            const selectedTheme = themes[answers.A - 1];
+            const selectedStyle = styles[answers.B - 1];
+            const selectedLanguage = languages[answers.C - 1];
+            const selectedDuration = durations[answers.D - 1];
+            const selectedRatio = aspectRatios[answers.E - 1];
+            const selectedCast = casts[answers.F - 1];
+
+            const prompt = `Anda adalah Creative Director AI yang membuat storyboard untuk iklan video profesional.
+
+PRODUK: ${state.productName}
+${state.productImage ? 'GAMBAR PRODUK: Diupload oleh pengguna' : 'GAMBAR PRODUK: Tiada'}
+
+PILIHAN PENGGUNA:
+- Tema: ${selectedTheme}
+- Style Visual: ${selectedStyle}
+- Bahasa: ${selectedLanguage}
+- Durasi: ${selectedDuration}
+- Aspect Ratio: ${selectedRatio}
+- Cast: ${selectedCast}
+- Music Style: ${state.musicStyle}
+
+JANA storyboard lengkap dengan scene details dalam format JSON:
+{
+  "title": "Judul Storyboard",
+  "productName": "${state.productName}",
+  "theme": "${selectedTheme}",
+  "style": "${selectedStyle}",
+  "duration": "${selectedDuration}",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "timing": "0-Xs",
+      "visual": "detailed description",
+      "copy": "dialog jika ada",
+      "sfx": "sound effects",
+      "vo": "voice over notes",
+      "cameraWork": "shot type"
+    }
+  ]
+}
+
+Pastikan scene terakhir adalah HERO SHOT dengan produk menonjol.`;
+
+            generateStoryboard(prompt);
+        }
+
+        async function generateStoryboard(prompt) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/generate-storyboard`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error(data.error || 'API error');
+                }
+
+                const storyboard = data.storyboard;
+                displayStoryboardResult(storyboard);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('step3').classList.add('hidden');
+                document.getElementById('step4').classList.remove('hidden');
+                
+                let errorMsg = error.message || 'Unknown error';
+                if (errorMsg.includes('Failed to fetch')) {
+                    errorMsg = 'Backend server tidak accessible. Sila check backend URL.';
+                }
+
+                document.getElementById('resultContent').innerHTML = `
+                    <div style="padding: 30px; background: rgba(239, 68, 68, 0.1); border-radius: 14px; color: var(--danger); border-left: 4px solid var(--danger);">
+                        <strong style="font-size: 16px;">⚠️ Error:</strong> ${errorMsg}
+                        <p style="margin-top: 12px; font-size: 14px;">Sila pastikan backend server running sa Railway.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayStoryboardResult(storyboard) {
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step4').classList.remove('hidden');
+
+            let sceneTableHTML = `
+                <h2>✅ Storyboard Anda Siap!</h2>
+                <h3 style="color: var(--primary); margin: 25px 0 15px;">🎵 Cadangan Music Style: <strong>${state.musicStyle}</strong></h3>
+                
+                <table class="result-table">
+                    <thead>
+                        <tr>
+                            <th>Scene</th>
+                            <th>Durasi</th>
+                            <th>Visual</th>
+                            <th>Dialog/VO</th>
+                            <th>Audio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            storyboard.scenes.forEach((scene, idx) => {
+                const isLastScene = idx === storyboard.scenes.length - 1;
+                const sceneLabel = isLastScene ? `${scene.sceneNumber} ⭐` : scene.sceneNumber;
+                sceneTableHTML += `
+                    <tr>
+                        <td><strong>${sceneLabel}</strong></td>
+                        <td>${scene.timing}</td>
+                        <td>${scene.visual.substring(0, 60)}...</td>
+                        <td>${scene.copy || '-'}</td>
+                        <td>${scene.sfx || scene.vo || '-'}</td>
+                    </tr>
+                `;
+            });
+
+            sceneTableHTML += `
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 40px;">
+                    <h3>📋 Detail Lengkap Setiap Scene:</h3>
+                    <div id="sceneDetails" style="margin-top: 20px;"></div>
+                </div>
+
+                <div class="button-group" style="margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="resetToStep0()">
+                        🔄 Buat Storyboard Baru
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportAsJSON()">
+                        📥 Export JSON
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('resultContent').innerHTML = sceneTableHTML;
+
+            const sceneDetailsDiv = document.getElementById('sceneDetails');
+            let detailsHTML = '';
+            storyboard.scenes.forEach((scene, idx) => {
+                const isLastScene = idx === storyboard.scenes.length - 1;
+                detailsHTML += `
+                    <div class="scene-detail" style="border-left-color: ${isLastScene ? 'var(--success)' : 'var(--primary)'};">
+                        <h4>
+                            Scene ${scene.sceneNumber} ${isLastScene ? '⭐ HERO SHOT' : ''} — ${scene.timing}
+                        </h4>
+                        <p><strong>Visual:</strong> ${scene.visual}</p>
+                        ${scene.copy ? `<p><strong>Dialog:</strong> "${scene.copy}"</p>` : ''}
+                        ${scene.vo ? `<p><strong>VO:</strong> ${scene.vo}</p>` : ''}
+                        ${scene.sfx ? `<p><strong>SFX:</strong> ${scene.sfx}</p>` : ''}
+                        ${scene.cameraWork ? `<p><strong>Camera:</strong> ${scene.cameraWork}</p>` : ''}
+                    </div>
+                `;
+            });
+            sceneDetailsDiv.innerHTML = detailsHTML;
+
+            window.currentStoryboard = storyboard;
+        }
+
+        function exportAsJSON() {
+            if (!window.currentStoryboard) return;
+            
+            const dataStr = JSON.stringify(window.currentStoryboard, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `storyboard-${state.productName.replace(/\s+/g, '-').toLowerCase()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function resetToStep0() {
+            state.answers = { A: null, B: null, C: null, D: null, E: null, F: null };
+            state.productName = '';
+            state.productImage = null;
+            state.productImageFile = null;
+            
+            document.getElementById('productName').value = '';
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('step0').classList.remove('hidden');
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step4').classList.add('hidden');
+            document.getElementById('statusMessage').innerHTML = '';
+            document.getElementById('summarySection').classList.add('hidden');
+        }
+
+        window.addEventListener('load', function() {
+            console.log('🚀 Storyboard Iklan AI v8 - Professional Edition');
+        });
+    </script>
+</body>
+</html>
