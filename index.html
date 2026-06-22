@@ -65,11 +65,6 @@
             padding: 40px 30px;
         }
 
-        /* Langkah 0 - Product Identification */
-        .step-0 {
-            animation: slideIn 0.3s ease-out;
-        }
-
         .upload-area {
             border: 2px dashed var(--primary-light);
             border-radius: 8px;
@@ -79,14 +74,21 @@
             transition: all 0.3s;
             background: rgba(59, 130, 246, 0.05);
             margin: 20px 0;
+            position: relative;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .upload-area:hover {
             border-color: var(--primary);
             background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
         }
 
-        .upload-area input {
+        .upload-area input[type="file"] {
             display: none;
         }
 
@@ -98,15 +100,13 @@
         .upload-text {
             font-size: 14px;
             color: var(--text-gray);
+            margin-bottom: 5px;
         }
 
-        /* Langkah 1 - 6 Questions */
-        .step-1 {
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .question-container {
-            margin-bottom: 30px;
+        .upload-hint {
+            font-size: 12px;
+            color: var(--text-gray);
+            opacity: 0.7;
         }
 
         .progress-bar {
@@ -121,6 +121,10 @@
             height: 100%;
             background: linear-gradient(90deg, var(--primary-light), var(--success));
             transition: width 0.3s ease;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
         }
 
         .question-header {
@@ -202,6 +206,7 @@
             display: flex;
             gap: 10px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -291,76 +296,10 @@
             border-left: 4px solid var(--primary);
         }
 
-        .step-indicator {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            gap: 10px;
-        }
-
-        .step-dot {
-            flex: 1;
-            height: 6px;
-            background: var(--border-gray);
-            border-radius: 3px;
-            transition: all 0.3s;
-        }
-
-        .step-dot.active {
-            background: var(--primary);
-            flex: 2;
-        }
-
-        .step-dot.completed {
-            background: var(--success);
-        }
-
-        /* Loading state */
-        .loading {
-            display: inline-block;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: currentColor;
-            margin: 0 2px;
-            animation: blink 1.3s infinite;
-        }
-
-        .loading:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes blink {
-            0%, 60%, 100% { opacity: 0.5; }
-            30% { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .info-box {
-            background: rgba(217, 119, 6, 0.05);
-            border-left: 4px solid var(--warning);
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        .info-box strong {
-            color: var(--warning);
+        .status-error {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
         }
 
         .product-preview {
@@ -401,8 +340,103 @@
             font-size: 13px;
         }
 
+        .info-box {
+            background: rgba(217, 119, 6, 0.05);
+            border-left: 4px solid var(--warning);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .info-box strong {
+            color: var(--warning);
+        }
+
         .hidden {
             display: none;
+        }
+
+        input[type="text"], textarea, select {
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-gray);
+            border-radius: 6px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        h3 {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: currentColor;
+            margin: 0 2px;
+            animation: blink 1.3s infinite;
+        }
+
+        .loading:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 60%, 100% { opacity: 0.5; }
+            30% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-0 {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .step-1 {
+            animation: slideIn 0.3s ease-out;
         }
 
         @media (max-width: 600px) {
@@ -418,13 +452,17 @@
                 font-size: 24px;
             }
 
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-
             .product-preview {
                 flex-direction: column;
                 text-align: center;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
             }
         }
     </style>
@@ -439,26 +477,33 @@
         <div class="content" id="mainContent">
             <!-- Langkah 0: Product Identification -->
             <div id="step0" class="step-0">
-                <h2 style="margin-bottom: 20px; color: var(--text-dark);">Langkah 1: Kenal Pasti Produk</h2>
+                <h2>Langkah 1: Kenal Pasti Produk</h2>
                 
                 <div class="info-box">
-                    <strong>💡 Info:</strong> Anda boleh terangkan produk atau upload gambar produk untuk hasil yang lebih tepat.
+                    <strong>💡 Info:</strong> Nama produk wajib. Gambar produk optional (untuk hasil lebih tepat).
                 </div>
 
-                <label style="display: block; margin-bottom: 15px; font-weight: 600;">Nama & Jenis Produk (Wajib) *</label>
+                <label>Nama & Jenis Produk (Wajib) *</label>
                 <input 
                     type="text" 
                     id="productName" 
                     placeholder="Contoh: Nescafé Latte (Minuman Kopi), Samsung Galaxy S25 (Telefon Pintar)"
-                    style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-gray); border-radius: 6px; font-size: 14px; margin-bottom: 20px; font-family: inherit;"
                 >
 
-                <label style="display: block; margin-bottom: 15px; font-weight: 600;">Upload Gambar Produk (Pilihan)</label>
-                <div class="upload-area" onclick="document.getElementById('productImage').click()">
+                <h3 style="margin-top: 25px;">Upload Gambar Produk (Pilihan)</h3>
+                
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('productImageInput').click();" style="cursor: pointer;">
                     <div class="upload-icon">📸</div>
-                    <div class="upload-text">Klik untuk upload atau tarik gambar di sini</div>
-                    <input type="file" id="productImage" accept="image/*">
+                    <div class="upload-text"><strong>Klik untuk pilih atau tarik gambar ke sini</strong></div>
+                    <div class="upload-hint">Format: JPG, PNG, WebP. Saiz max: 5MB</div>
                 </div>
+
+                <input 
+                    type="file" 
+                    id="productImageInput" 
+                    accept="image/*"
+                    style="display: none;"
+                >
 
                 <div id="imagePreview"></div>
 
@@ -469,25 +514,22 @@
 
             <!-- Langkah 1: 6 Questions -->
             <div id="step1" class="step-1 hidden">
-                <div class="step-indicator" id="stepIndicator"></div>
-
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                 </div>
 
                 <div id="statusMessage"></div>
 
-                <!-- Question Container -->
                 <div id="questionContainer"></div>
 
                 <!-- Summary Section -->
                 <div id="summarySection" class="hidden">
                     <div class="summary-box">
-                        <h3 style="margin-bottom: 15px; color: var(--success);">✅ Ringkasan Pilihan (6/6 Selesai)</h3>
+                        <h3 style="color: var(--success); margin-top: 0;">✅ Ringkasan Pilihan (6/6 Selesai)</h3>
                         <div id="summaryContent"></div>
                     </div>
                     <div class="button-group" style="margin-top: 20px;">
-                        <button class="btn btn-primary" onclick="proceedToGenerate()">Generate Storyboard Poster →</button>
+                        <button class="btn btn-primary" onclick="proceedToGenerate()">Generate Storyboard →</button>
                         <button class="btn btn-secondary" onclick="resetToStep0()">← Ubah Produk</button>
                     </div>
                 </div>
@@ -495,14 +537,14 @@
 
             <!-- Langkah 3: Generating -->
             <div id="step3" class="hidden">
-                <h2 style="text-align: center; margin: 40px 0 20px;">Sedang Menjana Storyboard Poster...</h2>
+                <h2 style="text-align: center; margin: 40px 0 20px;">Sedang Menjana Storyboard...</h2>
                 <div style="text-align: center; font-size: 24px; margin: 20px 0;">
                     <span class="loading"></span>
                     <span class="loading"></span>
                     <span class="loading"></span>
                 </div>
                 <p style="text-align: center; color: var(--text-gray); font-size: 14px;">
-                    Ini mungkin mengambil 30-60 saat untuk menghasilkan imej berkualitas tinggi...
+                    Ini mungkin mengambil 20-60 saat...
                 </p>
             </div>
 
@@ -514,7 +556,7 @@
     </div>
 
     <script>
-        // Data Store
+        // State management
         const state = {
             productName: '',
             productImage: null,
@@ -572,7 +614,7 @@
                 emoji: '⏱️',
                 options: [
                     '10 saat — pantas, bumper ad (8 panel)',
-                    '15 saat — pendek, iklan media sosial (8 panel)',
+                    '15 seat — pendek, iklan media sosial (8 panel)',
                     '30 saat — sederhana, TVC standard (12 panel)',
                     '60 saat — panjang, video long-form (12 panel)'
                 ]
@@ -602,54 +644,81 @@
             }
         };
 
-        // Handle product image upload
-        document.getElementById('productImage').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    state.productImage = event.target.result;
-                    state.productImageFile = file;
-                    showImagePreview();
-                };
-                reader.readAsDataURL(file);
+        // File input handler - PENTING: Direct function tanpa event listener complex
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('productImageInput');
+
+        fileInput.addEventListener('change', function(e) {
+            handleFileSelect(e.target.files[0]);
+        });
+
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.borderColor = 'var(--primary)';
+            this.style.background = 'rgba(59, 130, 246, 0.15)';
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.borderColor = 'var(--primary-light)';
+            this.style.background = 'rgba(59, 130, 246, 0.05)';
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.borderColor = 'var(--primary-light)';
+            this.style.background = 'rgba(59, 130, 246, 0.05)';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('image/')) {
+                handleFileSelect(files[0]);
+            } else {
+                showError('Sila gunakan file gambar (JPG, PNG, WebP)');
             }
         });
 
-        // Drag and drop
-        const uploadArea = document.querySelector('.upload-area');
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.style.borderColor = 'var(--primary)';
-            uploadArea.style.background = 'rgba(59, 130, 246, 0.1)';
-        });
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.style.borderColor = 'var(--primary-light)';
-            uploadArea.style.background = 'rgba(59, 130, 246, 0.05)';
-        });
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const file = e.dataTransfer.files[0];
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    state.productImage = event.target.result;
-                    state.productImageFile = file;
-                    showImagePreview();
-                };
-                reader.readAsDataURL(file);
+        function handleFileSelect(file) {
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                showError('Saiz gambar terlalu besar. Max 5MB.');
+                return;
             }
-        });
+
+            if (!file.type.startsWith('image/')) {
+                showError('Sila pilih file gambar sahaja.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                state.productImage = event.target.result;
+                state.productImageFile = file;
+                showImagePreview();
+            };
+            reader.onerror = function() {
+                showError('Error membaca file. Sila cuba lagi.');
+            };
+            reader.readAsDataURL(file);
+        }
 
         function showImagePreview() {
             const container = document.getElementById('imagePreview');
+            if (!state.productImage) {
+                container.innerHTML = '';
+                return;
+            }
+
             container.innerHTML = `
                 <div class="product-preview">
-                    <img src="${state.productImage}" alt="Product">
+                    <img src="${state.productImage}" alt="Product" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22%3EImage%3C/text%3E%3C/svg%3E'">
                     <div class="product-info">
-                        <p class="product-name">Gambar Dimuat</p>
-                        <p class="product-category">${state.productImageFile.name}</p>
-                        <p style="font-size: 12px; margin-top: 8px; cursor: pointer; color: var(--primary);" onclick="clearImage()">Tukar gambar</p>
+                        <p class="product-name">✅ Gambar Dimuat</p>
+                        <p class="product-category">${state.productImageFile ? state.productImageFile.name : 'Unknown file'}</p>
+                        <p style="font-size: 12px; margin-top: 8px; cursor: pointer; color: var(--primary);" onclick="clearImage()">🗑️ Tukar gambar</p>
                     </div>
                 </div>
             `;
@@ -658,8 +727,17 @@
         function clearImage() {
             state.productImage = null;
             state.productImageFile = null;
-            document.getElementById('productImage').value = '';
+            document.getElementById('productImageInput').value = '';
             document.getElementById('imagePreview').innerHTML = '';
+        }
+
+        function showError(message) {
+            const container = document.getElementById('imagePreview');
+            container.innerHTML = `
+                <div class="status-message status-error">
+                    ⚠️ ${message}
+                </div>
+            `;
         }
 
         function startStep1() {
@@ -710,7 +788,6 @@
             const questionsArray = Object.keys(questions);
             const currentIndex = questionsArray.indexOf(slot);
 
-            // Show status message
             const question = questions[slot];
             const selectedOption = question.options[number - 1];
             const completedCount = questionsArray.filter(s => state.answers[s] !== null).length;
@@ -740,9 +817,6 @@
         }
 
         function showSummary() {
-            const questionsArray = Object.keys(questions);
-            
-            // Determine music style based on theme and visual style
             const themeIndex = state.answers['A'] - 1;
             const themeNames = ['Lifestyle', 'Problem-Solution', 'Testimonial', 'Emotional', 'Comedy', 'Product Demo', 'Before-After', 'Unboxing', 'ASMR'];
             const themeName = themeNames[themeIndex] || 'Lifestyle';
@@ -795,24 +869,20 @@
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step3').classList.remove('hidden');
             
-            // Simulate generation process
             setTimeout(() => {
                 generateStoryboardPrompt();
-            }, 2000);
+            }, 1500);
         }
 
         function generateStoryboardPrompt() {
-            // Generate detailed storyboard from answers
-            const answers = state.answers;
-            
-            // Get option texts
             const themes = ['Lifestyle & Aspirational', 'Problem-Solution', 'Testimoni/Social Proof', 'Storytelling/Emosional', 'Komedi/Lighthearted', 'Product Demo/Showcase', 'Before-After', 'Unboxing/Reveal', 'ASMR'];
             const styles = ['Sketch Klasik', 'Comic/Berwarna', 'Cinematic Realistic', 'Flat Illustration', 'Minimalist Line Art', 'Stop Motion'];
             const languages = ['Bahasa Melayu', 'English', 'Campur BM+EN'];
-            const durations = ['10 saat (8 panel)', '15 saat (8 panel)', '30 saat (12 panel)', '60 saat (12 panel)'];
+            const durations = ['10 saat (8 panel)', '15 saat (8 panel)', '30 seat (12 panel)', '60 saat (12 panel)'];
             const aspectRatios = ['16:9 Landscape', '9:16 Vertical', '1:1 Square', '4:5 Tall Square', '21:9 Ultrawide'];
             const casts = ['Female Lead (20-40)', 'Male Lead (20-40)', 'Mixed Couple/Pair', 'Family/Group', 'Use Upload Image', 'No Human Cast'];
 
+            const answers = state.answers;
             const selectedTheme = themes[answers.A - 1];
             const selectedStyle = styles[answers.B - 1];
             const selectedLanguage = languages[answers.C - 1];
@@ -820,11 +890,10 @@
             const selectedRatio = aspectRatios[answers.E - 1];
             const selectedCast = casts[answers.F - 1];
 
-            // Call Claude API to generate storyboard structure
             const prompt = `Anda adalah Creative Director AI yang membuat storyboard untuk iklan video profesional.
 
 PRODUK: ${state.productName}
-${state.productImage ? 'GAMBAR PRODUK: Diupload oleh pengguna' : 'GAMBAR PRODUK: Tiada - terangkan produk dari nama sahaja'}
+${state.productImage ? 'GAMBAR PRODUK: Diupload oleh pengguna' : 'GAMBAR PRODUK: Tiada'}
 
 PILIHAN PENGGUNA:
 - Tema: ${selectedTheme}
@@ -835,11 +904,7 @@ PILIHAN PENGGUNA:
 - Cast: ${selectedCast}
 - Music Style: ${state.musicStyle}
 
-Berdasarkan pilihan di atas, JANA DESKRIPSI LENGKAP untuk setiap scene dalam storyboard ini:
-1. Terangkan setiap scene dengan visual yang jelas dan realistik untuk dishoot
-2. Sertakan dialog, SFX, VO notes
-3. Scene terakhir WAJIB Hero Shot dengan produk/jenama menonjol
-4. Format output sebagai JSON dengan struktur:
+JANA storyboard lengkap dengan scene details dalam format JSON:
 {
   "title": "Judul Storyboard",
   "productName": "${state.productName}",
@@ -850,16 +915,16 @@ Berdasarkan pilihan di atas, JANA DESKRIPSI LENGKAP untuk setiap scene dalam sto
     {
       "sceneNumber": 1,
       "timing": "0-Xs",
-      "visual": "detailed description ikut ${selectedStyle}",
+      "visual": "detailed description",
       "copy": "dialog jika ada",
       "sfx": "sound effects",
       "vo": "voice over notes",
-      "cameraWork": "shot type (wide, close-up, dll)"
+      "cameraWork": "shot type"
     }
   ]
 }
 
-Pastikan konsisten, profesional, dan realistik untuk production.`;
+Pastikan scene terakhir adalah HERO SHOT dengan produk menonjol.`;
 
             generateStoryboard(prompt);
         }
@@ -899,9 +964,9 @@ Pastikan konsisten, profesional, dan realistik untuk production.`;
                 document.getElementById('step3').classList.add('hidden');
                 document.getElementById('step4').classList.remove('hidden');
                 document.getElementById('resultContent').innerHTML = `
-                    <div style="padding: 20px; background: #fee; border-radius: 8px; color: var(--danger);">
+                    <div style="padding: 20px; background: rgba(220, 38, 38, 0.1); border-radius: 8px; color: var(--danger); border-left: 4px solid var(--danger);">
                         <strong>⚠️ Error:</strong> ${error.message}
-                        <p style="margin-top: 10px;">Sila cuba sekali lagi atau hubungi support.</p>
+                        <p style="margin-top: 10px; font-size: 13px;">Sila pastikan API key valid atau cuba sekali lagi.</p>
                     </div>
                 `;
             }
@@ -912,8 +977,8 @@ Pastikan konsisten, profesional, dan realistik untuk production.`;
             document.getElementById('step4').classList.remove('hidden');
 
             let sceneTableHTML = `
-                <h2 style="margin-bottom: 20px;">Storyboard Anda Siap! ✅</h2>
-                <h3 style="color: var(--primary); margin: 20px 0 10px;">Cadangan Music Style: <strong>${state.musicStyle}</strong></h3>
+                <h2>✅ Storyboard Anda Siap!</h2>
+                <h3 style="color: var(--primary); margin: 20px 0 10px;">🎵 Cadangan Music Style: <strong>${state.musicStyle}</strong></h3>
                 
                 <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px;">
                     <thead>
@@ -947,7 +1012,7 @@ Pastikan konsisten, profesional, dan realistik untuk production.`;
                 </table>
                 
                 <div style="margin-top: 30px;">
-                    <h3 style="margin-bottom: 15px;">📋 Detail Lengkap Setiap Scene:</h3>
+                    <h3>📋 Detail Lengkap Setiap Scene:</h3>
                     <div id="sceneDetails"></div>
                 </div>
 
@@ -959,7 +1024,6 @@ Pastikan konsisten, profesional, dan realistik untuk production.`;
 
             document.getElementById('resultContent').innerHTML = sceneTableHTML;
 
-            // Display full scene details
             const sceneDetailsDiv = document.getElementById('sceneDetails');
             let detailsHTML = '';
             storyboard.scenes.forEach((scene, idx) => {
@@ -979,7 +1043,6 @@ Pastikan konsisten, profesional, dan realistik untuk production.`;
             });
             sceneDetailsDiv.innerHTML = detailsHTML;
 
-            // Store storyboard for export
             window.currentStoryboard = storyboard;
         }
 
@@ -991,12 +1054,12 @@ Pastikan konsisten, profesional, dan realistik untuk production.`;
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `storyboard-${state.productName.replace(/\s+/g, '-')}.json`;
+            link.download = `storyboard-${state.productName.replace(/\s+/g, '-').toLowerCase()}.json`;
             link.click();
+            URL.revokeObjectURL(url);
         }
 
         function resetToStep0() {
-            // Reset all
             state.answers = { A: null, B: null, C: null, D: null, E: null, F: null };
             state.productName = '';
             state.productImage = null;
@@ -1011,6 +1074,11 @@ Pastikan konsisten, profesional, dan realistik untuk production.`;
             document.getElementById('statusMessage').innerHTML = '';
             document.getElementById('summarySection').classList.add('hidden');
         }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            console.log('Storyboard Iklan AI v8 - Ready');
+        });
     </script>
 </body>
 </html>
