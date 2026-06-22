@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storyboard Iklan AI v8</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e3a8a;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-gray: #e5e7eb;
+            --text-dark: #111827;
+            --text-gray: #6b7280;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        /* Langkah 0 - Product Identification */
+        .step-0 {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--primary-light);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(59, 130, 246, 0.05);
+            margin: 20px 0;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .upload-area input {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        /* Langkah 1 - 6 Questions */
+        .step-1 {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            background: var(--bg-light);
+            height: 4px;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-light), var(--success));
+            transition: width 0.3s ease;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .question-number {
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .question-title {
+            flex: 1;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-left: 40px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 12px 16px;
+            border: 2px solid var(--border-gray);
+            background: var(--bg-white);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .option-button:hover {
+            border-color: var(--primary-light);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .option-button.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .option-number {
+            display: inline-block;
+            background: var(--primary-light);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-right: 8px;
+            font-size: 12px;
+        }
+
+        .option-button.selected .option-number {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 1px solid var(--border-gray);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-gray);
+        }
+
+        .summary-box {
+            background: rgba(5, 150, 105, 0.05);
+            border-left: 4px solid var(--success);
+            padding: 16px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+
+        .summary-value {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .status-message {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-success {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .status-info {
+            background: rgba(30, 64, 175, 0.1);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            gap: 10px;
+        }
+
+        .step-dot {
+            flex: 1;
+            height: 6px;
+            background: var(--border-gray);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: var(--primary);
+            flex: 2;
+        }
+
+        .step-dot.completed {
+            background: var(--success);
+        }
+
+        /* Loading state */
+        .loading {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: currentColor;
+            margin: 0 2px;
+            animation: blink 1.3s infinite;
+        }
+
+        .loading:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 60%, 100% { opacity: 0.5; }
+            30% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-box {
+            background: rgba(217, 119, 6, 0.05);
+            border-left: 4px solid var(--warning);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .info-box strong {
+            color: var(--warning);
+        }
+
+        .product-preview {
+            margin: 20px 0;
+            padding: 16px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .product-preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border-gray);
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-info p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 16px;
+        }
+
+        .product-category {
+            color: var(--text-gray);
+            font-size: 13px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .content {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-preview {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 Storyboard Iklan AI v8</h1>
+            <p>Creative Director AI untuk Video Iklan Profesional</p>
+        </div>
+
+        <div class="content" id="mainContent">
+            <!-- Langkah 0: Product Identification -->
+            <div id="step0" class="step-0">
+                <h2 style="margin-bottom: 20px; color: var(--text-dark);">Langkah 1: Kenal Pasti Produk</h2>
+                
+                <div class="info-box">
+                    <strong>💡 Info:</strong> Anda boleh terangkan produk atau upload gambar produk untuk hasil yang lebih tepat.
+                </div>
+
+                <label style="display: block; margin-bottom: 15px; font-weight: 600;">Nama & Jenis Produk (Wajib) *</label>
+                <input 
+                    type="text" 
+                    id="productName" 
+                    placeholder="Contoh: Nescafé Latte (Minuman Kopi), Samsung Galaxy S25 (Telefon Pintar)"
+                    style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-gray); border-radius: 6px; font-size: 14px; margin-bottom: 20px; font-family: inherit;"
+                >
+
+                <label style="display: block; margin-bottom: 15px; font-weight: 600;">Upload Gambar Produk (Pilihan)</label>
+                <div class="upload-area" onclick="document.getElementById('productImage').click()">
+                    <div class="upload-icon">📸</div>
+                    <div class="upload-text">Klik untuk upload atau tarik gambar di sini</div>
+                    <input type="file" id="productImage" accept="image/*">
+                </div>
+
+                <div id="imagePreview"></div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="startStep1()">Seterusnya: 6 Soalan →</button>
+                </div>
+            </div>
+
+            <!-- Langkah 1: 6 Questions -->
+            <div id="step1" class="step-1 hidden">
+                <div class="step-indicator" id="stepIndicator"></div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+
+                <div id="statusMessage"></div>
+
+                <!-- Question Container -->
+                <div id="questionContainer"></div>
+
+                <!-- Summary Section -->
+                <div id="summarySection" class="hidden">
+                    <div class="summary-box">
+                        <h3 style="margin-bottom: 15px; color: var(--success);">✅ Ringkasan Pilihan (6/6 Selesai)</h3>
+                        <div id="summaryContent"></div>
+                    </div>
+                    <div class="button-group" style="margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="proceedToGenerate()">Generate Storyboard Poster →</button>
+                        <button class="btn btn-secondary" onclick="resetToStep0()">← Ubah Produk</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Langkah 3: Generating -->
+            <div id="step3" class="hidden">
+                <h2 style="text-align: center; margin: 40px 0 20px;">Sedang Menjana Storyboard Poster...</h2>
+                <div style="text-align: center; font-size: 24px; margin: 20px 0;">
+                    <span class="loading"></span>
+                    <span class="loading"></span>
+                    <span class="loading"></span>
+                </div>
+                <p style="text-align: center; color: var(--text-gray); font-size: 14px;">
+                    Ini mungkin mengambil 30-60 saat untuk menghasilkan imej berkualitas tinggi...
+                </p>
+            </div>
+
+            <!-- Langkah 4: Result -->
+            <div id="step4" class="hidden">
+                <div id="resultContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Store
+        const state = {
+            productName: '',
+            productImage: null,
+            productImageFile: null,
+            answers: {
+                A: null,
+                B: null,
+                C: null,
+                D: null,
+                E: null,
+                F: null
+            },
+            musicStyle: ''
+        };
+
+        const questions = {
+            A: {
+                title: 'Soalan 1 dari 6 — Apa tema storyboard anda?',
+                emoji: '🎬',
+                options: [
+                    'Lifestyle & Aspirational — kehidupan ideal, aspirasi',
+                    'Problem-Solution — masalah → solusi',
+                    'Testimoni/Social Proof — pelanggan berkongsi pengalaman',
+                    'Storytelling/Emosional — naratif, perasaan',
+                    'Komedi/Lighthearted — ringan, menghiburkan',
+                    'Product Demo/Showcase — tunjuk ciri & fungsi',
+                    'Before-After — transformasi, perubahan',
+                    'Unboxing/Reveal — pendedahan, dramatik',
+                    'ASMR — tekstur, bunyi, sensori'
+                ]
+            },
+            B: {
+                title: 'Soalan 2 dari 6 — Pilih style visual imej:',
+                emoji: '🎨',
+                options: [
+                    'Sketch Klasik — garis tradisional, hitam putih',
+                    'Comic/Berwarna — garis jelas, warna flat',
+                    'Cinematic Realistic — fotorealistik, profesional',
+                    'Flat Illustration — vektor modern, bersih',
+                    'Minimalist Line Art — garis ringkas, simple',
+                    'Stop Motion — animasi frame-by-frame, tekstur handmade'
+                ]
+            },
+            C: {
+                title: 'Soalan 3 dari 6 — Bahasa yang digunakan:',
+                emoji: '📝',
+                options: [
+                    'Bahasa Melayu — sepenuhnya',
+                    'English — sepenuhnya',
+                    'Campur — BM + English'
+                ]
+            },
+            D: {
+                title: 'Soalan 4 dari 6 — Berapa lama video?',
+                emoji: '⏱️',
+                options: [
+                    '10 saat — pantas, bumper ad (8 panel)',
+                    '15 saat — pendek, iklan media sosial (8 panel)',
+                    '30 saat — sederhana, TVC standard (12 panel)',
+                    '60 saat — panjang, video long-form (12 panel)'
+                ]
+            },
+            E: {
+                title: 'Soalan 5 dari 6 — Format/Aspect Ratio:',
+                emoji: '📐',
+                options: [
+                    '16:9 — landscape (TV, desktop)',
+                    '9:16 — vertical (TikTok, Instagram Reels, mobile)',
+                    '1:1 — square (Instagram feed, Facebook)',
+                    '4:5 — tall square (Instagram Stories)',
+                    '21:9 — ultrawide (cinema, YouTube trailer)'
+                ]
+            },
+            F: {
+                title: 'Soalan 6 dari 6 — Watak/Cast:',
+                emoji: '👥',
+                options: [
+                    'Female Lead (20-40 tahun, aspirational)',
+                    'Male Lead (20-40 tahun, confident)',
+                    'Mixed Couple / Pair',
+                    'Family or Group',
+                    'Guna Gambar Upload (produk/brand ambassador anda)',
+                    'Tiada Watak Manusia — fokus produk/packshot sahaja'
+                ]
+            }
+        };
+
+        // Handle product image upload
+        document.getElementById('productImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    state.productImage = event.target.result;
+                    state.productImageFile = file;
+                    showImagePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Drag and drop
+        const uploadArea = document.querySelector('.upload-area');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.style.background = 'rgba(59, 130, 246, 0.1)';
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = 'var(--primary-light)';
+            uploadArea.style.background = 'rgba(59, 130, 246, 0.05)';
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    state.productImage = event.target.result;
+                    state.productImageFile = file;
+                    showImagePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function showImagePreview() {
+            const container = document.getElementById('imagePreview');
+            container.innerHTML = `
+                <div class="product-preview">
+                    <img src="${state.productImage}" alt="Product">
+                    <div class="product-info">
+                        <p class="product-name">Gambar Dimuat</p>
+                        <p class="product-category">${state.productImageFile.name}</p>
+                        <p style="font-size: 12px; margin-top: 8px; cursor: pointer; color: var(--primary);" onclick="clearImage()">Tukar gambar</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function clearImage() {
+            state.productImage = null;
+            state.productImageFile = null;
+            document.getElementById('productImage').value = '';
+            document.getElementById('imagePreview').innerHTML = '';
+        }
+
+        function startStep1() {
+            const productName = document.getElementById('productName').value.trim();
+            if (!productName) {
+                alert('Sila masukkan nama produk');
+                return;
+            }
+
+            state.productName = productName;
+            document.getElementById('step0').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+            displayQuestion('A');
+        }
+
+        function displayQuestion(slot) {
+            const question = questions[slot];
+            const questionNum = Object.keys(questions).indexOf(slot) + 1;
+            const questionsArray = Object.keys(questions);
+            let completedCount = questionsArray.filter(s => state.answers[s] !== null).length;
+
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = `
+                <div class="question-container">
+                    <div class="question-header">
+                        <div class="question-number">${questionNum}</div>
+                        <div class="question-title">${question.emoji} ${question.title}</div>
+                    </div>
+                    <div class="progress-text">(${completedCount}/6 selesai, ${6 - completedCount} lagi)</div>
+                    <div class="options-grid" id="optionsGrid"></div>
+                </div>
+            `;
+
+            const optionsGrid = document.getElementById('optionsGrid');
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('button');
+                optionDiv.className = 'option-button';
+                optionDiv.innerHTML = `<span class="option-number">${index + 1}</span> ${option}`;
+                optionDiv.onclick = () => selectOption(slot, index + 1);
+                optionsGrid.appendChild(optionDiv);
+            });
+
+            updateProgressBar();
+        }
+
+        function selectOption(slot, number) {
+            state.answers[slot] = number;
+            const questionsArray = Object.keys(questions);
+            const currentIndex = questionsArray.indexOf(slot);
+
+            // Show status message
+            const question = questions[slot];
+            const selectedOption = question.options[number - 1];
+            const completedCount = questionsArray.filter(s => state.answers[s] !== null).length;
+
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.innerHTML = `
+                <div class="status-success">
+                    ✅ ${slot}: ${number}. ${selectedOption.split('—')[0].trim()} — (${completedCount}/6 selesai, ${6 - completedCount} lagi)
+                </div>
+            `;
+
+            setTimeout(() => {
+                if (completedCount === 6) {
+                    showSummary();
+                } else {
+                    const nextSlot = questionsArray[currentIndex + 1];
+                    displayQuestion(nextSlot);
+                }
+            }, 600);
+        }
+
+        function updateProgressBar() {
+            const questionsArray = Object.keys(questions);
+            const completedCount = questionsArray.filter(s => state.answers[s] !== null).length;
+            const progress = (completedCount / 6) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showSummary() {
+            const questionsArray = Object.keys(questions);
+            
+            // Determine music style based on theme and visual style
+            const themeIndex = state.answers['A'] - 1;
+            const themeNames = ['Lifestyle', 'Problem-Solution', 'Testimonial', 'Emotional', 'Comedy', 'Product Demo', 'Before-After', 'Unboxing', 'ASMR'];
+            const themeName = themeNames[themeIndex] || 'Lifestyle';
+            
+            const musicMap = {
+                'Lifestyle': 'Uplifting, modern pop/indie',
+                'Problem-Solution': 'Motivational, corporate',
+                'Testimonial': 'Warm, acoustic/organic',
+                'Emotional': 'Emotional strings, cinematic',
+                'Comedy': 'Quirky, playful, pop',
+                'Product Demo': 'Tech, modern, energetic',
+                'Before-After': 'Triumphant, epic',
+                'Unboxing': 'Exciting, dynamic, modern',
+                'ASMR': 'Ambient, minimalist, lo-fi'
+            };
+            
+            state.musicStyle = musicMap[themeName];
+
+            const summaryContent = document.getElementById('summaryContent');
+            const questionsArray = Object.keys(questions);
+            
+            let summaryHTML = '';
+            questionsArray.forEach(slot => {
+                const question = questions[slot];
+                const answerIndex = state.answers[slot] - 1;
+                const selectedOption = question.options[answerIndex];
+                summaryHTML += `
+                    <div class="summary-item">
+                        <span class="summary-label">${slot}: ${state.answers[slot]}.</span>
+                        <span class="summary-value">${selectedOption.split('—')[0].trim()}</span>
+                    </div>
+                `;
+            });
+
+            summaryHTML += `
+                <div class="summary-item">
+                    <span class="summary-label">🎵 Music Style:</span>
+                    <span class="summary-value">${state.musicStyle}</span>
+                </div>
+            `;
+
+            summaryContent.innerHTML = summaryHTML;
+            
+            document.getElementById('questionContainer').classList.add('hidden');
+            document.getElementById('statusMessage').classList.add('hidden');
+            document.getElementById('summarySection').classList.remove('hidden');
+        }
+
+        function proceedToGenerate() {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            
+            // Simulate generation process
+            setTimeout(() => {
+                generateStoryboardPrompt();
+            }, 2000);
+        }
+
+        function generateStoryboardPrompt() {
+            // Generate detailed storyboard from answers
+            const answers = state.answers;
+            
+            // Get option texts
+            const themes = ['Lifestyle & Aspirational', 'Problem-Solution', 'Testimoni/Social Proof', 'Storytelling/Emosional', 'Komedi/Lighthearted', 'Product Demo/Showcase', 'Before-After', 'Unboxing/Reveal', 'ASMR'];
+            const styles = ['Sketch Klasik', 'Comic/Berwarna', 'Cinematic Realistic', 'Flat Illustration', 'Minimalist Line Art', 'Stop Motion'];
+            const languages = ['Bahasa Melayu', 'English', 'Campur BM+EN'];
+            const durations = ['10 saat (8 panel)', '15 saat (8 panel)', '30 saat (12 panel)', '60 saat (12 panel)'];
+            const aspectRatios = ['16:9 Landscape', '9:16 Vertical', '1:1 Square', '4:5 Tall Square', '21:9 Ultrawide'];
+            const casts = ['Female Lead (20-40)', 'Male Lead (20-40)', 'Mixed Couple/Pair', 'Family/Group', 'Use Upload Image', 'No Human Cast'];
+
+            const selectedTheme = themes[answers.A - 1];
+            const selectedStyle = styles[answers.B - 1];
+            const selectedLanguage = languages[answers.C - 1];
+            const selectedDuration = durations[answers.D - 1];
+            const selectedRatio = aspectRatios[answers.E - 1];
+            const selectedCast = casts[answers.F - 1];
+
+            // Call Claude API to generate storyboard structure
+            const prompt = `Anda adalah Creative Director AI yang membuat storyboard untuk iklan video profesional.
+
+PRODUK: ${state.productName}
+${state.productImage ? 'GAMBAR PRODUK: Diupload oleh pengguna' : 'GAMBAR PRODUK: Tiada - terangkan produk dari nama sahaja'}
+
+PILIHAN PENGGUNA:
+- Tema: ${selectedTheme}
+- Style Visual: ${selectedStyle}
+- Bahasa: ${selectedLanguage}
+- Durasi: ${selectedDuration}
+- Aspect Ratio: ${selectedRatio}
+- Cast: ${selectedCast}
+- Music Style: ${state.musicStyle}
+
+Berdasarkan pilihan di atas, JANA DESKRIPSI LENGKAP untuk setiap scene dalam storyboard ini:
+1. Terangkan setiap scene dengan visual yang jelas dan realistik untuk dishoot
+2. Sertakan dialog, SFX, VO notes
+3. Scene terakhir WAJIB Hero Shot dengan produk/jenama menonjol
+4. Format output sebagai JSON dengan struktur:
+{
+  "title": "Judul Storyboard",
+  "productName": "${state.productName}",
+  "theme": "${selectedTheme}",
+  "style": "${selectedStyle}",
+  "duration": "${selectedDuration}",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "timing": "0-Xs",
+      "visual": "detailed description ikut ${selectedStyle}",
+      "copy": "dialog jika ada",
+      "sfx": "sound effects",
+      "vo": "voice over notes",
+      "cameraWork": "shot type (wide, close-up, dll)"
+    }
+  ]
+}
+
+Pastikan konsisten, profesional, dan realistik untuk production.`;
+
+            generateStoryboard(prompt);
+        }
+
+        async function generateStoryboard(prompt) {
+            try {
+                const response = await fetch("https://api.anthropic.com/v1/messages", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        model: "claude-sonnet-4-6",
+                        max_tokens: 2000,
+                        messages: [
+                            { role: "user", content: prompt }
+                        ],
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const responseText = data.content[0].text;
+                
+                const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) {
+                    throw new Error('Could not parse storyboard');
+                }
+
+                const storyboard = JSON.parse(jsonMatch[0]);
+                displayStoryboardResult(storyboard);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('step3').classList.add('hidden');
+                document.getElementById('step4').classList.remove('hidden');
+                document.getElementById('resultContent').innerHTML = `
+                    <div style="padding: 20px; background: #fee; border-radius: 8px; color: var(--danger);">
+                        <strong>⚠️ Error:</strong> ${error.message}
+                        <p style="margin-top: 10px;">Sila cuba sekali lagi atau hubungi support.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayStoryboardResult(storyboard) {
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step4').classList.remove('hidden');
+
+            let sceneTableHTML = `
+                <h2 style="margin-bottom: 20px;">Storyboard Anda Siap! ✅</h2>
+                <h3 style="color: var(--primary); margin: 20px 0 10px;">Cadangan Music Style: <strong>${state.musicStyle}</strong></h3>
+                
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px;">
+                    <thead>
+                        <tr style="background: var(--bg-light); border-bottom: 2px solid var(--primary);">
+                            <th style="padding: 10px; text-align: left; font-weight: 600;">Scene</th>
+                            <th style="padding: 10px; text-align: left; font-weight: 600;">Durasi</th>
+                            <th style="padding: 10px; text-align: left; font-weight: 600;">Visual</th>
+                            <th style="padding: 10px; text-align: left; font-weight: 600;">Dialog/VO</th>
+                            <th style="padding: 10px; text-align: left; font-weight: 600;">Audio/SFX</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            storyboard.scenes.forEach((scene, idx) => {
+                const isLastScene = idx === storyboard.scenes.length - 1;
+                const sceneLabel = isLastScene ? `${scene.sceneNumber} (HERO SHOT)` : scene.sceneNumber;
+                sceneTableHTML += `
+                    <tr style="border-bottom: 1px solid var(--border-gray); ${idx % 2 === 0 ? 'background: var(--bg-light);' : ''}">
+                        <td style="padding: 10px;"><strong>${sceneLabel}</strong></td>
+                        <td style="padding: 10px;">${scene.timing}</td>
+                        <td style="padding: 10px;">${scene.visual.substring(0, 80)}...</td>
+                        <td style="padding: 10px;">${scene.copy || '-'}</td>
+                        <td style="padding: 10px;">${scene.sfx || scene.vo || '-'}</td>
+                    </tr>
+                `;
+            });
+
+            sceneTableHTML += `
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 15px;">📋 Detail Lengkap Setiap Scene:</h3>
+                    <div id="sceneDetails"></div>
+                </div>
+
+                <div class="button-group" style="margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="resetToStep0()">← Buat Storyboard Baru</button>
+                    <button class="btn btn-secondary" onclick="exportAsJSON()">📥 Export JSON</button>
+                </div>
+            `;
+
+            document.getElementById('resultContent').innerHTML = sceneTableHTML;
+
+            // Display full scene details
+            const sceneDetailsDiv = document.getElementById('sceneDetails');
+            let detailsHTML = '';
+            storyboard.scenes.forEach((scene, idx) => {
+                const isLastScene = idx === storyboard.scenes.length - 1;
+                detailsHTML += `
+                    <div style="margin-bottom: 20px; padding: 15px; background: var(--bg-light); border-radius: 6px; border-left: 4px solid ${isLastScene ? 'var(--success)' : 'var(--primary)'};">
+                        <h4 style="margin: 0 0 10px 0; color: var(--text-dark);">
+                            Scene ${scene.sceneNumber} ${isLastScene ? '(HERO SHOT ⭐)' : ''} — ${scene.timing}
+                        </h4>
+                        <p style="margin: 8px 0; font-size: 13px; color: var(--text-gray);"><strong>Visual:</strong> ${scene.visual}</p>
+                        ${scene.copy ? `<p style="margin: 8px 0; font-size: 13px;"><strong>Dialog:</strong> "${scene.copy}"</p>` : ''}
+                        ${scene.vo ? `<p style="margin: 8px 0; font-size: 13px;"><strong>VO:</strong> ${scene.vo}</p>` : ''}
+                        ${scene.sfx ? `<p style="margin: 8px 0; font-size: 13px;"><strong>SFX:</strong> ${scene.sfx}</p>` : ''}
+                        ${scene.cameraWork ? `<p style="margin: 8px 0; font-size: 13px;"><strong>Camera:</strong> ${scene.cameraWork}</p>` : ''}
+                    </div>
+                `;
+            });
+            sceneDetailsDiv.innerHTML = detailsHTML;
+
+            // Store storyboard for export
+            window.currentStoryboard = storyboard;
+        }
+
+        function exportAsJSON() {
+            if (!window.currentStoryboard) return;
+            
+            const dataStr = JSON.stringify(window.currentStoryboard, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `storyboard-${state.productName.replace(/\s+/g, '-')}.json`;
+            link.click();
+        }
+
+        function resetToStep0() {
+            // Reset all
+            state.answers = { A: null, B: null, C: null, D: null, E: null, F: null };
+            state.productName = '';
+            state.productImage = null;
+            state.productImageFile = null;
+            
+            document.getElementById('productName').value = '';
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('step0').classList.remove('hidden');
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step4').classList.add('hidden');
+            document.getElementById('statusMessage').innerHTML = '';
+            document.getElementById('summarySection').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
