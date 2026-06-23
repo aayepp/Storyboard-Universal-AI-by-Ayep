@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Iklan AI — Storyboard & Reference Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0c0a09;
+    --paper:#faf8f4;
+    --panel:#ffffff;
+    --line:#e7e2d8;
+    --line-strong:#c9c2b4;
+    --accent:#ff5436;        /* vermilion — director's grease pencil */
+    --accent-soft:#ffe9e3;
+    --accent-ink:#c2371f;
+    --gold:#e0a800;
+    --muted:#7a7468;
+    --muted-2:#a39c8e;
+    --good:#1f9d6b;
+    --good-soft:#e3f5ec;
+    --shadow:0 1px 0 var(--line), 0 8px 30px rgba(12,10,9,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'JetBrains Mono',monospace}
+  .display{font-family:'Space Grotesk',sans-serif}
+
+  /* ===== Top bar ===== */
+  header.topbar{
+    position:sticky;top:0;z-index:40;
+    background:rgba(250,248,244,.85);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:1080px;margin:0 auto;padding:14px 20px;
+    display:flex;align-items:center;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:11px;min-width:0}
+  .clap{
+    width:38px;height:38px;border-radius:9px;flex:none;
+    background:var(--ink);position:relative;overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .clap:before{
+    content:"";position:absolute;top:0;left:0;right:0;height:13px;
+    background:repeating-linear-gradient(115deg,var(--paper) 0 7px,var(--ink) 7px 14px);
+    transform-origin:left;
+  }
+  .clap:after{
+    content:"";position:absolute;top:13px;left:0;right:0;bottom:0;
+    background:linear-gradient(180deg,#1c1916,#0c0a09);
+  }
+  .brand h1{
+    font-family:'Space Grotesk';font-size:17px;font-weight:700;margin:0;
+    letter-spacing:-.02em;white-space:nowrap;
+  }
+  .brand span{display:block;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.02em}
+  .spacer{flex:1}
+  .lang-toggle{
+    display:flex;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden;
+    font-size:12px;font-weight:600;
+  }
+  .lang-toggle button{
+    border:0;background:transparent;padding:6px 13px;cursor:pointer;color:var(--muted);
+    font-family:'Inter';font-weight:600;
+  }
+  .lang-toggle button.on{background:var(--ink);color:var(--paper)}
+  .key-btn{
+    border:1px solid var(--line-strong);background:var(--panel);
+    border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer;
+    display:flex;align-items:center;gap:7px;color:var(--ink);
+  }
+  .key-btn .dot{width:8px;height:8px;border-radius:50%;background:#d64545}
+  .key-btn.ok .dot{background:var(--good)}
+
+  /* ===== Tabs ===== */
+  .tabs{max-width:1080px;margin:0 auto;padding:0 20px;display:flex;gap:4px}
+  .tab{
+    border:0;background:transparent;cursor:pointer;
+    padding:15px 20px 13px;font-family:'Space Grotesk';font-weight:600;font-size:14.5px;
+    color:var(--muted);border-bottom:2.5px solid transparent;margin-bottom:-1px;
+    display:flex;align-items:center;gap:9px;letter-spacing:-.01em;
+  }
+  .tab .num{
+    font-family:'JetBrains Mono';font-size:11px;width:20px;height:20px;border-radius:5px;
+    background:var(--line);color:var(--muted);display:grid;place-items:center;font-weight:500;
+  }
+  .tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+  .tab.on .num{background:var(--accent);color:#fff}
+
+  /* ===== Layout ===== */
+  main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+  .stage{display:grid;grid-template-columns:1fr;gap:22px}
+  @media(min-width:900px){.stage{grid-template-columns:minmax(0,1fr) 360px}}
+
+  .panel{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .panel-head{
+    padding:15px 18px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:10px;
+  }
+  .panel-head .eyebrow{
+    font-family:'JetBrains Mono';font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent-ink);font-weight:500;
+  }
+  .panel-head h2{font-family:'Space Grotesk';font-size:15px;margin:0;font-weight:600}
+
+  /* ===== Chat / flow area ===== */
+  .flow{padding:0;display:flex;flex-direction:column;min-height:420px}
+  .msgs{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;max-height:62vh}
+  .msg{display:flex;gap:11px;align-items:flex-start;animation:rise .25s ease}
+  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .avatar{
+    width:30px;height:30px;border-radius:8px;flex:none;display:grid;place-items:center;
+    font-size:14px;font-weight:700;font-family:'Space Grotesk';
+  }
+  .msg.ai .avatar{background:var(--ink);color:var(--paper)}
+  .msg.user .avatar{background:var(--accent);color:#fff}
+  .bubble{
+    border-radius:11px;padding:11px 14px;font-size:14px;max-width:100%;
+    border:1px solid var(--line);background:#fcfbf8;white-space:pre-wrap;word-break:break-word;
+  }
+  .msg.user{flex-direction:row-reverse}
+  .msg.user .bubble{background:var(--accent-soft);border-color:#ffd4c8}
+  .bubble img{max-width:100%;border-radius:8px;border:1px solid var(--line);margin-top:6px}
+  .bubble .gen-img{margin-top:4px}
+  .img-actions{display:flex;gap:8px;margin-top:9px}
+  .img-btn{
+    display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);
+    background:#fff;border-radius:8px;padding:7px 13px;font-size:12.5px;font-weight:600;
+    cursor:pointer;color:var(--ink);font-family:'Inter';transition:.14s;
+  }
+  .img-btn:hover{border-color:var(--accent);color:var(--accent-ink)}
+  .img-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .img-btn.primary:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+  .img-btn svg{flex:none}
+
+  .copybox{
+    margin-top:10px;border:1px solid var(--line-strong);border-radius:10px;overflow:hidden;
+    background:#fcfbf8;
+  }
+  .copybox-text{
+    padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;
+    color:var(--ink);white-space:pre-wrap;word-break:break-word;border-bottom:1px solid var(--line);
+    background:#fff;
+  }
+  .copybox-btn{
+    width:100%;border:0;background:var(--ink);color:#fff;padding:10px;cursor:pointer;
+    font-family:'Inter';font-weight:600;font-size:13px;display:flex;align-items:center;
+    justify-content:center;gap:7px;transition:.14s;
+  }
+  .copybox-btn:hover{background:var(--accent)}
+
+  .lightbox{
+    position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;
+    background:rgba(12,10,9,.86);backdrop-filter:blur(4px);padding:24px;flex-direction:column;gap:16px;
+  }
+  .lightbox.show{display:flex;animation:rise .2s ease}
+  .lightbox img{max-width:92vw;max-height:80vh;border-radius:10px;box-shadow:0 20px 70px rgba(0,0,0,.5);background:#fff}
+  .lightbox-bar{display:flex;gap:10px}
+  .lightbox-bar button{
+    border:0;border-radius:9px;padding:11px 20px;font-weight:600;font-size:14px;cursor:pointer;
+    font-family:'Inter';display:inline-flex;align-items:center;gap:8px;
+  }
+  .lb-dl{background:var(--accent);color:#fff}
+  .lb-dl:hover{background:#e64428}
+  .lb-close{background:rgba(255,255,255,.14);color:#fff;backdrop-filter:blur(4px)}
+  .lb-close:hover{background:rgba(255,255,255,.24)}
+  .bubble strong{font-weight:600}
+  .bubble table{border-collapse:collapse;width:100%;font-size:11.5px;margin-top:8px}
+  .bubble th,.bubble td{border:1px solid var(--line-strong);padding:4px 6px;text-align:left;vertical-align:top}
+  .bubble th{background:var(--ink);color:var(--paper);font-weight:600;font-family:'JetBrains Mono';font-size:10px}
+  .bubble .hero-row{background:var(--accent-soft)}
+
+  .thinking{display:flex;gap:5px;padding:4px 2px}
+  .thinking span{width:7px;height:7px;border-radius:50%;background:var(--muted-2);animation:bounce 1.2s infinite}
+  .thinking span:nth-child(2){animation-delay:.15s}
+  .thinking span:nth-child(3){animation-delay:.3s}
+  @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+
+  /* ===== Composer ===== */
+  .composer{border-top:1px solid var(--line);padding:13px;background:var(--panel)}
+  .attach-row{display:flex;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+  .chip{
+    font-size:12px;border:1px solid var(--line-strong);border-radius:999px;
+    padding:5px 11px;background:#fcfbf8;cursor:pointer;color:var(--ink);font-weight:500;
+    display:flex;align-items:center;gap:6px;transition:.15s;
+  }
+  .chip:hover{border-color:var(--accent);color:var(--accent-ink)}
+  .chip.preview{padding:4px 4px 4px 9px}
+  .chip.preview img{width:26px;height:26px;border-radius:5px;object-fit:cover}
+  .chip .x{font-weight:700;color:var(--muted);padding:0 4px}
+  .composer-input{display:flex;gap:9px;align-items:flex-end}
+  .composer textarea{
+    flex:1;border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;
+    font-family:'Inter';font-size:14px;resize:none;outline:none;background:#fcfbf8;
+    max-height:120px;line-height:1.4;
+  }
+  .composer textarea:focus{border-color:var(--accent);background:#fff}
+  .send{
+    border:0;background:var(--ink);color:var(--paper);border-radius:10px;
+    width:42px;height:42px;flex:none;cursor:pointer;display:grid;place-items:center;
+    transition:.15s;
+  }
+  .send:hover{background:var(--accent)}
+  .send:disabled{opacity:.4;cursor:not-allowed}
+  .send:disabled:hover{background:var(--ink)}
+
+  /* quick-pick buttons rendered inside flow */
+  .picks{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+  .pick{
+    border:1px solid var(--line-strong);background:#fff;border-radius:9px;
+    padding:7px 12px;font-size:13px;cursor:pointer;font-weight:500;color:var(--ink);
+    transition:.13s;font-family:'Inter';
+  }
+  .pick:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+  .pick .k{font-family:'JetBrains Mono';font-size:11px;color:var(--accent-ink);margin-right:6px;font-weight:600}
+
+  /* ===== Side rail ===== */
+  .rail{display:flex;flex-direction:column;gap:18px}
+  .rail .panel-head{padding:13px 16px}
+  .rail-body{padding:16px}
+  .step-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+  .step-list li{
+    display:flex;gap:11px;align-items:center;padding:8px 6px;border-radius:8px;font-size:13px;
+    color:var(--muted);
+  }
+  .step-list li .s-num{
+    font-family:'JetBrains Mono';font-size:11px;width:22px;height:22px;border-radius:6px;flex:none;
+    background:var(--line);color:var(--muted);display:grid;place-items:center;font-weight:500;
+  }
+  .step-list li.active{color:var(--ink);background:var(--accent-soft);font-weight:600}
+  .step-list li.active .s-num{background:var(--accent);color:#fff}
+  .step-list li.done{color:var(--ink)}
+  .step-list li.done .s-num{background:var(--good);color:#fff}
+
+  .summary-card{font-size:13px}
+  .summary-card .row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line)}
+  .summary-card .row:last-child{border-bottom:0}
+  .summary-card .lbl{color:var(--muted);display:flex;align-items:center;gap:6px}
+  .summary-card .val{font-weight:600;text-align:right}
+  .summary-card .val.empty{color:var(--muted-2);font-weight:400;font-style:italic}
+
+  .hint{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .hint b{color:var(--ink)}
+
+  .reset-link{
+    background:transparent;border:0;color:var(--muted);font-size:12.5px;cursor:pointer;
+    text-decoration:underline;font-family:'Inter';padding:0;
+  }
+  .reset-link:hover{color:var(--accent-ink)}
+
+  /* ===== Modal ===== */
+  .modal-bg{
+    position:fixed;inset:0;background:rgba(12,10,9,.55);backdrop-filter:blur(3px);
+    z-index:100;display:none;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-bg.show{display:flex}
+  .modal{
+    background:var(--panel);border-radius:16px;max-width:440px;width:100%;
+    box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden;
+  }
+  .modal-head{padding:20px 22px 0}
+  .modal-head h3{font-family:'Space Grotesk';margin:0 0 5px;font-size:18px}
+  .modal-head p{margin:0;color:var(--muted);font-size:13.5px}
+  .modal-body{padding:18px 22px 22px}
+  .modal-body label{font-size:12.5px;font-weight:600;display:block;margin-bottom:7px}
+  .modal-body input{
+    width:100%;border:1px solid var(--line-strong);border-radius:9px;padding:11px 12px;
+    font-family:'JetBrains Mono';font-size:13px;outline:none;
+  }
+  .modal-body input:focus{border-color:var(--accent)}
+  .modal-body .help{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5}
+  .modal-body .help a{color:var(--accent-ink)}
+  .modal-actions{display:flex;gap:9px;margin-top:16px}
+  .btn{
+    border:0;border-radius:9px;padding:11px 16px;font-weight:600;font-size:13.5px;cursor:pointer;
+    font-family:'Inter';flex:1;
+  }
+  .btn-primary{background:var(--ink);color:var(--paper)}
+  .btn-primary:hover{background:var(--accent)}
+  .btn-ghost{background:transparent;border:1px solid var(--line-strong);color:var(--ink)}
+
+  .toast{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:10px;font-size:13.5px;
+    z-index:120;opacity:0;transition:.25s;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.25);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .view{display:none}
+  .view.on{display:block}
+  ::-webkit-scrollbar{width:9px;height:9px}
+  ::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:99px;border:2px solid var(--paper)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="clap"></div>
+      <div>
+        <h1 class="display">Studio Iklan AI</h1>
+        <span data-i="tagline">Storyboard & reference sheet generator</span>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="lang-toggle">
+      <button id="lang-ms" onclick="setLang('ms')">BM</button>
+      <button id="lang-en" class="on" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="key-btn" id="keyBtn" onclick="openKey()">
+      <span class="dot"></span><span data-i="apikey">API Key</span>
+    </button>
+  </div>
+  <div class="tabs">
+    <button class="tab on" id="tab-sheet" onclick="switchTab('sheet')">
+      <span class="num">1</span><span data-i="tab1">Smart Sheet Creator</span>
+    </button>
+    <button class="tab" id="tab-board" onclick="switchTab('board')">
+      <span class="num">2</span><span data-i="tab2">Storyboard Generator</span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- ===================== TAB 1: SMART SHEET ===================== -->
+  <section class="view on" id="view-sheet">
+    <div class="stage">
+      <div class="panel flow">
+        <div class="panel-head">
+          <span class="eyebrow">Tab 1</span>
+          <h2 class="display" data-i="sheetTitle">Character / Product Reference Sheet</h2>
+        </div>
+        <div class="msgs" id="sheet-msgs"></div>
+        <div class="composer">
+          <div class="attach-row" id="sheet-attach"></div>
+          <div class="composer-input">
+            <textarea id="sheet-input" rows="1" data-i-ph="phSheet" placeholder="Taip jawapan atau nombor pilihan…"></textarea>
+            <button class="send" id="sheet-send" onclick="sendSheet()" title="Hantar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="rail">
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow">Progress</span></div>
+          <div class="rail-body">
+            <ul class="step-list" id="sheet-steps">
+              <li data-step="1"><span class="s-num">1</span><span data-i="ss1">Upload gambar + nama</span></li>
+              <li data-step="2"><span class="s-num">2</span><span data-i="ss2">Sahkan objek</span></li>
+              <li data-step="3"><span class="s-num">3</span><span data-i="ss3">Pilih tetapan</span></li>
+              <li data-step="4"><span class="s-num">4</span><span data-i="ss4">Jana imej sheet</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow" data-i="howto">Cara guna</span></div>
+          <div class="rail-body">
+            <p class="hint" data-i="sheetHint"><b>1.</b> Upload gambar produk/watak + bagi nama. <b>2.</b> Sahkan nama tepat. <b>3.</b> Pilih tetapan (style, angle). <b>4.</b> Dapat satu imej reference sheet penuh.</p>
+            <div style="margin-top:14px"><button class="reset-link" onclick="resetSheet()" data-i="resetSheet">↺ Mula semula sheet</button></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 2: STORYBOARD ===================== -->
+  <section class="view" id="view-board">
+    <div class="stage">
+      <div class="panel flow">
+        <div class="panel-head">
+          <span class="eyebrow">Tab 2</span>
+          <h2 class="display" data-i="boardTitle">Storyboard Poster Generator</h2>
+        </div>
+        <div class="msgs" id="board-msgs"></div>
+        <div class="composer">
+          <div class="attach-row" id="board-attach"></div>
+          <div class="composer-input">
+            <textarea id="board-input" rows="1" data-i-ph="phBoard" placeholder="Taip jawapan atau nombor pilihan…"></textarea>
+            <button class="send" id="board-send" onclick="sendBoard()" title="Hantar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="rail">
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow">Brief</span><h2 class="display" data-i="briefTitle" style="font-size:14px">Pilihan anda</h2></div>
+          <div class="rail-body">
+            <div class="summary-card" id="board-summary">
+              <div class="row"><span class="lbl">🎬 <span data-i="qTema">Tema</span></span><span class="val empty" data-slot="tema">—</span></div>
+              <div class="row"><span class="lbl">🎨 <span data-i="qStyle">Style</span></span><span class="val empty" data-slot="style">—</span></div>
+              <div class="row"><span class="lbl">📝 <span data-i="qBahasa">Bahasa</span></span><span class="val empty" data-slot="bahasa">—</span></div>
+              <div class="row"><span class="lbl">⏱️ <span data-i="qDurasi">Durasi</span></span><span class="val empty" data-slot="durasi">—</span></div>
+              <div class="row"><span class="lbl">📱 <span data-i="qAr">Aspect Ratio</span></span><span class="val empty" data-slot="ar">—</span></div>
+              <div class="row"><span class="lbl">👥 <span data-i="qCast">Cast</span></span><span class="val empty" data-slot="cast">—</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow" data-i="howto">Cara guna</span></div>
+          <div class="rail-body">
+            <p class="hint" data-i="boardHint">Jawab <b>6 soalan</b> satu demi satu. Pada hujung, pilih <b>jana</b> untuk dapat satu imej poster storyboard dengan grid panel + Hero Shot di scene terakhir.</p>
+            <div style="margin-top:14px"><button class="reset-link" onclick="resetBoard()" data-i="resetBoard">↺ Mula semula storyboard</button></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<!-- ===== API KEY MODAL ===== -->
+<div class="modal-bg" id="keyModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 class="display" data-i="keyTitle">Sambung Gemini API</h3>
+      <p data-i="keySub">Tampal API key Gemini anda. Disimpan dalam pelayar ini sahaja.</p>
+    </div>
+    <div class="modal-body">
+      <label data-i="keyLabel">Gemini API Key</label>
+      <input id="keyInput" type="password" placeholder="AIza…" autocomplete="off" spellcheck="false">
+      <p class="help" data-i="keyHelp">Dapatkan key percuma di <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Key disimpan di peranti anda (localStorage), tidak dihantar ke mana-mana selain Google.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeKey()" data-i="cancel">Batal</button>
+        <button class="btn btn-primary" onclick="saveKey()" data-i="save">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <img id="lightbox-img" src="" alt="preview">
+  <div class="lightbox-bar">
+    <button class="lb-dl" id="lightbox-dl">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i="save">Muat turun</span>
+    </button>
+    <button class="lb-close" onclick="closeLightbox()" data-i="cancel">Tutup</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   STATE
+===================================================================== */
+const KEY_LS = 'gemini_api_key_v1';
+let LANG = 'en';
+let API_KEY = localStorage.getItem(KEY_LS) || '';
+const TEXT_MODEL = 'gemini-flash-latest';
+const IMAGE_MODEL = 'gemini-3.1-flash-image';
+
+/* ---- per-tab conversation state ---- */
+const S = {
+  sheet: { step:1, history:[], image:null, busy:false, object:null, type:null, angles:null },
+  board: { step:0, qi:0, answers:{}, history:[], image:null, busy:false }
+};
+
+/* =====================================================================
+   I18N
+===================================================================== */
+const I18N = {
+  ms:{
+    tagline:'Penjana storyboard & reference sheet',
+    apikey:'API Key', tab1:'Pencipta Smart Sheet', tab2:'Penjana Storyboard',
+    sheetTitle:'Reference Sheet Watak / Produk',
+    boardTitle:'Penjana Poster Storyboard',
+    phSheet:'Taip jawapan atau nombor pilihan…',
+    phBoard:'Taip jawapan atau nombor pilihan…',
+    ss1:'Upload gambar + nama', ss2:'Sahkan objek', ss3:'Pilih tetapan', ss4:'Jana imej sheet',
+    howto:'Cara guna',
+    sheetHint:'<b>1.</b> Upload gambar produk/watak + bagi nama. <b>2.</b> Sahkan nama tepat. <b>3.</b> Pilih tetapan (style, angle). <b>4.</b> Dapat satu imej reference sheet penuh.',
+    resetSheet:'↺ Mula semula sheet',
+    briefTitle:'Pilihan anda',
+    qTema:'Tema', qStyle:'Style', qBahasa:'Bahasa', qDurasi:'Durasi', qAr:'Aspect Ratio', qCast:'Cast',
+    boardHint:'Jawab <b>6 soalan</b> satu demi satu. Pada hujung, pilih <b>jana</b> untuk dapat satu imej poster storyboard dengan grid panel + Hero Shot di scene terakhir.',
+    resetBoard:'↺ Mula semula storyboard',
+    keyTitle:'Sambung Gemini API', keySub:'Tampal API key Gemini anda. Disimpan dalam pelayar ini sahaja.',
+    keyLabel:'Gemini API Key',
+    keyHelp:'Dapatkan key percuma di <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Key disimpan di peranti anda (localStorage), tidak dihantar ke mana-mana selain Google.',
+    cancel:'Batal', save:'Simpan',
+    attachImg:'📎 Lampir gambar',
+    needKey:'Sila set Gemini API key dahulu.',
+    keySaved:'API key disimpan ✓', keyCleared:'API key dipadam',
+    genImg:'Sedang menjana imej…', thinking:'Sedang fikir…',
+    errGen:'Penjanaan imej gagal. Cuba lagi atau periksa API key.',
+    imgFail:'⚠️ Imej tak berjaya dijana kali ini. Cuba taip "jana lagi".',
+  },
+  en:{
+    tagline:'Storyboard & reference sheet generator',
+    apikey:'API Key', tab1:'Smart Sheet Creator', tab2:'Storyboard Generator',
+    sheetTitle:'Character / Product Reference Sheet',
+    boardTitle:'Storyboard Poster Generator',
+    phSheet:'Type your answer or option number…',
+    phBoard:'Type your answer or option number…',
+    ss1:'Upload image + name', ss2:'Verify object', ss3:'Choose settings', ss4:'Generate sheet image',
+    howto:'How to use',
+    sheetHint:'<b>1.</b> Upload your product/character image + give it a name. <b>2.</b> Confirm the exact name. <b>3.</b> Pick settings (style, angles). <b>4.</b> Get one full reference sheet image.',
+    resetSheet:'↺ Restart sheet',
+    briefTitle:'Your choices',
+    qTema:'Theme', qStyle:'Style', qBahasa:'Language', qDurasi:'Duration', qAr:'Aspect Ratio', qCast:'Cast',
+    boardHint:'Answer <b>6 questions</b> one at a time. At the end, choose <b>generate</b> to get one storyboard poster image with a panel grid + a Hero Shot on the final scene.',
+    resetBoard:'↺ Restart storyboard',
+    keyTitle:'Connect Gemini API', keySub:'Paste your Gemini API key. Stored only in this browser.',
+    keyLabel:'Gemini API Key',
+    keyHelp:'Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. The key stays on your device (localStorage), sent only to Google.',
+    cancel:'Cancel', save:'Save',
+    attachImg:'📎 Attach image',
+    needKey:'Please set your Gemini API key first.',
+    keySaved:'API key saved ✓', keyCleared:'API key cleared',
+    genImg:'Generating image…', thinking:'Thinking…',
+    errGen:'Image generation failed. Try again or check the API key.',
+    imgFail:'⚠️ Image didn\'t generate this time. Type "regenerate" to retry.',
+  }
+};
+function t(k){return (I18N[LANG]&&I18N[LANG][k])||k}
+
+function setLang(l){
+  LANG=l;
+  document.getElementById('lang-ms').classList.toggle('on',l==='ms');
+  document.getElementById('lang-en').classList.toggle('on',l==='en');
+  document.documentElement.lang = l==='ms'?'ms':'en';
+  document.querySelectorAll('[data-i]').forEach(el=>{
+    const k=el.getAttribute('data-i'); if(I18N[l][k]!==undefined) el.innerHTML=I18N[l][k];
+  });
+  document.querySelectorAll('[data-i-ph]').forEach(el=>{
+    const k=el.getAttribute('data-i-ph'); if(I18N[l][k]!==undefined) el.placeholder=I18N[l][k];
+  });
+  renderAttachChips('sheet'); renderAttachChips('board');
+  // re-fire greeting if conversations empty
+  if(S.sheet.history.length===0) bootSheet();
+  if(S.board.history.length===0) bootBoard();
+}
+
+/* =====================================================================
+   UI HELPERS
+===================================================================== */
+function toast(msg){
+  const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show');
+  clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),2600);
+}
+function switchTab(tab){
+  document.getElementById('tab-sheet').classList.toggle('on',tab==='sheet');
+  document.getElementById('tab-board').classList.toggle('on',tab==='board');
+  document.getElementById('view-sheet').classList.toggle('on',tab==='sheet');
+  document.getElementById('view-board').classList.toggle('on',tab==='board');
+}
+function refreshKeyBtn(){
+  const b=document.getElementById('keyBtn');
+  b.classList.toggle('ok', !!API_KEY);
+}
+function openKey(){document.getElementById('keyInput').value=API_KEY;document.getElementById('keyModal').classList.add('show')}
+
+/* ----- image preview (lightbox) + download ----- */
+function openLightbox(src){
+  const lb=document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src=src;
+  document.querySelector('#lightbox-dl span').textContent = LANG==='ms'?'Muat turun':'Download';
+  document.getElementById('lightbox-dl').onclick=()=>downloadImage(src,'image-'+Date.now()+'.png');
+  lb.classList.add('show');
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('show')}
+function downloadImage(src,filename){
+  const a=document.createElement('a');
+  a.href=src; a.download=filename||('image-'+Date.now()+'.png');
+  document.body.appendChild(a); a.click(); a.remove();
+  toast(LANG==='ms'?'Imej dimuat turun ✓':'Image downloaded ✓');
+}
+function closeKey(){document.getElementById('keyModal').classList.remove('show')}
+function saveKey(){
+  const v=document.getElementById('keyInput').value.trim();
+  API_KEY=v; if(v) localStorage.setItem(KEY_LS,v); else localStorage.removeItem(KEY_LS);
+  refreshKeyBtn(); closeKey(); toast(v?t('keySaved'):t('keyCleared'));
+}
+
+/* auto-grow textareas */
+['sheet-input','board-input'].forEach(id=>{
+  const ta=document.getElementById(id);
+  ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,120)+'px'});
+  ta.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();id==='sheet-input'?sendSheet():sendBoard()}
+  });
+});
+
+/* =====================================================================
+   ATTACHMENTS (image upload)
+===================================================================== */
+const attachments = { sheet:[], board:[] };
+function renderAttachChips(tab){
+  const wrap=document.getElementById(tab+'-attach'); wrap.innerHTML='';
+  // attach button
+  const add=document.createElement('label'); add.className='chip';
+  add.innerHTML=`<input type="file" accept="image/*" hidden> ${t('attachImg')}`;
+  add.querySelector('input').addEventListener('change',e=>handleFile(e,tab));
+  wrap.appendChild(add);
+  // previews
+  attachments[tab].forEach((a,i)=>{
+    const c=document.createElement('div'); c.className='chip preview';
+    c.innerHTML=`<img src="${a.dataUrl}"><span class="x">✕</span>`;
+    c.querySelector('.x').onclick=()=>{attachments[tab].splice(i,1);renderAttachChips(tab)};
+    wrap.appendChild(c);
+  });
+}
+function handleFile(e,tab){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    attachments[tab].push({dataUrl:r.result, mime:f.type});
+    renderAttachChips(tab);
+  };
+  r.readAsDataURL(f);
+}
+
+/* =====================================================================
+   MESSAGE RENDERING
+===================================================================== */
+function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function mdLite(s){
+  // minimal markdown: **bold**, line breaks already preserved by pre-wrap; tables handled separately
+  s=escapeHtml(s);
+  s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  // pipe tables
+  if(/\n\|.*\|/.test('\n'+s)){
+    s=s.replace(/((?:^|\n)\|.+\|(?:\n\|.+\|)+)/g,(blk)=>{
+      const rows=blk.trim().split('\n').map(r=>r.trim());
+      let html='<table>';
+      rows.forEach((r,ri)=>{
+        if(/^\|[\s\-:|]+\|$/.test(r)) return; // separator
+        const cells=r.slice(1,-1).split('|').map(c=>c.trim());
+        const tag = ri===0 ? 'th':'td';
+        const isHero = /hero/i.test(r);
+        html+=`<tr class="${isHero?'hero-row':''}">`+cells.map(c=>`<${tag}>${c}</${tag}>`).join('')+'</tr>';
+      });
+      return html+'</table>';
+    });
+  }
+  return s;
+}
+function addMsg(tab, role, content, imgUrl){
+  const box=document.getElementById(tab+'-msgs');
+  const m=document.createElement('div'); m.className='msg '+role;
+  const av=document.createElement('div'); av.className='avatar'; av.textContent=role==='ai'?'◐':'You'.slice(0,1);
+  if(role==='ai') av.textContent='◐'; else av.textContent='∎';
+  const b=document.createElement('div'); b.className='bubble';
+  if(content) b.innerHTML=mdLite(content);
+  if(imgUrl){
+    const im=document.createElement('img');im.src=imgUrl;im.className='gen-img';
+    im.style.cursor='zoom-in'; im.onclick=()=>openLightbox(imgUrl);
+    b.appendChild(im);
+    const bar=document.createElement('div'); bar.className='img-actions';
+    const fname = (tab==='sheet'?'reference-sheet':'storyboard')+'-'+Date.now()+'.png';
+    const pv=document.createElement('button'); pv.className='img-btn';
+    pv.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg> '+(LANG==='ms'?'Preview':'Preview');
+    pv.onclick=()=>openLightbox(imgUrl);
+    const dl=document.createElement('button'); dl.className='img-btn primary';
+    dl.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> '+(LANG==='ms'?'Muat turun':'Download');
+    dl.onclick=()=>downloadImage(imgUrl,fname);
+    bar.appendChild(pv); bar.appendChild(dl); b.appendChild(bar);
+  }
+  m.appendChild(av); m.appendChild(b); box.appendChild(m);
+  box.scrollTop=box.scrollHeight;
+  return b;
+}
+function addThinking(tab,label){
+  const box=document.getElementById(tab+'-msgs');
+  const m=document.createElement('div'); m.className='msg ai'; m.dataset.thinking='1';
+  m.innerHTML=`<div class="avatar">◐</div><div class="bubble"><div class="thinking"><span></span><span></span><span></span></div></div>`;
+  box.appendChild(m); box.scrollTop=box.scrollHeight; return m;
+}
+function removeThinking(tab){
+  const box=document.getElementById(tab+'-msgs');
+  box.querySelectorAll('[data-thinking]').forEach(n=>n.remove());
+}
+function renderPicks(tab, picks){
+  // picks: [{k:'1', label:'...'}]
+  const box=document.getElementById(tab+'-msgs');
+  const last=box.querySelector('.msg.ai:last-child .bubble') || addMsg(tab,'ai','');
+  const wrap=document.createElement('div'); wrap.className='picks';
+  picks.forEach(p=>{
+    const btn=document.createElement('button'); btn.className='pick';
+    btn.innerHTML=`<span class="k">${p.k}</span>${p.label}`;
+    btn.onclick=()=>{ tab==='sheet'?submitSheet(p.k):submitBoard(p.k) };
+    wrap.appendChild(btn);
+  });
+  last.appendChild(wrap); box.scrollTop=box.scrollHeight;
+}
+
+/* =====================================================================
+   GEMINI API
+===================================================================== */
+async function geminiText(systemPrompt, history){
+  const contents = history.map(h=>({
+    role: h.role==='ai'?'model':'user',
+    parts: h.parts
+  }));
+  const body={
+    systemInstruction:{parts:[{text:systemPrompt}]},
+    contents,
+    generationConfig:{temperature:0.7,maxOutputTokens:2048}
+  };
+  const candidates=[TEXT_MODEL,'gemini-flash-latest','gemini-3.5-flash','gemini-3.1-flash-lite','gemini-2.5-flash'];
+  let lastErr='';
+  for(const model of [...new Set(candidates)]){
+    try{
+      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`,{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
+      });
+      if(!r.ok){ lastErr=(await r.text()).slice(0,200);
+        if(/"code":\s*404/.test(lastErr) || /not found|no longer available|not supported/i.test(lastErr)) continue;
+        throw new Error('Text API: '+lastErr);
+      }
+      const data=await r.json();
+      const parts=data.candidates?.[0]?.content?.parts||[];
+      return parts.map(p=>p.text||'').join('').trim();
+    }catch(e){ lastErr=String(e.message).slice(0,200); }
+  }
+  throw new Error('Text API: '+lastErr);
+}
+
+async function geminiImage(promptText, refImages, preferPro){
+  // refImages: [{dataUrl, mime}]
+  const parts=[{text:promptText}];
+  (refImages||[]).forEach(im=>{
+    parts.push({inlineData:{mimeType:im.mime||'image/png',data:im.dataUrl.split(',')[1]}});
+  });
+  const body={ contents:[{role:'user',parts}] };
+  // When reference images are supplied, prefer Nano Banana Pro for better fidelity.
+  const candidates = preferPro
+    ? ['gemini-3-pro-image', IMAGE_MODEL, 'gemini-3.1-flash-image', 'gemini-2.5-flash-image']
+    : [IMAGE_MODEL, 'gemini-3-pro-image', 'gemini-3.1-flash-image', 'gemini-2.5-flash-image'];
+  let lastErr='';
+  for(const model of [...new Set(candidates)]){
+    try{
+      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`,{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
+      });
+      if(!r.ok){ lastErr=(await r.text()).slice(0,200);
+        // 404 => model name gone, try next; other errors => stop and report
+        if(/"code":\s*404/.test(lastErr) || /not found|no longer available|not supported/i.test(lastErr)) continue;
+        throw new Error('Image API: '+lastErr);
+      }
+      const data=await r.json();
+      const ps=data.candidates?.[0]?.content?.parts||[];
+      let imgUrl=null, caption='';
+      ps.forEach(p=>{
+        if(p.inlineData) imgUrl='data:'+(p.inlineData.mimeType||'image/png')+';base64,'+p.inlineData.data;
+        if(p.text) caption+=p.text;
+      });
+      if(imgUrl) return {imgUrl, caption, model};
+      // no image returned but call ok — try next model
+      lastErr='No image in response from '+model;
+    }catch(e){ lastErr=String(e.message).slice(0,200); }
+  }
+  throw new Error('Image API: '+lastErr);
+}
+
+/* =====================================================================
+   SYSTEM PROMPTS
+===================================================================== */
+function sheetSystemPrompt(){
+  const lang = LANG==='ms'?'Bahasa Melayu (boleh campur English untuk istilah industri)':'English (you may mix Malay terms if user does)';
+  return `You are a Smart Reference Sheet Creator for advertising production. You help users create CHARACTER or PRODUCT reference sheets as professional visual grid images.
+
+REPLY LANGUAGE: ${lang}. Keep replies concise and friendly. Use numbered menus.
+
+STRICT FLOW (one step per reply, never skip):
+STEP 1 — Welcome: ask user to upload an image + give a name (e.g. "ASUS ZenBook 14 OLED" or "Sarah, 28yo").
+STEP 2 — Verify object: confirm the EXACT name & model. Only real colors, real materials, real features, exact logo. No hallucination.
+STEP 3 — Suggest settings then show this menu:
+  For CHARACTER: STYLE, EXPRESSIONS, AGE, COLOR.
+  For PRODUCT: VIEWS, POSITIONS, DETAIL, COLORS, STYLE.
+  Recommend one option per setting with a short reason. Then show:
+  "1️⃣ Generate visual sheet image now
+   2️⃣ Change one setting
+   3️⃣ More info on specs
+   4️⃣ Choose angle count (8 / 10 / 12)"
+STEP 4 — Act on the choice.
+
+IMAGE GENERATION RULE: You DO NOT generate images yourself in text. When the user is ready to generate (chose option 1, or after picking angle count), end your reply with a single line exactly:
+[[GENERATE_SHEET]]
+…on its own line. The app will then render a real image. Before that line, give a one-sentence confirmation of what will be drawn.
+
+NEVER write "[[GENERATE_SHEET]]" until the object name is verified and settings are chosen. If no image was uploaded yet, ask for one first — do NOT emit the token.
+
+Keep menus as numbered lists so the app can show quick-pick buttons. Always be warm and direct.`;
+}
+
+function sheetImagePrompt(){
+  const o=S.sheet.object||'the subject';
+  const ang=S.sheet.angles||10;
+  const isChar=(S.sheet.type==='character');
+  return `Create ONE complete professional REFERENCE SHEET as a single unified grid image.
+
+Subject: ${o}
+Type: ${isChar?'CHARACTER':'PRODUCT'} reference sheet.
+Layout: a clean studio reference sheet with a header bar reading "${isChar?'CHARACTER SHEET':'PRODUCT SHEET'}" and the subject name "${o}", followed by an organized grid of ${ang} labelled angle/view panels (front, 3/4, side, back, top, detail/close-ups${isChar?', plus expression variations':''}).
+Style: professional, neutral studio background, soft even lighting, consistent identity across every panel — same ${isChar?'face, hair, outfit, body proportions':'shape, color, logo, materials, buttons/ports'} in every panel. ${isChar?'':'Keep the logo and brand details EXACT and authentic — do not invent features.'}
+Each panel clearly labelled with its angle/view name. Tidy aligned grid, white/light background, thin borders, modern sans-serif labels. ONE single image only.`;
+}
+
+function boardSystemPrompt(){
+  const lang = LANG==='ms'?'Bahasa Melayu':'English';
+  return `You are a Creative Director & Storyboard Artist AI for video ads (TVC, social video). Your job: guide the user to build a STORYBOARD POSTER (one static grid image).
+
+REPLY LANGUAGE: ${lang}. Be concise, warm, use numbered menus.
+
+The app handles the 6-question flow and image generation itself — you are only invoked for free-form help, clarifications, and the final scene table. Follow the app's instruction in each message. When asked to produce the scene table, output a markdown table with columns: Scene | Time | Visual | Dialog/VO | Overlay Text | Audio/SFX. The final scene MUST be the HERO SHOT (label it clearly). Number of scenes: 10s=8, 20s=12, 30s=9 panels.`;
+}
+
+function boardImagePrompt(){
+  const a=S.board.answers;
+  const dur=a.durasi?.val||'20s';
+  const panels = a.durasi?.k==='1'?8 : a.durasi?.k==='3'?9 : 12;
+  const ar = a.ar?.val||'16:9';
+  const style = a.style?.val||'cinematic realistic';
+  const tema = a.tema?.val||'lifestyle';
+  const cast = a.cast?.val||'product only';
+  const lang = a.bahasa?.k==='2'?'English':a.bahasa?.k==='3'?'mixed Malay+English':'Bahasa Melayu';
+  const product = S.board.product || 'the user\'s product';
+  const hasRef = !!S.board._productImgs || (a.cast?.k==='5' && attachments.board.length>0);
+  return `Create ONE complete advertising STORYBOARD POSTER as a single static grid image.
+
+${hasRef?`REFERENCE PHOTO PROVIDED: The attached image shows the EXACT product to use. Study it carefully — its precise shape, exact colors, logo placement, buttons, ports, proportions and materials. Reproduce THIS SAME product in every single panel. Do NOT redesign, restyle, recolor, or imagine a different version of it. Treat the reference as the single source of truth for the product's appearance.
+`:''}PRODUCT: ${product}. Every panel and the Hero Shot must feature this exact product.
+HEADER: large title "STORYBOARD", subtitle = "${product}", and badges: DURATION ${dur} • STYLE ${style} • FORMAT ${ar} • CAST ${cast}.
+GRID: exactly ${panels} numbered scene panels arranged 4 per row. Each panel: scene number (top-left), timestamp (top-right), the scene illustration in "${style}" style, and a one-line caption below.
+THEME: ${tema}. On-screen text/captions in ${lang}. Each panel composition reflects aspect ratio ${ar}.
+FINAL PANEL = HERO SHOT: ${product} centered, clean, best lighting, with logo + tagline + CTA, acting as the end card. Label it "HERO SHOT".
+CONSISTENCY (CRITICAL): ${product} must look 100% IDENTICAL across all ${panels} panels — same exact shape, color, logo, and details${hasRef?' as the reference photo':''}. Only the camera angle/shot type changes between panels; the product identity never changes. ${hasRef?'If unsure about a detail, copy it from the reference photo rather than inventing it.':''}
+VISUAL: light/white background, thin black border around the poster, bold modern sans-serif header, tidy aligned grid. ONE single poster image only.`;
+}
+
+/* =====================================================================
+   TAB 1 — SMART SHEET FLOW
+===================================================================== */
+function setSheetStep(n){
+  S.sheet.step=n;
+  document.querySelectorAll('#sheet-steps li').forEach(li=>{
+    const s=+li.dataset.step;
+    li.classList.toggle('active',s===n);
+    li.classList.toggle('done',s<n);
+  });
+}
+function bootSheet(){
+  document.getElementById('sheet-msgs').innerHTML='';
+  S.sheet={step:1,history:[],image:null,busy:false,object:null,type:null,angles:null};
+  setSheetStep(1);
+  const greet = LANG==='ms'
+    ? 'Hai! 👋 Saya bantu anda bina **reference sheet** watak atau produk sebagai satu imej grid profesional.\n\n**Langkah 1:** Lampir gambar (butang 📎 di bawah) + bagi nama.\nContoh: gambar laptop + "ASUS ZenBook 14 OLED" atau gambar orang + "Sarah, 28 tahun".'
+    : 'Hi! 👋 I help you build a **character or product reference sheet** as one professional grid image.\n\n**Step 1:** Attach an image (📎 button below) + give it a name.\nExample: a laptop photo + "ASUS ZenBook 14 OLED" or a person + "Sarah, 28yo".';
+  addMsg('sheet','ai',greet);
+}
+function resetSheet(){bootSheet();renderAttachChips('sheet');toast(LANG==='ms'?'Sheet dimulakan semula':'Sheet restarted')}
+
+function sendSheet(){
+  const ta=document.getElementById('sheet-input');
+  const text=ta.value.trim();
+  if(!text && attachments.sheet.length===0) return;
+  submitSheet(text);
+  ta.value=''; ta.style.height='auto';
+}
+async function submitSheet(text){
+  if(!API_KEY){toast(t('needKey'));openKey();return}
+  if(S.sheet.busy) return;
+  const imgs=attachments.sheet.slice();
+  // render user msg
+  let ub=addMsg('sheet','user',text||'(gambar dilampirkan)');
+  imgs.forEach(im=>{const i=document.createElement('img');i.src=im.dataUrl;ub.appendChild(i)});
+  // push to history
+  const parts=[]; if(text) parts.push({text});
+  imgs.forEach(im=>parts.push({inlineData:{mimeType:im.mime,data:im.dataUrl.split(',')[1]}}));
+  S.sheet.history.push({role:'user',parts});
+  if(imgs.length){ S.sheet._lastImgs = imgs; attachments.sheet=[]; renderAttachChips('sheet'); }
+
+  S.sheet.busy=true; document.getElementById('sheet-send').disabled=true;
+  const th=addThinking('sheet');
+  try{
+    let reply=await geminiText(sheetSystemPrompt(),S.sheet.history);
+    removeThinking('sheet');
+    // detect generate token
+    const wantGen=/\[\[GENERATE_SHEET\]\]/.test(reply);
+    reply=reply.replace(/\[\[GENERATE_SHEET\]\]/g,'').trim();
+
+    // try to capture object name / type / angles from reply heuristically
+    captureSheetMeta(reply,text);
+
+    if(reply) addMsg('sheet','ai',reply);
+    S.sheet.history.push({role:'ai',parts:[{text:reply}]});
+    // advance steps
+    if(S.sheet._lastImgs && S.sheet.step<2) setSheetStep(2);
+
+    if(wantGen){ setSheetStep(4); await generateSheetImage(); }
+    else { offerSheetPicks(reply); }
+  }catch(err){
+    removeThinking('sheet');
+    addMsg('sheet','ai','⚠️ '+t('errGen')+'\n\n`'+String(err.message).slice(0,180)+'`');
+  }finally{
+    S.sheet.busy=false; document.getElementById('sheet-send').disabled=false;
+  }
+}
+function captureSheetMeta(reply,userText){
+  const all=(reply+' '+userText).toLowerCase();
+  if(/character|watak|orang|person|\byo\b|tahun|umur/.test(all) && !/product|produk/.test(all)) S.sheet.type='character';
+  else if(/product|produk|gajet|gadget|device|peranti/.test(all)) S.sheet.type='product';
+  const angM=(userText||'').match(/\b(8|10|12)\b/); if(angM && S.sheet.step>=3) S.sheet.angles=+angM[1];
+  // object name: first quoted token in user text
+  if(!S.sheet.object && userText){
+    const q=userText.match(/"([^"]+)"/); if(q) S.sheet.object=q[1];
+    else if(userText.length<60 && S.sheet.step<=2) S.sheet.object=userText;
+  }
+}
+function offerSheetPicks(reply){
+  // detect numbered menu in reply → render quick picks
+  const picks=[];
+  const re=/(?:^|\n)\s*([1-9])[\.\)️⃣]+\s*(.+?)(?=\n|$)/g; let m;
+  while((m=re.exec(reply))!==null){
+    const label=m[2].replace(/[️⃣]/g,'').trim().slice(0,60);
+    if(label) picks.push({k:m[1],label});
+  }
+  if(picks.length>=2 && picks.length<=8){ if(S.sheet.step<3) setSheetStep(3); renderPicks('sheet',picks); }
+}
+async function generateSheetImage(){
+  const th=addThinking('sheet');
+  const note=addMsg('sheet','ai',t('genImg'));
+  try{
+    const refs=S.sheet._lastImgs||[];
+    const {imgUrl,caption}=await geminiImage(sheetImagePrompt(),refs);
+    removeThinking('sheet');
+    note.remove();
+    if(imgUrl){
+      S.sheet.image=imgUrl;
+      addMsg('sheet','ai', LANG==='ms'?'✅ **Reference sheet siap!**':'✅ **Reference sheet ready!**', imgUrl);
+      const menu = LANG==='ms'
+        ? 'Apa seterusnya?\n1. Jana semula sheet\n2. Tukar tetapan\n3. Tukar angle (8/10/12)'
+        : 'What next?\n1. Regenerate sheet\n2. Change settings\n3. Change angles (8/10/12)';
+      addMsg('sheet','ai',menu);
+      renderPicks('sheet',[
+        {k:'jana semula', label: LANG==='ms'?'Jana semula':'Regenerate'},
+        {k:'tukar tetapan', label: LANG==='ms'?'Tukar tetapan':'Change settings'},
+        {k:'tukar angle', label: LANG==='ms'?'Tukar angle':'Change angles'},
+      ]);
+    }else{
+      addMsg('sheet','ai',t('imgFail'));
+    }
+  }catch(err){
+    removeThinking('sheet'); note.remove();
+    addMsg('sheet','ai','⚠️ '+t('errGen')+'\n\n`'+String(err.message).slice(0,180)+'`');
+  }
+}
+
+/* =====================================================================
+   TAB 2 — STORYBOARD FLOW (6 questions, app-driven)
+===================================================================== */
+const QUESTIONS = {
+  ms:[
+    {slot:'tema',icon:'🎬',title:'Soalan 1 dari 6 — Apa tema storyboard anda?',opts:[
+      ['1','Lifestyle & Aspirational'],['2','Problem-Solution'],['3','Testimoni / Social Proof'],
+      ['4','Storytelling / Emosional'],['5','Komedi / Lighthearted'],['6','Product Demo / Showcase'],
+      ['7','Before-After'],['8','Unboxing / Reveal'],['9','ASMR'],
+    ]},
+    {slot:'style',icon:'🎨',title:'Soalan 2 dari 6 — Pilih style visual imej:',opts:[
+      ['1','Sketch Klasik'],['2','Comic / Berwarna'],['3','Cinematic Realistic'],
+      ['4','Flat Illustration'],['5','Minimalist Line Art'],['6','Stop Motion'],
+    ]},
+    {slot:'bahasa',icon:'📝',title:'Soalan 3 dari 6 — Bahasa yang digunakan:',opts:[
+      ['1','Bahasa Melayu'],['2','English'],['3','Campur BM + English'],
+    ]},
+    {slot:'durasi',icon:'⏱️',title:'Soalan 4 dari 6 — Berapa lama video?',opts:[
+      ['1','10 saat — bumper (8 panel)'],['2','20 saat — standard (12 panel)'],['3','30 saat — TVC (9 panel)'],
+    ]},
+    {slot:'ar',icon:'📱',title:'Soalan 5 dari 6 — Format skrin:',opts:[
+      ['1','16:9 Landscape — YouTube/TV'],['2','9:16 Portrait — TikTok/Reels'],['3','1:1 Square — IG/FB Feed'],
+    ]},
+    {slot:'cast',icon:'👥',title:'Soalan 6 dari 6 — Siapa/apa dalam video?',opts:[
+      ['1','Perempuan Muslimah (bertudung)'],['2','Lelaki dewasa'],['3','Perempuan (tiada tudung)'],
+      ['4','Keluarga / Pelbagai watak'],['5','Guna gambar upload'],['6','Tiada watak — produk sahaja'],
+    ]},
+  ],
+  en:[
+    {slot:'tema',icon:'🎬',title:'Question 1 of 6 — What is your storyboard theme?',opts:[
+      ['1','Lifestyle & Aspirational'],['2','Problem-Solution'],['3','Testimonial / Social Proof'],
+      ['4','Storytelling / Emotional'],['5','Comedy / Lighthearted'],['6','Product Demo / Showcase'],
+      ['7','Before-After'],['8','Unboxing / Reveal'],['9','ASMR'],
+    ]},
+    {slot:'style',icon:'🎨',title:'Question 2 of 6 — Choose the visual style:',opts:[
+      ['1','Classic Sketch'],['2','Comic / Colored'],['3','Cinematic Realistic'],
+      ['4','Flat Illustration'],['5','Minimalist Line Art'],['6','Stop Motion'],
+    ]},
+    {slot:'bahasa',icon:'📝',title:'Question 3 of 6 — Language used:',opts:[
+      ['1','Bahasa Melayu'],['2','English'],['3','Mixed BM + English'],
+    ]},
+    {slot:'durasi',icon:'⏱️',title:'Question 4 of 6 — Video length?',opts:[
+      ['1','10s — bumper (8 panels)'],['2','20s — standard (12 panels)'],['3','30s — TVC (9 panels)'],
+    ]},
+    {slot:'ar',icon:'📱',title:'Question 5 of 6 — Screen format:',opts:[
+      ['1','16:9 Landscape — YouTube/TV'],['2','9:16 Portrait — TikTok/Reels'],['3','1:1 Square — IG/FB Feed'],
+    ]},
+    {slot:'cast',icon:'👥',title:'Question 6 of 6 — Who/what is in the video?',opts:[
+      ['1','Muslim woman (hijab)'],['2','Adult man'],['3','Woman (no hijab)'],
+      ['4','Family / Mixed cast'],['5','Use uploaded image'],['6','No people — product only'],
+    ]},
+  ]
+};
+const SLOT_DOM = {tema:'tema',style:'style',bahasa:'bahasa',durasi:'durasi',ar:'ar',cast:'cast'};
+
+function setSlotVal(slot,k,val){
+  const el=document.querySelector(`#board-summary [data-slot="${slot}"]`);
+  if(el){el.textContent=`${k}. ${val}`;el.classList.remove('empty')}
+}
+function clearSummary(){
+  document.querySelectorAll('#board-summary .val').forEach(el=>{el.textContent='—';el.classList.add('empty')});
+}
+function bootBoard(){
+  document.getElementById('board-msgs').innerHTML='';
+  S.board={step:0,qi:0,answers:{},history:[],image:null,busy:false,productKnown:false,product:null};
+  clearSummary();
+  const greet = LANG==='ms'
+    ? 'Hai! 👋 Saya **Creative Director AI**. Kita akan bina **poster storyboard** iklan anda.\n\n**Langkah 1:** Lampir gambar produk dahulu (📎 di bawah), kemudian hantar. Selepas itu, 6 soalan akan bermula.'
+    : 'Hi! 👋 I\'m your **Creative Director AI**. We\'ll build your ad **storyboard poster**.\n\n**Step 1:** Attach a product image first (📎 below), then send. After that, the 6 questions begin.';
+  addMsg('board','ai',greet);
+  // NOTE: questions start only AFTER an image is uploaded (Step 0).
+}
+function resetBoard(){bootBoard();renderAttachChips('board');toast(LANG==='ms'?'Storyboard dimulakan semula':'Storyboard restarted')}
+
+function askBoardQuestion(qi){
+  S.board.qi=qi;
+  const q=QUESTIONS[LANG][qi];
+  const lines=q.opts.map(o=>`${o[0]}. ${o[1]}`).join('\n');
+  const progress = qi>0 ? `(${qi}/6 ${LANG==='ms'?'selesai':'done'})\n\n` : '';
+  addMsg('board','ai',`${progress}${q.icon} **${q.title}**\n\n${lines}`);
+  renderPicks('board', q.opts.map(o=>({k:o[0],label:o[1]})));
+}
+
+function sendBoard(){
+  const ta=document.getElementById('board-input');
+  const text=ta.value.trim();
+  if(!text && attachments.board.length===0) return;
+  submitBoard(text);
+  ta.value=''; ta.style.height='auto';
+}
+async function submitBoard(text){
+  if(!API_KEY){toast(t('needKey'));openKey();return}
+  if(S.board.busy) return;
+
+  // echo user
+  let ub=addMsg('board','user',text||'(gambar dilampirkan)');
+  attachments.board.forEach(im=>{const i=document.createElement('img');i.src=im.dataUrl;ub.appendChild(i)});
+
+  const lc=(text||'').toLowerCase().trim();
+
+  /* ---- STEP 0 — must upload an image before any question ---- */
+  if(!S.board.productKnown){
+    if(attachments.board.length>0){
+      S.board._productImgs = attachments.board.slice();
+      attachments.board=[]; renderAttachChips('board');
+      S.board.product = text && text.trim() ? text.trim() : (LANG==='ms'?'produk anda':'your product');
+      S.board.productKnown=true;
+      addMsg('board','ai', LANG==='ms'
+        ? '✅ Gambar diterima! Sekarang mari mula 6 soalan 👇'
+        : '✅ Image received! Now let\'s start the 6 questions 👇');
+      askBoardQuestion(0);
+      return;
+    }
+    addMsg('board','ai', LANG==='ms'
+      ? 'Sila **lampir gambar produk** dahulu (📎 di bawah) sebelum kita mula soalan.'
+      : 'Please **attach a product image** first (📎 below) before we start the questions.');
+    return;
+  }
+
+  /* ---- collecting answers (initial flow OR a single re-ask after summary) ---- */
+  const reasking = S.board._reaskAfter===true;
+  if(S.board.qi<6 && (Object.keys(S.board.answers).length<6 || reasking)){
+    const q=QUESTIONS[LANG][S.board.qi];
+    // accept exact number that matches an option key
+    const pick=q.opts.find(o=>o[0]===lc || o[0]===text.trim());
+    if(!pick){
+      addMsg('board','ai', LANG==='ms'
+        ? `Sila taip nombor pilihan (cth "${q.opts[0][0]}"). Pilihan: ${q.opts.map(o=>o[0]).join(', ')}.`
+        : `Please type an option number (e.g. "${q.opts[0][0]}"). Options: ${q.opts.map(o=>o[0]).join(', ')}.`);
+      renderPicks('board', q.opts.map(o=>({k:o[0],label:o[1]})));
+      return;
+    }
+    // F5 guard (before storing)
+    if(q.slot==='cast' && pick[0]==='5' && attachments.board.length===0){
+      addMsg('board','ai', LANG==='ms'
+        ? 'Anda pilih **guna gambar upload**. Sila lampir gambar watak/produk dahulu (📎 di bawah), kemudian taip "5" lagi.'
+        : 'You chose **use uploaded image**. Please attach the character/product photo first (📎 below), then type "5" again.');
+      return;
+    }
+    // store
+    S.board.answers[q.slot]={k:pick[0],val:pick[1]};
+    setSlotVal(q.slot,pick[0],pick[1]);
+
+    // single re-ask path → back to summary
+    if(reasking){
+      S.board._reaskAfter=false; S.board.qi=6;
+      addMsg('board','ai', `✅ ${labelFor(q.slot)}: ${pick[0]}. ${pick[1]}`);
+      showBoardSummary();
+      return;
+    }
+
+    const nextQ=S.board.qi+1;
+    addMsg('board','ai', `✅ ${labelFor(q.slot)}: ${pick[0]}. ${pick[1]} — (${nextQ}/6 ${LANG==='ms'?'selesai':'done'})`);
+
+    if(nextQ<6){ askBoardQuestion(nextQ); }
+    else { S.board.qi=6; showBoardSummary(); }
+    return;
+  }
+
+  /* ---- after summary: handle menu choices ---- */
+  await handleBoardMenu(lc, text);
+}
+function labelFor(slot){
+  const map={tema:t('qTema'),style:t('qStyle'),bahasa:t('qBahasa'),durasi:t('qDurasi'),ar:t('qAr'),cast:t('qCast')};
+  return map[slot]||slot;
+}
+function showBoardSummary(){
+  const a=S.board.answers;
+  const music = pickMusic(a);
+  const sum = LANG==='ms'
+    ? `✅ **Pilihan anda siap!**\n\n🎬 TEMA: ${a.tema.k}. ${a.tema.val}\n🎨 STYLE: ${a.style.k}. ${a.style.val}\n📝 BAHASA: ${a.bahasa.k}. ${a.bahasa.val}\n⏱️ DURASI: ${a.durasi.k}. ${a.durasi.val}\n📱 ASPECT RATIO: ${a.ar.k}. ${a.ar.val}\n👥 CAST: ${a.cast.k}. ${a.cast.val}\n\n🎵 MUSIC STYLE (auto): ${music}`
+    : `✅ **Your choices are set!**\n\n🎬 THEME: ${a.tema.k}. ${a.tema.val}\n🎨 STYLE: ${a.style.k}. ${a.style.val}\n📝 LANGUAGE: ${a.bahasa.k}. ${a.bahasa.val}\n⏱️ DURATION: ${a.durasi.k}. ${a.durasi.val}\n📱 ASPECT RATIO: ${a.ar.k}. ${a.ar.val}\n👥 CAST: ${a.cast.k}. ${a.cast.val}\n\n🎵 MUSIC STYLE (auto): ${music}`;
+  addMsg('board','ai',sum);
+  const menu = LANG==='ms'
+    ? '🚀 **Sedia untuk teruskan?**\n\n1. Jana gambar storyboard sekarang\n2. Ubah pilihan (taip "ubah" + slot)\n3. Ulang semua dari awal'
+    : '🚀 **Ready to continue?**\n\n1. Generate storyboard image now\n2. Change a choice (type "change" + slot)\n3. Restart all questions';
+  addMsg('board','ai',menu);
+  renderPicks('board',[
+    {k:'1',label: LANG==='ms'?'Jana storyboard':'Generate storyboard'},
+    {k:'2',label: LANG==='ms'?'Ubah pilihan':'Change a choice'},
+    {k:'3',label: LANG==='ms'?'Ulang semua':'Restart all'},
+  ]);
+}
+function pickMusic(a){
+  const t=a.tema?.k;
+  if(t==='9') return LANG==='ms'?'Minimal ambient / SFX-driven':'Minimal ambient / SFX-driven';
+  if(t==='5') return LANG==='ms'?'Upbeat playful / quirky':'Upbeat playful / quirky';
+  if(t==='4') return LANG==='ms'?'Emotional cinematic / piano strings':'Emotional cinematic / piano strings';
+  if(t==='1') return LANG==='ms'?'Aspirational uplifting pop':'Aspirational uplifting pop';
+  return LANG==='ms'?'Modern upbeat commercial':'Modern upbeat commercial';
+}
+
+async function handleBoardMenu(lc, raw){
+  // post-generation & post-summary menu
+  if(lc==='3' || /ulang|restart/.test(lc)){ resetBoard(); return; }
+  if(lc==='2' || /ubah|change/.test(lc)){
+    addMsg('board','ai', LANG==='ms'
+      ? 'Slot mana nak ubah? Taip: **tema / style / bahasa / durasi / ar / cast**.'
+      : 'Which slot to change? Type: **tema / style / bahasa / durasi / ar / cast**.');
+    return;
+  }
+  // change specific slot
+  const slotMap={tema:0,style:1,bahasa:2,durasi:3,'aspect':4,ar:4,cast:5,durasi:3};
+  for(const key in slotMap){
+    if(lc.includes(key)){
+      const qi=slotMap[key];
+      const slot=QUESTIONS[LANG][qi].slot;
+      delete S.board.answers[slot];
+      const el=document.querySelector(`#board-summary [data-slot="${slot}"]`); el.textContent='—'; el.classList.add('empty');
+      S.board.qi=qi;
+      askBoardQuestion(qi);
+      // after re-answering, we need to jump back to summary — handle by checking completeness in submit
+      S.board._reaskAfter=true;
+      return;
+    }
+  }
+  // generate
+  if(lc==='1' || /jana|generate|storyboard/.test(lc)){
+    await generateBoardImage();
+    return;
+  }
+  // regenerate / fix consistency from post-image menu
+  if(/regenerate|jana semula|betulkan|consistency|konsisten/.test(lc)){
+    await generateBoardImage(true);
+    return;
+  }
+  if(/video instruction|arahan video|video/.test(lc)){
+    showVideoInstruction();
+    return;
+  }
+  if(/export|shot list|teks/.test(lc)){
+    await exportShotList();
+    return;
+  }
+  // fallback: free chat
+  await boardFreeChat(raw);
+}
+
+async function generateBoardImage(isFix){
+  if(Object.keys(S.board.answers).length<6){
+    addMsg('board','ai', LANG==='ms'?'Jawab semua 6 soalan dahulu sebelum jana.':'Answer all 6 questions before generating.');
+    return;
+  }
+  S.board.busy=true; document.getElementById('board-send').disabled=true;
+  const th=addThinking('board');
+  const note=addMsg('board','ai',t('genImg'));
+  try{
+    // reference images: product photo from Step 0 + any F5 upload
+    let refs = [];
+    if(S.board._productImgs) refs = refs.concat(S.board._productImgs);
+    if(S.board.answers.cast?.k==='5') refs = refs.concat(attachments.board.slice());
+    let prompt=boardImagePrompt();
+    if(isFix) prompt+='\n\nCRITICAL: previous attempt had inconsistent product look. Re-anchor the EXACT product identity from the reference photo and make it 100% IDENTICAL across ALL panels — same shape, color, logo, details. Do not redesign it.';
+    const {imgUrl}=await geminiImage(prompt, refs, refs.length>0);
+    removeThinking('board'); note.remove();
+    if(imgUrl){
+      S.board.image=imgUrl;
+      addMsg('board','ai', LANG==='ms'?'✅ **Storyboard anda siap!**':'✅ **Your storyboard is ready!**', imgUrl);
+      await exportShotList(true); // show table
+      showPostImageMenu();
+    }else{
+      addMsg('board','ai',t('imgFail'));
+      showPostImageMenu();
+    }
+  }catch(err){
+    removeThinking('board'); note.remove();
+    addMsg('board','ai','⚠️ '+t('errGen')+'\n\n`'+String(err.message).slice(0,180)+'`');
+    showPostImageMenu();
+  }finally{
+    S.board.busy=false; document.getElementById('board-send').disabled=false;
+  }
+}
+function showPostImageMenu(){
+  const menu = LANG==='ms'
+    ? '✅ **Apa nak buat seterusnya?**\n\n1. Dapatkan teks arahan video (salin → tampal ke tool video)\n2. Ubah scene / style / durasi\n3. Regenerate poster ini\n4. Jana semula & betulkan konsistensi\n5. Export shot list teks\n6. Mula semula'
+    : '✅ **What next?**\n\n1. Get video instruction text (copy → paste into a video tool)\n2. Change scene / style / duration\n3. Regenerate this poster\n4. Regenerate & fix consistency\n5. Export text shot list\n6. Restart';
+  addMsg('board','ai',menu);
+  renderPicks('board',[
+    {k:'video instruction',label: LANG==='ms'?'🎬 Teks arahan video':'🎬 Video instruction text'},
+    {k:'2',label: LANG==='ms'?'Ubah pilihan':'Change a choice'},
+    {k:'regenerate',label: LANG==='ms'?'Regenerate':'Regenerate'},
+    {k:'betulkan konsistensi',label: LANG==='ms'?'Betulkan konsistensi':'Fix consistency'},
+    {k:'export',label: LANG==='ms'?'Export shot list':'Export shot list'},
+    {k:'3',label: LANG==='ms'?'Mula semula':'Restart'},
+  ]);
+}
+
+function showVideoInstruction(){
+  const VIDEO_TEXT = 'Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion';
+  const intro = LANG==='ms'
+    ? '🎬 **Teks arahan video** — salin teks di bawah dan tampal ke tool video anda (cth Veo, Runway, Kling), bersama imej storyboard sebagai rujukan:'
+    : '🎬 **Video instruction text** — copy the text below and paste it into your video tool (e.g. Veo, Runway, Kling), along with the storyboard image as reference:';
+  addMsg('board','ai',intro);
+  // copyable box appended to last AI bubble
+  const box=document.getElementById('board-msgs');
+  const bubble=box.querySelector('.msg.ai:last-child .bubble');
+  const wrap=document.createElement('div'); wrap.className='copybox';
+  const pre=document.createElement('div'); pre.className='copybox-text'; pre.textContent=VIDEO_TEXT;
+  const btn=document.createElement('button'); btn.className='copybox-btn';
+  btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg> '+(LANG==='ms'?'Salin':'Copy');
+  btn.onclick=()=>{
+    navigator.clipboard.writeText(VIDEO_TEXT).then(()=>{
+      btn.innerHTML='✓ '+(LANG==='ms'?'Disalin!':'Copied!');
+      toast(LANG==='ms'?'Teks disalin ✓':'Text copied ✓');
+      setTimeout(()=>{btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg> '+(LANG==='ms'?'Salin':'Copy')},2000);
+    });
+  };
+  wrap.appendChild(pre); wrap.appendChild(btn); bubble.appendChild(wrap);
+  box.scrollTop=box.scrollHeight;
+  // tip + re-show menu
+  addMsg('board','ai', LANG==='ms'
+    ? '💡 Tip: muat turun imej storyboard (butang di atas), upload ke tool video sebagai rujukan, kemudian tampal teks di atas.'
+    : '💡 Tip: download the storyboard image (button above), upload it to your video tool as reference, then paste the text above.');
+}
+
+async function exportShotList(silent){
+  const a=S.board.answers;
+  if(Object.keys(a).length<6){ if(!silent) addMsg('board','ai','—'); return; }
+  S.board.busy=true; document.getElementById('board-send').disabled=true;
+  const th=addThinking('board');
+  try{
+    const panels = a.durasi.k==='1'?8 : a.durasi.k==='3'?9 : 12;
+    const instruction = `Produce ONLY a markdown scene table for this storyboard. ${panels} scenes. Columns: Scene | ${LANG==='ms'?'Masa':'Time'} | Visual | ${LANG==='ms'?'Dialog/VO':'Dialog/VO'} | ${LANG==='ms'?'Teks Overlay':'Overlay'} | Audio/SFX.
+Theme: ${a.tema.val}. Style: ${a.style.val}. Language of on-screen text: ${a.bahasa.val}. Duration: ${a.durasi.val}. Aspect: ${a.ar.val}. Cast: ${a.cast.val}.
+Realistic timestamps that add up to the duration. The FINAL scene (scene ${panels}) MUST be labelled "HERO SHOT" in the Scene column. Add one line ABOVE the table: "**Music:** <genre>". Output the music line then the table, nothing else.`;
+    const reply=await geminiText(boardSystemPrompt(),[{role:'user',parts:[{text:instruction}]}]);
+    removeThinking('board');
+    addMsg('board','ai',reply);
+  }catch(err){
+    removeThinking('board');
+    if(!silent) addMsg('board','ai','⚠️ '+t('errGen'));
+  }finally{
+    S.board.busy=false; document.getElementById('board-send').disabled=false;
+  }
+}
+
+async function boardFreeChat(raw){
+  S.board.busy=true; document.getElementById('board-send').disabled=true;
+  const th=addThinking('board');
+  try{
+    const reply=await geminiText(boardSystemPrompt(),[
+      {role:'user',parts:[{text:`Context: user is building a storyboard with these choices: ${JSON.stringify(S.board.answers)}. User said: "${raw}". Reply helpfully and briefly.`}]}
+    ]);
+    removeThinking('board');
+    addMsg('board','ai',reply||'…');
+  }catch(err){
+    removeThinking('board');
+    addMsg('board','ai','⚠️ '+t('errGen'));
+  }finally{
+    S.board.busy=false; document.getElementById('board-send').disabled=false;
+  }
+}
+
+/* =====================================================================
+   INIT
+===================================================================== */
+function init(){
+  refreshKeyBtn();
+  setLang('en');
+  renderAttachChips('sheet'); renderAttachChips('board');
+  bootSheet(); bootBoard();
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'){closeLightbox();} });
+  if(!API_KEY){ setTimeout(openKey,400); }
+}
+init();
+</script>
+</body>
+</html>
