@@ -422,6 +422,14 @@
           <div class="panel-head"><span class="eyebrow" data-i="howto">Cara guna</span></div>
           <div class="rail-body">
             <p class="hint" data-i="boardHint">Jawab <b>6 soalan</b> satu demi satu. Pada hujung, pilih <b>jana</b> untuk dapat satu imej poster storyboard dengan grid panel + Hero Shot di scene terakhir.</p>
+            <p class="hint" style="margin-top:12px" data-i="videoRefLabel"><b>Ayat rujukan video:</b></p>
+            <div class="copybox" style="margin-top:7px">
+              <div class="copybox-text" id="howto-video-text">Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion</div>
+              <button class="copybox-btn" onclick="copyHowtoVideo(this)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg>
+                <span data-i="copyBtn">Salin</span>
+              </button>
+            </div>
             <div style="margin-top:14px"><button class="reset-link" onclick="resetBoard()" data-i="resetBoard">↺ Mula semula storyboard</button></div>
           </div>
         </div>
@@ -496,6 +504,7 @@ const I18N = {
     briefTitle:'Pilihan anda',
     qTema:'Tema', qStyle:'Style', qBahasa:'Bahasa', qDurasi:'Durasi', qAr:'Aspect Ratio', qCast:'Cast',
     boardHint:'Jawab <b>6 soalan</b> satu demi satu. Pada hujung, pilih <b>jana</b> untuk dapat satu imej poster storyboard dengan grid panel + Hero Shot di scene terakhir.',
+    videoRefLabel:'<b>Ayat rujukan video:</b>', copyBtn:'Salin',
     resetBoard:'↺ Mula semula storyboard',
     keyTitle:'Sambung Gemini API', keySub:'Tampal API key Gemini anda. Disimpan dalam pelayar ini sahaja.',
     keyLabel:'Gemini API Key',
@@ -522,6 +531,7 @@ const I18N = {
     briefTitle:'Your choices',
     qTema:'Theme', qStyle:'Style', qBahasa:'Language', qDurasi:'Duration', qAr:'Aspect Ratio', qCast:'Cast',
     boardHint:'Answer <b>6 questions</b> one at a time. At the end, choose <b>generate</b> to get one storyboard poster image with a panel grid + a Hero Shot on the final scene.',
+    videoRefLabel:'<b>Video reference sentence:</b>', copyBtn:'Copy',
     resetBoard:'↺ Restart storyboard',
     keyTitle:'Connect Gemini API', keySub:'Paste your Gemini API key. Stored only in this browser.',
     keyLabel:'Gemini API Key',
@@ -587,6 +597,16 @@ function downloadImage(src,filename){
   a.href=src; a.download=filename||('image-'+Date.now()+'.png');
   document.body.appendChild(a); a.click(); a.remove();
   toast(LANG==='ms'?'Imej dimuat turun ✓':'Image downloaded ✓');
+}
+function copyHowtoVideo(btn){
+  const txt=document.getElementById('howto-video-text').textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const span=btn.querySelector('span');
+    const old=span.textContent;
+    span.textContent=LANG==='ms'?'Disalin!':'Copied!';
+    toast(LANG==='ms'?'Teks disalin ✓':'Text copied ✓');
+    setTimeout(()=>{span.textContent=old},1800);
+  });
 }
 function closeKey(){document.getElementById('keyModal').classList.remove('show')}
 function saveKey(){
@@ -1207,6 +1227,10 @@ async function handleBoardMenu(lc, raw){
     await generateBoardImage(true);
     return;
   }
+  if(/video json|json/.test(lc)){
+    await generateVideoJson();
+    return;
+  }
   if(/video instruction|arahan video|video/.test(lc)){
     showVideoInstruction();
     return;
@@ -1240,6 +1264,7 @@ async function generateBoardImage(isFix){
       S.board.image=imgUrl;
       addMsg('board','ai', LANG==='ms'?'✅ **Storyboard anda siap!**':'✅ **Your storyboard is ready!**', imgUrl);
       await exportShotList(true); // show table
+      await generateVideoJson();  // auto video prompt JSON
       showPostImageMenu();
     }else{
       addMsg('board','ai',t('imgFail'));
@@ -1255,15 +1280,15 @@ async function generateBoardImage(isFix){
 }
 function showPostImageMenu(){
   const menu = LANG==='ms'
-    ? '✅ **Apa nak buat seterusnya?**\n\n1. Dapatkan teks arahan video (salin → tampal ke tool video)\n2. Ubah scene / style / durasi\n3. Regenerate poster ini\n4. Jana semula & betulkan konsistensi\n5. Export shot list teks\n6. Mula semula'
-    : '✅ **What next?**\n\n1. Get video instruction text (copy → paste into a video tool)\n2. Change scene / style / duration\n3. Regenerate this poster\n4. Regenerate & fix consistency\n5. Export text shot list\n6. Restart';
+    ? '✅ **Apa nak buat seterusnya?**\n\n1. Teks arahan video (salin → tampal ke tool video)\n2. Video prompt JSON (jana semula)\n3. Ubah scene / style / durasi\n4. Regenerate poster ini\n5. Jana semula & betulkan konsistensi\n6. Mula semula'
+    : '✅ **What next?**\n\n1. Video instruction text (copy → paste into a video tool)\n2. Video prompt JSON (regenerate)\n3. Change scene / style / duration\n4. Regenerate this poster\n5. Regenerate & fix consistency\n6. Restart';
   addMsg('board','ai',menu);
   renderPicks('board',[
     {k:'video instruction',label: LANG==='ms'?'🎬 Teks arahan video':'🎬 Video instruction text'},
+    {k:'video json',label: LANG==='ms'?'🎞️ Video prompt JSON':'🎞️ Video prompt JSON'},
     {k:'2',label: LANG==='ms'?'Ubah pilihan':'Change a choice'},
     {k:'regenerate',label: LANG==='ms'?'Regenerate':'Regenerate'},
     {k:'betulkan konsistensi',label: LANG==='ms'?'Betulkan konsistensi':'Fix consistency'},
-    {k:'export',label: LANG==='ms'?'Export shot list':'Export shot list'},
     {k:'3',label: LANG==='ms'?'Mula semula':'Restart'},
   ]);
 }
@@ -1294,6 +1319,77 @@ function showVideoInstruction(){
   addMsg('board','ai', LANG==='ms'
     ? '💡 Tip: muat turun imej storyboard (butang di atas), upload ke tool video sebagai rujukan, kemudian tampal teks di atas.'
     : '💡 Tip: download the storyboard image (button above), upload it to your video tool as reference, then paste the text above.');
+}
+
+/* ----- reusable copyable code box appended to the last AI bubble ----- */
+function addCopyBox(text, btnLabel){
+  const box=document.getElementById('board-msgs');
+  const bubble=box.querySelector('.msg.ai:last-child .bubble');
+  if(!bubble) return;
+  const wrap=document.createElement('div'); wrap.className='copybox';
+  const pre=document.createElement('div'); pre.className='copybox-text'; pre.textContent=text;
+  const btn=document.createElement('button'); btn.className='copybox-btn';
+  const label=btnLabel||(LANG==='ms'?'Salin':'Copy');
+  btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg> '+label;
+  btn.onclick=()=>{
+    navigator.clipboard.writeText(text).then(()=>{
+      btn.innerHTML='✓ '+(LANG==='ms'?'Disalin!':'Copied!');
+      toast(LANG==='ms'?'Disalin ✓':'Copied ✓');
+      setTimeout(()=>{btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg> '+label},1800);
+    });
+  };
+  wrap.appendChild(pre); wrap.appendChild(btn); bubble.appendChild(wrap);
+  box.scrollTop=box.scrollHeight;
+}
+
+async function generateVideoJson(){
+  const a=S.board.answers;
+  if(Object.keys(a).length<6) return;
+  const panels = a.durasi.k==='1'?8 : a.durasi.k==='3'?9 : 12;
+  const dur = a.durasi.k==='1'?10 : a.durasi.k==='3'?30 : 20;
+  const th=addThinking('board');
+  try{
+    const instruction = `Output ONLY valid minified-but-readable JSON (no markdown, no backticks, no commentary). Create a video generation prompt JSON for an AI video tool (Veo/Runway/Kling) based on this storyboard.
+
+Product: ${S.board.product||'product'}. Theme: ${a.tema.val}. Visual style: ${a.style.val}. Total duration: ${dur}s. Aspect ratio: ${a.ar.val}. Cast: ${a.cast.val}. On-screen dialogue language: Malay.
+
+JSON shape:
+{
+  "video_prompt": {
+    "global": {
+      "instruction": "Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion",
+      "product": "...",
+      "style": "...",
+      "aspect_ratio": "...",
+      "total_duration_seconds": ${dur},
+      "motion": "smooth motion",
+      "dialogue_language": "Malay"
+    },
+    "scenes": [
+      { "scene": 1, "start": "0s", "end": "Xs", "visual": "...", "action": "...", "camera": "...", "dialogue_malay": "...", "on_screen_text": "...", "audio_sfx": "..." }
+    ]
+  }
+}
+
+Generate exactly ${panels} scenes with realistic timestamps that sum to ${dur}s. The final scene is the HERO SHOT end card (logo + tagline + CTA). Keep each field concise. Dialogue must be in Malay.`;
+    const reply=await geminiText(boardSystemPrompt(),[{role:'user',parts:[{text:instruction}]}]);
+    removeThinking('board');
+    // clean any stray fences
+    let json=reply.replace(/```json|```/g,'').trim();
+    // validate; if invalid, still show raw
+    let pretty=json;
+    try{ pretty=JSON.stringify(JSON.parse(json),null,2); }catch(e){}
+    addMsg('board','ai', LANG==='ms'
+      ? '🎞️ **Video Prompt JSON** — siap untuk salin ke tool video anda:'
+      : '🎞️ **Video Prompt JSON** — ready to copy into your video tool:');
+    addCopyBox(pretty, LANG==='ms'?'Salin JSON':'Copy JSON');
+  }catch(err){
+    removeThinking('board');
+    // non-fatal — just skip silently with a tiny note
+    addMsg('board','ai', LANG==='ms'
+      ? '(Video prompt JSON tak dapat dijana kali ini — cuba pilih "Teks arahan video" dalam menu.)'
+      : '(Couldn\'t build the video prompt JSON this time — try "Video instruction text" in the menu.)');
+  }
 }
 
 async function exportShotList(silent){
