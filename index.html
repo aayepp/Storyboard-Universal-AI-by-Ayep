@@ -811,12 +811,14 @@ function sheetImagePrompt(){
   const o=S.sheet.object||'the subject';
   const ang=S.sheet.angles||10;
   const isChar=(S.sheet.type==='character');
+  const hasRef = (S.sheet._lastImgs && S.sheet._lastImgs.length>0);
   return `Create ONE complete professional REFERENCE SHEET as a single unified grid image.
 
-Subject: ${o}
+${hasRef?`REFERENCE PHOTO PROVIDED: The attached image shows the EXACT real subject to use. Study it closely — its precise shape, exact colors, logo, text, buttons, ports, materials and proportions. Reproduce THIS SAME subject in every panel. Do NOT invent, redesign, or substitute a different object. The reference photo is the single source of truth for what the subject looks like.
+`:''}Subject: ${o}
 Type: ${isChar?'CHARACTER':'PRODUCT'} reference sheet.
 Layout: a clean studio reference sheet with a header bar reading "${isChar?'CHARACTER SHEET':'PRODUCT SHEET'}" and the subject name "${o}", followed by an organized grid of ${ang} labelled angle/view panels (front, 3/4, side, back, top, detail/close-ups${isChar?', plus expression variations':''}).
-Style: professional, neutral studio background, soft even lighting, consistent identity across every panel — same ${isChar?'face, hair, outfit, body proportions':'shape, color, logo, materials, buttons/ports'} in every panel. ${isChar?'':'Keep the logo and brand details EXACT and authentic — do not invent features.'}
+Style: professional, neutral studio background, soft even lighting, consistent identity across every panel — same ${isChar?'face, hair, outfit, body proportions':'shape, color, logo, materials, buttons/ports'} in every panel${hasRef?', matching the reference photo exactly':''}. ${isChar?'':'Keep the logo and brand details EXACT and authentic — do not invent features.'}
 Each panel clearly labelled with its angle/view name. Tidy aligned grid, white/light background, thin borders, modern sans-serif labels. ONE single image only.`;
 }
 
@@ -922,8 +924,11 @@ async function submitSheet(text){
 }
 function captureSheetMeta(reply,userText){
   const all=(reply+' '+userText).toLowerCase();
-  if(/character|watak|orang|person|\byo\b|tahun|umur/.test(all) && !/product|produk/.test(all)) S.sheet.type='character';
-  else if(/product|produk|gajet|gadget|device|peranti/.test(all)) S.sheet.type='product';
+  const charHints=/character|watak|orang|person|\byo\b|tahun|umur|woman|man|girl|boy|lelaki|perempuan|wanita|face|wajah/;
+  const prodHints=/product|produk|gajet|gadget|device|peranti|laptop|phone|telefon|bottle|botol|car|kereta|shoe|kasut|watch|jam|camera|kamera|headphone|earbud|console|machine|mesin|drink|minuman|food|makanan/;
+  if(charHints.test(all) && !prodHints.test(all)) S.sheet.type='character';
+  else if(prodHints.test(all)) S.sheet.type='product';
+  else if(!S.sheet.type) S.sheet.type='product'; // safe default — most uploads are products
   const angM=(userText||'').match(/\b(8|10|12)\b/); if(angM && S.sheet.step>=3) S.sheet.angles=+angM[1];
   // object name: first quoted token in user text
   if(!S.sheet.object && userText){
@@ -942,11 +947,17 @@ function offerSheetPicks(reply){
   if(picks.length>=2 && picks.length<=8){ if(S.sheet.step<3) setSheetStep(3); renderPicks('sheet',picks); }
 }
 async function generateSheetImage(){
+  const refs=S.sheet._lastImgs||[];
+  if(refs.length===0){
+    addMsg('sheet','ai', LANG==='ms'
+      ? '⚠️ Saya tak nampak gambar yang diupload. Sila lampir gambar produk/watak (📎 di bawah) dahulu sebelum jana sheet.'
+      : '⚠️ I don\'t see an uploaded image. Please attach the product/character photo (📎 below) before generating the sheet.');
+    return;
+  }
   const th=addThinking('sheet');
   const note=addMsg('sheet','ai',t('genImg'));
   try{
-    const refs=S.sheet._lastImgs||[];
-    const {imgUrl,caption}=await geminiImage(sheetImagePrompt(),refs);
+    const {imgUrl,caption}=await geminiImage(sheetImagePrompt(),refs, refs.length>0);
     removeThinking('sheet');
     note.remove();
     if(imgUrl){
