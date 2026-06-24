@@ -405,7 +405,6 @@
   .summary-card{font-size:13px;position:relative}
   .summary-card .row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:all 0.2s;position:relative}
   .summary-card .row:hover{background:rgba(255,255,255,0.03);padding:9px 6px;margin:0 -6px}
-  .summary-card .row:hover .tooltip{display:block}
   .summary-card .row:last-child{border-bottom:0}
   .summary-card .lbl{color:var(--muted);display:flex;align-items:center;gap:7px;flex:1}
   .summary-card .val{font-weight:600;text-align:right;max-width:60%;white-space:normal;line-height:1.4}
@@ -413,15 +412,8 @@
   .summary-card .details{font-size:11px;color:var(--muted);margin-top:6px;padding:6px 0;line-height:1.5;display:none}
   .summary-card .row.expanded .details{display:block;border-top:1px solid rgba(255,255,255,0.1);padding-top:8px}
   
-  /* hover tooltip */
-  .summary-card .tooltip{
-    display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:var(--glass-panel);border:1px solid var(--glass-border);border-radius:9px;padding:12px 14px;
-    font-size:12px;color:var(--muted);line-height:1.6;width:320px;margin-top:10px;
-    box-shadow:0 8px 16px rgba(0,0,0,0.4);backdrop-filter:var(--glass-blur);z-index:10000;
-    pointer-events:none;white-space:normal;min-height:auto;overflow:visible;text-overflow:clip;visibility:visible;opacity:1;
-  }
-  .summary-card .row:hover .tooltip{display:block !important}
-  .summary-card .tooltip:before{content:'';position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid var(--glass-panel)}
+  /* tooltip hidden - summary clean and simple */
+  .summary-card .tooltip{display:none !important}
 
   .hint{font-size:12.5px;color:var(--muted);line-height:1.6}
   .howto-list{margin:0;padding:0;list-style:none;counter-reset:ht;display:flex;flex-direction:column;gap:9px}
@@ -1518,40 +1510,40 @@ async function generateSheetImage(){
 const QUESTIONS = {
   ms:[
     {slot:'tema',icon:'🎬',title:'Soalan 1 dari 6 — Pilih style video affiliate anda:',opts:[
-      ['1','UGC Style (Raw & Authentic) — Phone camera, natural light, real person, genuine reaction. Highest conversion affiliate.'],
-      ['2','Unboxing & First Impression — Honest reaction, tactile details, ASMR packaging sounds. Prime affiliate moment.'],
-      ['3','Problem → Solution Journey — User pain point → product solves it. Emotional arc. Strong conversion.'],
-      ['4','Day-in-the-Life Integration — Product natural dalam daily routine. Lifestyle affiliate. Aspirational tapi relatable.'],
-      ['5','Before-After Transformation — Visual proof. Results-driven. Supplement/skincare/fitness affiliate goldmine.'],
-      ['6','Comparison Demo — vs competitor atau vs life without product. Direct benefit messaging.'],
-      ['7','Tutorial / How-To Use — Educational affiliate. Build trust. Show expertise. Lower sales resistance.'],
-      ['8','Testimonial / Real Reviews — Person speaks to camera (friend-to-friend). Authentic social proof.'],
-      ['9','Trending Sound / Trend-Jacking — Hook dengan trending audio/meme. Gen-Z friendly. Viral potential.'],
-      ['10','Behind-the-Scenes / Creator Story — Why I love this product. Personal brand trust. Premium positioning.'],
+      ['1','Gaya UGC (Autentik & Mentah)'],
+      ['2','Pembukaan & Kesan Pertama'],
+      ['3','Perjalanan Masalah → Penyelesaian'],
+      ['4','Integrasi Dalam Rutinitas Harian'],
+      ['5','Transformasi Sebelum-Sesudah'],
+      ['6','Demo Perbandingan'],
+      ['7','Tutorial / Cara Penggunaan'],
+      ['8','Testimoni / Ulasan Nyata'],
+      ['9','Bunyi Trending / Trend-Jacking'],
+      ['10','Disebalik Layar / Cerita Kreator'],
     ]},
     {slot:'style',icon:'🎨',title:'Soalan 2 dari 6 — Pilih visual style video anda:',opts:[
-      ['1','Cinematic Realistic — Film-quality production. Professional lighting, color grading, depth of field. Premium positioning. High trust.'],
-      ['2','Mobile Phone Aesthetic — Shot like TikTok/Reels. Vertical framing, quick cuts, trending transitions. Native to social. Highest engagement.'],
-      ['3','Lifestyle Photography — Instagram aesthetic. Natural daylight, real environments, aspirational but relatable. Authentic feel.'],
-      ['4','Studio Product Shot — Clean white/gradient background, professional lighting, product hero. Clarity. E-commerce optimized.'],
-      ['5','Documentary / Vérité — Handheld camera, natural lighting, real moments, no setup. Authenticity. Trust-building.'],
-      ['6','ASMR Visual — Close-ups, macro shots, tactile textures, slow pans. Sensory-rich. Meditative. High retention.'],
-      ['7','Fast-Paced / Energy — Quick cuts, dynamic transitions, trending music sync. Gen-Z vibe. Scroll-stopping.'],
-      ['8','Testimonial / Talking Head — Person direct to camera, intimate framing, authentic emotion. Social proof. Conversion-focused.'],
-      ['9','Flat / Minimalist — Minimal elements, bold colors, clean typography. Modern. Trendy. Design-forward.'],
-      ['10','Behind-the-Scenes / Raw — Imperfect lighting, real setting, creator vibe. Authenticity. Transparency. High conversion.'],
+      ['1','Sinematik Realistik'],
+      ['2','Estetika Telefon Mudah Alih'],
+      ['3','Fotografi Gaya Hidup'],
+      ['4','Tangkapan Produk Studio'],
+      ['5','Dokumenter / Vérité'],
+      ['6','Visual ASMR'],
+      ['7','Pace Cepat / Tenaga'],
+      ['8','Testimoni / Bercakap ke Kamera'],
+      ['9','Flat / Minimalis'],
+      ['10','Disebalik Tabir / Mentah'],
     ]},
     {slot:'bahasa',icon:'📝',title:'Soalan 3 dari 6 — Bahasa yang digunakan:',opts:[
       ['1','Bahasa Melayu'],['2','English'],['3','Campur BM + English'],
     ]},
     {slot:'durasi',icon:'⏱️',title:'Soalan 4 dari 6 — Berapa lama video?',opts:[
-      ['1','10 saat — 6 panels (Faster pacing, snappy)'],
-      ['2','15 saat — 8 panels (Balanced)'],
-      ['3','20 saat — 12 panels (Standard, relaxed)'],
-      ['4','30 saat — 9 panels (TVC, panel besar)'],
+      ['1','10 saat — 6 panel (Pace cepat, ringkas)'],
+      ['2','15 saat — 8 panel (Seimbang)'],
+      ['3','20 saat — 12 panel (Standard, santai)'],
+      ['4','30 saat — 9 panel (TVC, panel besar)'],
     ]},
     {slot:'ar',icon:'📱',title:'Soalan 5 dari 6 — Format skrin:',opts:[
-      ['1','16:9 Landscape — YouTube/TV'],['2','9:16 Portrait — TikTok/Reels'],['3','1:1 Square — IG/FB Feed'],
+      ['1','16:9 Landskap — YouTube/TV'],['2','9:16 Potret — TikTok/Reels'],['3','1:1 Segi Empat — IG/FB Feed'],
     ]},
     {slot:'cast',icon:'👥',title:'Soalan 6 dari 6 — Siapa/apa dalam video?',opts:[
       ['1','Perempuan Muslimah (bertudung)'],['2','Lelaki dewasa'],['3','Perempuan (tiada tudung)'],
@@ -1560,28 +1552,28 @@ const QUESTIONS = {
   ],
   en:[
     {slot:'tema',icon:'🎬',title:'Question 1 of 6 — Choose your affiliate video style:',opts:[
-      ['1','UGC Style (Raw & Authentic) — Phone camera, natural light, real person, genuine reaction. Highest conversion affiliate.'],
-      ['2','Unboxing & First Impression — Honest reaction, tactile details, ASMR packaging sounds. Prime affiliate moment.'],
-      ['3','Problem → Solution Journey — User pain point → product solves it. Emotional arc. Strong conversion.'],
-      ['4','Day-in-the-Life Integration — Product natural dalam daily routine. Lifestyle affiliate. Aspirational but relatable.'],
-      ['5','Before-After Transformation — Visual proof. Results-driven. Supplement/skincare/fitness affiliate goldmine.'],
-      ['6','Comparison Demo — vs competitor or vs life without product. Direct benefit messaging.'],
-      ['7','Tutorial / How-To Use — Educational affiliate. Build trust. Show expertise. Lower sales resistance.'],
-      ['8','Testimonial / Real Reviews — Person speaks to camera (friend-to-friend). Authentic social proof.'],
-      ['9','Trending Sound / Trend-Jacking — Hook with trending audio/meme. Gen-Z friendly. Viral potential.'],
-      ['10','Behind-the-Scenes / Creator Story — Why I love this product. Personal brand trust. Premium positioning.'],
+      ['1','UGC Style (Raw & Authentic)'],
+      ['2','Unboxing & First Impression'],
+      ['3','Problem → Solution Journey'],
+      ['4','Day-in-the-Life Integration'],
+      ['5','Before-After Transformation'],
+      ['6','Comparison Demo'],
+      ['7','Tutorial / How-To Use'],
+      ['8','Testimonial / Real Reviews'],
+      ['9','Trending Sound / Trend-Jacking'],
+      ['10','Behind-the-Scenes / Creator Story'],
     ]},
     {slot:'style',icon:'🎨',title:'Question 2 of 6 — Choose your visual style:',opts:[
-      ['1','Cinematic Realistic — Film-quality production. Professional lighting, color grading, depth of field. Premium positioning. High trust.'],
-      ['2','Mobile Phone Aesthetic — Shot like TikTok/Reels. Vertical framing, quick cuts, trending transitions. Native to social. Highest engagement.'],
-      ['3','Lifestyle Photography — Instagram aesthetic. Natural daylight, real environments, aspirational but relatable. Authentic feel.'],
-      ['4','Studio Product Shot — Clean white/gradient background, professional lighting, product hero. Clarity. E-commerce optimized.'],
-      ['5','Documentary / Vérité — Handheld camera, natural lighting, real moments, no setup. Authenticity. Trust-building.'],
-      ['6','ASMR Visual — Close-ups, macro shots, tactile textures, slow pans. Sensory-rich. Meditative. High retention.'],
-      ['7','Fast-Paced / Energy — Quick cuts, dynamic transitions, trending music sync. Gen-Z vibe. Scroll-stopping.'],
-      ['8','Testimonial / Talking Head — Person direct to camera, intimate framing, authentic emotion. Social proof. Conversion-focused.'],
-      ['9','Flat / Minimalist — Minimal elements, bold colors, clean typography. Modern. Trendy. Design-forward.'],
-      ['10','Behind-the-Scenes / Raw — Imperfect lighting, real setting, creator vibe. Authenticity. Transparency. High conversion.'],
+      ['1','Cinematic Realistic'],
+      ['2','Mobile Phone Aesthetic'],
+      ['3','Lifestyle Photography'],
+      ['4','Studio Product Shot'],
+      ['5','Documentary / Vérité'],
+      ['6','ASMR Visual'],
+      ['7','Fast-Paced / Energy'],
+      ['8','Testimonial / Talking Head'],
+      ['9','Flat / Minimalist'],
+      ['10','Behind-the-Scenes / Raw'],
     ]},
     {slot:'bahasa',icon:'📝',title:'Question 3 of 6 — Language used:',opts:[
       ['1','Bahasa Melayu'],['2','English'],['3','Mixed BM + English'],
