@@ -584,7 +584,7 @@
       <div>
         <h1 class="display">Smart Universal Gen</h1>
         <span class="footer-by" style="display:block;margin-top:6px">crafted <em>by Ayep</em></span>
-        <span data-i="tagline">Character sheets & storyboard generator</span>
+        <span data-i="tagline">AI Creative Director — Reference sheets & storyboards for affiliate video</span>
       </div>
     </div>
     <div class="spacer"></div>
@@ -1237,8 +1237,8 @@ function bootSheet(){
   S.sheet={step:1,history:[],image:null,busy:false,object:null,type:null,angles:null};
   setSheetStep(1);
   const greet = LANG==='ms'
-    ? 'Hai! 👋 Saya bantu anda bina **reference sheet** watak atau produk sebagai satu imej grid profesional.\n\n**Langkah 1:** Lampir gambar (butang 📎 di bawah) + bagi nama.\nContoh: gambar laptop + "ASUS ZenBook 14 OLED" atau gambar orang + "Sarah, 28 tahun".'
-    : 'Hi! 👋 I help you build a **character or product reference sheet** as one professional grid image.\n\n**Step 1:** Attach an image (📎 button below) + give it a name.\nExample: a laptop photo + "ASUS ZenBook 14 OLED" or a person + "Sarah, 28yo".';
+    ? 'Hai! 👋 Saya **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, dan AI Image Prompt Engineer.\n\nTugas: Transform your product photo jadi **professional reference sheet** — authentic, natural, conversion-focused, siap untuk AI generation.\n\n**Langkah 1:** Lampir gambar produk (📎 di bawah) + beri nama (contoh: "iPhone 16 Pro" atau "Luxury Watch Gold").'
+    : 'Hi! 👋 I\'m your **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.\n\nMy role: Transform your product photo into a **professional reference sheet** — authentic, natural, conversion-focused, ready for AI generation.\n\n**Step 1:** Attach your product image (📎 below) + give it a name (example: "iPhone 16 Pro" or "Luxury Watch Gold").';
   addMsg('sheet','ai',greet);
 }
 function resetSheet(){bootSheet();renderAttachChips('sheet');toast(LANG==='ms'?'Sheet dimulakan semula':'Sheet restarted')}
@@ -1433,8 +1433,8 @@ function bootBoard(){
   S.board={step:0,qi:0,answers:{},history:[],image:null,busy:false,productKnown:false,product:null};
   clearSummary();
   const greet = LANG==='ms'
-    ? 'Hai! 👋 Saya **Creative Director AI**. Kita akan bina **poster storyboard** iklan anda.\n\n**Langkah 1:** Lampir gambar produk dahulu (📎 di bawah), kemudian hantar. Selepas itu, 6 soalan akan bermula.'
-    : 'Hi! 👋 I\'m your **Creative Director AI**. We\'ll build your ad **storyboard poster**.\n\n**Step 1:** Attach a product image first (📎 below), then send. After that, the 6 questions begin.';
+    ? 'Hai! 👋 Saya **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, dan AI Image Prompt Engineer.\n\nTugas: Bina **storyboard poster affiliate profesional** — authentic, natural, conversion-focused, sensory-rich, siap untuk AI Video generation (Veo, Kling, Runway).\n\n**Langkah 1:** Lampir gambar produk (📎 di bawah), kemudian hantar. Selepas itu, 6 soalan untuk build narrative yang convert.'
+    : 'Hi! 👋 I\'m your **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.\n\nMy role: Build a **professional affiliate storyboard** — authentic, natural, conversion-focused, sensory-rich, ready for AI Video generation (Veo, Kling, Runway).\n\n**Step 1:** Attach your product image (📎 below), then send. After that, 6 questions to craft a narrative that converts.';
   addMsg('board','ai',greet);
   // NOTE: questions start only AFTER an image is uploaded (Step 0).
 }
