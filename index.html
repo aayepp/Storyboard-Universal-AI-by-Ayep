@@ -1291,7 +1291,19 @@ function bootSheet(){
     : 'Hi! 👋 I\'m your **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.\n\nMy role: Transform your product photo into a **professional reference sheet** — authentic, natural, conversion-focused, ready for AI generation.\n\n**Step 1:** Attach your product image (📎 below) + give it a name (example: "iPhone 16 Pro" or "Luxury Watch Gold").';
   addMsg('sheet','ai',greet);
 }
-function resetSheet(){bootSheet();renderAttachChips('sheet');toast(LANG==='ms'?'Sheet dimulakan semula':'Sheet restarted')}
+function resetSheet(){
+  // clear all sheet state completely
+  S.sheet={step:1,history:[],image:null,busy:false,object:null,type:null,angles:null,_lastImgs:[]};
+  attachments.sheet=[];
+  // clear UI
+  document.getElementById('sheet-msgs').innerHTML='';
+  document.getElementById('sheet-input').value='';
+  document.getElementById('sheet-send').disabled=false;
+  // reinit
+  bootSheet();
+  renderAttachChips('sheet');
+  toast(LANG==='ms'?'Sheet dimulakan semula. Sila lampir gambar baru.':'Sheet restarted. Please attach a new image.');
+}
 
 function sendSheet(){
   const ta=document.getElementById('sheet-input');
@@ -1514,7 +1526,20 @@ function bootBoard(){
   addMsg('board','ai',greet);
   // NOTE: questions start only AFTER an image is uploaded (Step 0).
 }
-function resetBoard(){bootBoard();renderAttachChips('board');toast(LANG==='ms'?'Storyboard dimulakan semula':'Storyboard restarted')}
+function resetBoard(){
+  // clear all board state completely
+  S.board={step:0,qi:0,answers:{},history:[],image:null,busy:false,productKnown:false,product:null,_productImgs:null,_reaskAfter:false};
+  attachments.board=[];
+  // clear UI
+  document.getElementById('board-msgs').innerHTML='';
+  document.getElementById('board-input').value='';
+  document.getElementById('board-send').disabled=false;
+  clearSummary();
+  // reinit
+  bootBoard();
+  renderAttachChips('board');
+  toast(LANG==='ms'?'Storyboard dimulakan semula. Sila lampir gambar baru.':'Storyboard restarted. Please attach a new image.');
+}
 
 function askBoardQuestion(qi){
   S.board.qi=qi;
