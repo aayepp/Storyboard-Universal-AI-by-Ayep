@@ -297,7 +297,9 @@
     font-size:16px;font-weight:600;
   }
   .msg.ai .avatar{background:linear-gradient(160deg,var(--gold-deep),var(--gold));color:#fff;box-shadow:0 0 0 1px rgba(184,153,104,.25)}
-  .msg.ai .avatar:before{content:"✨"}
+  .msg.ai .avatar:before{content:"✨";display:inline-block}
+  .msg:has(.thinking) .avatar:before{animation:pulse 1s ease-in-out infinite}
+  @keyframes pulse{0%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.15)}100%{opacity:1;transform:scale(1)}}
   .msg.user .avatar{background:linear-gradient(160deg,var(--gold),var(--gold-deep));color:#fff}
   .msg.user .avatar:before{content:"👤"}
   .bubble{
