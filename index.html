@@ -294,10 +294,12 @@
   @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .avatar{
     width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;
-    font-size:14px;font-weight:600;font-family:'Fraunces';
+    font-size:16px;font-weight:600;
   }
-  .msg.ai .avatar{background:linear-gradient(160deg,#26221a,#100e0a);color:var(--gold);box-shadow:0 0 0 1px rgba(184,153,104,.25)}
+  .msg.ai .avatar{background:linear-gradient(160deg,var(--gold-deep),var(--gold));color:#fff;box-shadow:0 0 0 1px rgba(184,153,104,.25)}
+  .msg.ai .avatar:before{content:"✨"}
   .msg.user .avatar{background:linear-gradient(160deg,var(--gold),var(--gold-deep));color:#fff}
+  .msg.user .avatar:before{content:"👤"}
   .bubble{
     border-radius:13px;padding:13px 16px;font-size:14px;max-width:100%;
     border:1px solid var(--line);background:var(--panel);color:var(--ink);white-space:pre-wrap;word-break:break-word;
@@ -354,20 +356,21 @@
   .composer textarea::placeholder{color:var(--muted)}
   .composer textarea:focus{border-color:var(--gold);box-shadow:var(--glass-inset),0 0 0 4px rgba(184,153,104,.15)}
   .send{
-    border:0;background:linear-gradient(160deg,#26221a,#100e0a);color:var(--gold);border-radius:12px;
+    border:0;background:linear-gradient(160deg, var(--gold-deep), var(--gold-deep));color:#fff;border-radius:12px;
     width:46px;height:46px;flex:none;cursor:pointer;display:grid;place-items:center;
-    transition:.2s;box-shadow:var(--shadow);
+    transition:.2s;box-shadow:var(--shadow);opacity:.85;
   }
-  .send:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);animation:pulse-glow .6s infinite}
+  .send:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);animation:pulse-glow .6s infinite;opacity:1}
   .send:active{transform:translateY(0)}
 
   /* quick-pick buttons */
   .picks{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
   .pick{
-    border:1px solid var(--line-strong);background:#fff;border-radius:10px;
+    border:1px solid var(--glass-border);background:var(--glass-panel);border-radius:10px;
     padding:8px 13px;font-size:13px;cursor:pointer;font-weight:500;color:var(--ink);
-    transition:.16s;font-family:'Inter';box-shadow:var(--shadow-sm);
+    transition:.16s;font-family:'Inter';box-shadow:var(--shadow-sm),var(--glass-inset);
     animation:slide-up .3s ease-out backwards;
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
   }
   .pick:nth-child(1){animation-delay:.05s}
   .pick:nth-child(2){animation-delay:.1s}
@@ -696,16 +699,15 @@
               <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="ai-tool-link">Gemini</a>
               <a href="https://flow.ai/" target="_blank" rel="noopener" class="ai-tool-link">Flow AI</a>
               <a href="https://openai.com/chatgpt/" target="_blank" rel="noopener" class="ai-tool-link">ChatGPT</a>
-              <a href="https://www.seeruuide.com/" target="_blank" rel="noopener" class="ai-tool-link">Seeruide 2</a>
-              <a href="https://kling.kuaishou.com/" target="_blank" rel="noopener" class="ai-tool-link">Kling</a>
+              <a href="https://seedance2.ai/" target="_blank" rel="noopener" class="ai-tool-link">Seedance 2.0</a>
+              <a href="https://kling.ai/" target="_blank" rel="noopener" class="ai-tool-link">Kling</a>
             </div>
             <p class="hint" style="margin-top:8px;font-size:11px">
               <span style="color:var(--muted-2)" data-i="toolsLabel">AI Video Tools:</span>
               <a href="https://gemini.google.com" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">Gemini</a>
               <a href="https://chatgpt.com" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">ChatGPT</a>
               <a href="https://www.runway.ml" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">Runway</a>
-              <a href="https://www.kling.kuaishou.com" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">Kling</a>
-              <a href="https://www.sensemaker.ai" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">Sensemaker</a>
+              <a href="https://kling.ai" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">Kling</a>
             </p>
             <div class="copybox" style="margin-top:7px">
               <div class="copybox-text" id="howto-video-text">Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion</div>
@@ -1831,7 +1833,7 @@ function toggleTheme(){
 function init(){
   // color theme: saved pref, else default gold
   let savedColor=null; try{savedColor=localStorage.getItem(COLOR_THEME_LS)}catch(e){}
-  applyColorTheme(savedColor||'gold');
+  applyColorTheme(savedColor||'ocean');
   // light/dark theme: saved pref, else follow system
   let savedTheme=null; try{savedTheme=localStorage.getItem(THEME_LS)}catch(e){}
   if(!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) savedTheme='dark';
