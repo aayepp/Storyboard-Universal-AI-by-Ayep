@@ -1254,7 +1254,19 @@ FINAL PANEL = HERO SHOT (Panel ${panels}):
 
 CONSISTENCY (CRITICAL): ${product} must look 100% IDENTICAL across all ${panels} panels — same exact shape, color, logo, and details${hasRef?' as the reference photo':''}. Only the camera angle, framing, context, and character actions change; the product identity NEVER changes. ${hasRef?'If unsure about a detail, copy it from the reference photo rather than inventing it.':''}
 
-VISUAL: Professional, clean layout. Light/white background. Bold modern sans-serif header. Black thin border around entire poster. Consistent typography. Tidy aligned grid. ONE single poster image only.
+VISUAL STYLE (CRITICAL):
+- REALISTIC photography/cinematography style ONLY. NO cartoon, anime, illustration, or stylized art.
+- Every human character must be photorealistic: real skin texture, natural lighting, authentic expressions, genuine emotions.
+- Product must look like real product photography: accurate materials, real shadows, professional studio lighting.
+- Environments: real locations (home, street, office, café) or photorealistic 3D renderings. NO drawn backgrounds.
+- If ${style} is "cinematic realistic" — shoot like a movie/commercial: film grain, depth of field, professional color grading.
+- If ${style} is "lifestyle" — photograph like Instagram/lifestyle magazine: natural daylight, real props, authentic moments.
+- If ${style} is "luxury/premium" — studio photography: perfect lighting, minimal shadows, high-end product positioning.
+- Output must look like a professional video production or high-end advertising photoshoot. Treat as reference for real video/photo shoot.
+
+DO NOT output any of these styles: cartoon, anime, comic, illustration, watercolor, sketch, vector art, CG/CGI, 3D animation style, hand-drawn, painted, stylized. Every single panel must be PHOTOREALISTIC.
+
+VISUAL: Professional, clean layout. Light/white background. Bold modern sans-serif header. Black thin border around entire poster. Consistent typography. Tidy aligned grid. ONE single poster image only — photorealistic throughout.
 
 OUTPUT: A cohesive storyboard ready for professional video production. Every panel must be specific enough for an AI video tool to generate accurate scenes. Every dialog line and caption must be included so video AI knows exactly what to show and say.`;
 }
