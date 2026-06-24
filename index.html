@@ -1251,6 +1251,11 @@ function sendSheet(){
   ta.value=''; ta.style.height='auto';
 }
 async function submitSheet(text){
+  // retry generation
+  if(text.toLowerCase().includes('retry') || text.toLowerCase().includes('coba') || text.includes('retry-gen')){
+    generateSheetImage();
+    return;
+  }
   // special case: use sheet image for storyboard
   if(text.toLowerCase().includes('guna storyboard') || text.toLowerCase().includes('storyboard gen')){
     if(!S.sheet.image){
@@ -1362,7 +1367,13 @@ async function generateSheetImage(){
     }
   }catch(err){
     removeThinking('sheet'); note.remove();
-    addMsg('sheet','ai','⚠️ '+t('errGen')+'\n\n`'+String(err.message).slice(0,180)+'`');
+    const errMsg = String(err.message).slice(0,180);
+    const isServerError = err.message.includes('503') || err.message.includes('timeout') || err.message.includes('429');
+    addMsg('sheet','ai', isServerError
+      ? (LANG==='ms'?'⚠️ **Server sedang sibuk.** API Gemini mengalami beban tinggi. Sila tunggu beberapa saat dan coba lagi.':'⚠️ **Server busy.** Gemini API is temporarily overloaded. Please wait a moment and try again.')
+      : '⚠️ '+t('errGen')+'\n\n`'+errMsg+'`');
+    const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
+    renderPicks('sheet',[{k:'retry-gen',label:retryLabel}]);
   }
 }
 
@@ -1457,6 +1468,11 @@ function sendBoard(){
   ta.value=''; ta.style.height='auto';
 }
 async function submitBoard(text){
+  // retry generation
+  if(text.toLowerCase().includes('retry') || text.toLowerCase().includes('coba') || text.includes('retry-gen')){
+    generateBoardImage();
+    return;
+  }
   if(!API_KEY){toast(t('needKey'));openKey();return}
   if(S.board.busy) return;
 
@@ -1637,8 +1653,13 @@ async function generateBoardImage(isFix){
     }
   }catch(err){
     removeThinking('board'); note.remove();
-    addMsg('board','ai','⚠️ '+t('errGen')+'\n\n`'+String(err.message).slice(0,180)+'`');
-    showPostImageMenu();
+    const errMsg = String(err.message).slice(0,180);
+    const isServerError = err.message.includes('503') || err.message.includes('timeout') || err.message.includes('429');
+    addMsg('board','ai', isServerError
+      ? (LANG==='ms'?'⚠️ **Server sedang sibuk.** API Gemini mengalami beban tinggi. Sila tunggu beberapa saat dan coba lagi.':'⚠️ **Server busy.** Gemini API is temporarily overloaded. Please wait a moment and try again.')
+      : '⚠️ '+t('errGen')+'\n\n`'+errMsg+'`');
+    const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
+    renderPicks('board',[{k:'retry-gen',label:retryLabel}]);
   }finally{
     S.board.busy=false; document.getElementById('board-send').disabled=false;
   }
