@@ -707,7 +707,7 @@
         </div>
         
         <!-- Config Questions Container -->
-        <div class="config-container" id="board-config">
+        <div class="config-container" id="board-config" style="display:none">
           <!-- Q1: Tema -->
           <div class="config-item">
             <button class="config-header" onclick="toggleConfigDropdown(this)">
@@ -1681,7 +1681,32 @@ function bootBoard(){
   addMsg('board','ai',greet);
   // NOTE: questions start only AFTER an image is uploaded (Step 0).
 }
-function resetBoard(){bootBoard();renderAttachChips('board');toast(LANG==='ms'?'Storyboard dimulakan semula':'Storyboard restarted')}
+function getBoardConfigAnswers(){
+  const answers = {};
+  const inputs = [
+    {id: 'input-tema', slot: 'tema'},
+    {id: 'input-style', slot: 'style'},
+    {id: 'input-bahasa', slot: 'bahasa'},
+    {id: 'input-durasi', slot: 'durasi'},
+    {id: 'input-ar', slot: 'ar'},
+    {id: 'input-cast', slot: 'cast'}
+  ];
+  
+  for(const {id, slot} of inputs){
+    const el = document.getElementById(id);
+    if(!el) continue;
+    const val = el.value.trim();
+    if(!val) return null; // any empty = incomplete
+    answers[slot] = {val, k: val.substring(0,1)}; // store value + key
+  }
+  return Object.keys(answers).length === 6 ? answers : null;
+}
+
+function isBoardConfigReady(){
+  const hasImage = !!S.board._productImgs || S.board.productKnown;
+  const config = getBoardConfigAnswers();
+  return hasImage && config ? config : null;
+}
 
 function askBoardQuestion(qi){
   S.board.qi=qi;
@@ -1695,9 +1720,46 @@ function askBoardQuestion(qi){
 function sendBoard(){
   const ta=document.getElementById('board-input');
   const text=ta.value.trim();
+  
+  // Check if user pressed enter with config ready (dropdown mode)
+  const configReady = isBoardConfigReady();
+  if(configReady && S.board.productKnown){
+    // Auto-generate storyboard
+    S.board.answers = configReady;
+    ta.value=''; ta.style.height='auto';
+    autogenerateBoardStoryboard();
+    return;
+  }
+  
+  // Otherwise use normal chat flow
   if(!text && attachments.board.length===0) return;
   submitBoard(text);
   ta.value=''; ta.style.height='auto';
+}
+
+async function autogenerateBoardStoryboard(){
+  if(!API_KEY){toast(t('needKey'));openKey();return}
+  if(S.board.busy) return;
+  
+  const config = isBoardConfigReady();
+  if(!config){
+    addMsg('board','ai', LANG==='ms'
+      ? 'Sila pastikan gambar produk dimuat naik dan semua 6 soalan dijawab.'
+      : 'Please ensure product image is uploaded and all 6 questions are answered.');
+    return;
+  }
+  
+  // Hide config container
+  const configContainer = document.getElementById('board-config');
+  if(configContainer) configContainer.style.display='none';
+  
+  // Add generating message
+  addMsg('board','ai', LANG==='ms'
+    ? '🎬 Menghasilkan storyboard berdasarkan pilihan anda... ⏳'
+    : '🎬 Generating storyboard based on your choices... ⏳');
+  
+  // Use existing function to generate
+  await generateBoardImage();
 }
 async function submitBoard(text){
   if(!API_KEY){toast(t('needKey'));openKey();return}
@@ -1717,9 +1779,19 @@ async function submitBoard(text){
       S.board.product = text && text.trim() ? text.trim() : (LANG==='ms'?'produk anda':'your product');
       S.board.productKnown=true;
       addMsg('board','ai', LANG==='ms'
-        ? '✅ Gambar diterima! Sekarang mari mula 6 soalan 👇'
-        : '✅ Image received! Now let\'s start the 6 questions 👇');
-      askBoardQuestion(0);
+        ? '✅ Gambar diterima! Pilih jawapan untuk 6 soalan di bawah, kemudian tekan Enter untuk menjana storyboard. 👇'
+        : '✅ Image received! Select answers for the 6 questions below, then press Enter to generate the storyboard. 👇');
+      
+      // Show config container
+      const configContainer = document.getElementById('board-config');
+      if(configContainer) configContainer.style.display='block';
+      
+      // Scroll to config
+      setTimeout(()=>{
+        configContainer?.scrollIntoView({behavior:'smooth',block:'nearest'});
+        // Auto-focus first dropdown
+        document.getElementById('input-tema')?.focus();
+      }, 300);
       return;
     }
     addMsg('board','ai', LANG==='ms'
@@ -1730,6 +1802,13 @@ async function submitBoard(text){
 
   /* ---- collecting answers (initial flow OR a single re-ask after summary) ---- */
   const reasking = S.board._reaskAfter===true;
+  
+  // Skip old chat flow if user hasn't answered questions through chat (they're using dropdowns)
+  if(Object.keys(S.board.answers).length===0 && !reasking){
+    // User filled dropdowns, handled by sendBoard already
+    return;
+  }
+  
   if(S.board.qi<6 && (Object.keys(S.board.answers).length<6 || reasking)){
     const q=QUESTIONS[LANG][S.board.qi];
     // accept exact number that matches an option key
