@@ -2207,72 +2207,175 @@ Study the attached product image carefully. Analyze:
 Use these exact visual characteristics in every scene.
 
 PRODUCT: ${inputs.productName}
-Duration: ${inputs.duration}s (${sceneCount[inputs.duration]} scenes)
+Duration: ${inputs.duration}s
+Scenes needed: ${sceneCount[inputs.duration]}
 Model: ${inputs.modelMode}
 Platform: ${inputs.platform}
 Style: ${inputs.style}
 Audience: ${inputs.audience||'general'}
 
-REQUIREMENTS:
-✓ Generate exactly ${sceneCount[inputs.duration]} scenes with ${visualCount} visual actions each
-✓ Follow: Arrival → Inspection → Unboxing → Reveal → Detail → Setup → Usage → Benefit → Satisfaction → Ending
-✓ ASMR focus: hand interaction, realistic movement, texture, sound details
-✓ Keep product consistent with uploaded image in ALL scenes
-✓ Camera angles: Extreme Close Up, Close Up, Macro, Top Down, 45°, Handheld
+CRITICAL OUTPUT FORMAT:
 
-OUTPUT FORMAT:
+For each scene, use EXACTLY this format:
 
-SCENE [num] | TIME: [start-end]s | PURPOSE: [objective]
+SCENE 1 | TIME: 0-2s | PURPOSE: Arrival
+V1 | Top Down | Hands slide product onto desk | 2s
+V2 | Close Up | Fingers trace logo | 2s
+V3 | Macro | Edge detail | 1s
+IMAGE: Product on desk, top-down angle
+VIDEO: Smooth downward camera motion
 
-VISUAL ACTIONS:
-[V1] Angle | Action | Detail | Duration
-[V2] Angle | Action | Detail | Duration
-[V3] Angle | Action | Detail | Duration
+SCENE 2 | TIME: 2-4s | PURPOSE: Inspection
+[continue with same format]
 
-IMAGE: [visual description based on actual product]
-VIDEO: [motion description]
+After all ${sceneCount[inputs.duration]} scenes, add:
 
-After all scenes:
+MASTER IMAGE PROMPT: [synthesized visual description]
+MASTER VIDEO PROMPT: [synthesized motion description]
 
-MASTER IMAGE PROMPT: [synthesized visual language - reference actual product details]
-MASTER VIDEO PROMPT: [synthesized motion choreography]
+REMEMBER:
+✓ Generate exactly ${sceneCount[inputs.duration]} scenes
+✓ Each scene has ${visualCount} visual actions (V1, V2, V3...)
+✓ Use pipe separator | between fields
+✓ Keep product consistent with uploaded image
+✓ Follow journey: Arrival → Inspection → Unboxing → Reveal → Detail → Setup → Usage → Benefit → Satisfaction → Ending
 
 Generate in ${inputs.language==='indonesia'?'Bahasa Indonesia':'English'}.`;
 }
 
 function parseAffiliateStoryboard(text,inputs){
   const scenes=[];
-  const sceneRegex=/SCENE\s+(\d+)\s*\|\s*TIME:\s*([\d\-s]+)\s*\|\s*PURPOSE:\s*([^\n]+)/g;
-  const visualRegex=/\[V(\d+)\]\s*([^\|]+)\|([^\|]+)\|([^\|]+)\|/g;
   
-  let match;const sceneMatches=[];
-  while((match=sceneRegex.exec(text))!==null){
-    sceneMatches.push({index:match.index,num:match[1],time:match[2].trim(),purpose:match[3].trim()});
+  // Try multiple scene patterns (more flexible)
+  const patterns = [
+    /SCENE\s*(\d+)\s*\|\s*TIME:\s*([\d\-s]+)\s*\|\s*PURPOSE:\s*([^\n]+)/gi,
+    /SCENE\s*(\d+)[\s\|]+TIME:\s*([\d\-\.s]+)\s*[\s\|]+PURPOSE:\s*([^\n]+)/gi,
+    /Scene\s*(\d+).*?TIME[:\s]+([\d\-\.s]+).*?PURPOSE[:\s]+([^\n]+)/gi
+  ];
+  
+  let sceneMatches = [];
+  
+  for(const pattern of patterns){
+    let match;
+    pattern.lastIndex = 0;
+    while((match = pattern.exec(text)) !== null){
+      sceneMatches.push({
+        index: match.index,
+        num: match[1],
+        time: match[2].trim(),
+        purpose: match[3].trim()
+      });
+    }
+    if(sceneMatches.length > 0) break;
   }
   
+  // If still no scenes found, try simpler pattern
+  if(sceneMatches.length === 0){
+    const lines = text.split('\n');
+    let sceneNum = 0;
+    lines.forEach((line, idx) => {
+      if(/^SCENE\s*\d+/i.test(line) || /^Scene\s*\d+/i.test(line)){
+        sceneNum++;
+        const timeMatch = line.match(/[\d\-\.]+\s*s/i);
+        const purposeMatch = lines.slice(idx).find(l => /PURPOSE|purpose/.test(l));
+        if(timeMatch || purposeMatch){
+          sceneMatches.push({
+            index: idx,
+            num: String(sceneNum),
+            time: timeMatch ? timeMatch[0] : '0s',
+            purpose: purposeMatch ? purposeMatch.replace(/PURPOSE[:\s]*/i, '').trim() : 'Scene '+sceneNum
+          });
+        }
+      }
+    });
+  }
+  
+  // Parse visual actions (more flexible)
   sceneMatches.forEach((sceneMatch,i)=>{
-    const sceneStart=sceneMatch.index;const sceneEnd=sceneMatches[i+1]?sceneMatches[i+1].index:text.length;
-    const sceneText=text.substring(sceneStart,sceneEnd);
-    const visuals=[];visualRegex.lastIndex=0;
-    let vMatch;while((vMatch=visualRegex.exec(sceneText))!==null){
-      visuals.push({num:vMatch[1],angle:vMatch[2].trim(),action:vMatch[3].trim(),detail:vMatch[4].trim()});
+    const sceneStart = sceneMatch.index;
+    const sceneEnd = sceneMatches[i+1] ? sceneMatches[i+1].index : text.length;
+    const sceneText = text.substring(sceneStart, sceneEnd);
+    
+    const visuals = [];
+    const visualPatterns = [
+      /\[V(\d)\]\s*([^\|]+)\|([^\|]+)\|([^\|]+)/g,
+      /V(\d)\s*[\:\-]\s*([^\|]+)\|([^\|]+)\|([^\|]+)/g,
+      /\*\*V(\d)\*\*.*?([^\n]+)/g
+    ];
+    
+    for(const vPattern of visualPatterns){
+      let vMatch;
+      vPattern.lastIndex = 0;
+      while((vMatch = vPattern.exec(sceneText)) !== null){
+        if(vMatch[2] && vMatch[3]){
+          visuals.push({
+            num: vMatch[1],
+            angle: vMatch[2].trim(),
+            action: vMatch[3].trim(),
+            detail: vMatch[4] ? vMatch[4].trim() : ''
+          });
+        }
+      }
+      if(visuals.length > 0) break;
     }
-    const imgMatch=sceneText.match(/IMAGE:\s*([^\n]+)/);
-    const vidMatch=sceneText.match(/VIDEO:\s*([^\n]+)/);
+    
+    // If no visuals found, create placeholder
+    if(visuals.length === 0){
+      visuals.push({
+        num: '1',
+        angle: 'Close Up',
+        action: 'Product interaction',
+        detail: 'Detail focus'
+      });
+    }
+    
+    const imgMatch = sceneText.match(/IMAGE[:\s]*([^\n]+)/i);
+    const vidMatch = sceneText.match(/VIDEO[:\s]*([^\n]+)/i);
+    
     scenes.push({
-      num:sceneMatch.num,time:sceneMatch.time,purpose:sceneMatch.purpose,
-      visuals:visuals.length>0?visuals:[{num:'1',angle:'Close Up',action:'Product',detail:'Texture'}],
-      imagePrompt:imgMatch?imgMatch[1].trim():'Professional imagery',
-      videoPrompt:vidMatch?vidMatch[1].trim():'Smooth motion'
+      num: sceneMatch.num,
+      time: sceneMatch.time,
+      purpose: sceneMatch.purpose,
+      visuals: visuals,
+      imagePrompt: imgMatch ? imgMatch[1].trim() : 'Professional product imagery',
+      videoPrompt: vidMatch ? vidMatch[1].trim() : 'Smooth camera motion'
     });
   });
   
-  const masterImgMatch=text.match(/MASTER\s+IMAGE\s+PROMPT:\s*([^\n]+)/is);
-  const masterVidMatch=text.match(/MASTER\s+VIDEO\s+PROMPT:\s*([^\n]+)/is);
+  // Parse master prompts (more flexible)
+  let masterImage = 'Professional ASMR affiliate storyboard';
+  let masterVideo = 'Organic handheld camera motion';
+  
+  const masterImgPatterns = [
+    /MASTER\s+IMAGE\s+PROMPT[:\s]*([^\n]+)/is,
+    /Master.*?Image.*?Prompt[:\s]*([^\n]+)/is
+  ];
+  
+  for(const pattern of masterImgPatterns){
+    const match = text.match(pattern);
+    if(match && match[1]){
+      masterImage = match[1].trim();
+      break;
+    }
+  }
+  
+  const masterVidPatterns = [
+    /MASTER\s+VIDEO\s+PROMPT[:\s]*([^\n]+)/is,
+    /Master.*?Video.*?Prompt[:\s]*([^\n]+)/is
+  ];
+  
+  for(const pattern of masterVidPatterns){
+    const match = text.match(pattern);
+    if(match && match[1]){
+      masterVideo = match[1].trim();
+      break;
+    }
+  }
+  
   return{
-    scenes:scenes,
-    masterImage:masterImgMatch?masterImgMatch[1].trim():'Professional ASMR storyboard',
-    masterVideo:masterVidMatch?masterVidMatch[1].trim():'Organic handheld motion'
+    scenes: scenes,
+    masterImage: masterImage,
+    masterVideo: masterVideo
   };
 }
 
