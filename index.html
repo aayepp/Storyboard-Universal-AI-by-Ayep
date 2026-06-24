@@ -568,29 +568,42 @@
   .footer-credit em{font-style:italic;color:var(--gold-deep)}
   .footer-made{color:var(--muted-2)}
   
-  /* ===== Config dropdown layout ===== */
-  .config-container{display:grid;gap:12px;padding:20px;max-width:1100px;margin:0 auto}
-  .config-item{border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;background:var(--panel)}
-  .config-header{
-    width:100%;padding:16px;border:none;background:transparent;
-    cursor:pointer;display:flex;align-items:center;justify-content:space-between;
-    font-size:14px;font-weight:500;color:var(--ink);text-align:left;
-    transition:background .2s;font-family:inherit;
-  }
-  .config-header:hover{background:var(--line)}
-  .config-header.active{background:var(--line-strong)}
-  .chevron{transition:transform .3s}
-  .config-header.active .chevron{transform:rotate(180deg)}
-  .config-label{display:flex;align-items:center;gap:10px;flex:1;font-weight:600;color:var(--ink)}
-  .config-body{padding:0 16px;max-height:0;overflow:hidden;opacity:0;transition:all .3s ease}
-  .config-body.show{padding:0 16px 16px;max-height:500px;opacity:1}
-  .config-question{margin:12px 0 10px;font-size:13px;color:var(--ink-soft);font-weight:500}
+  /* ===== Config Grid Layout ===== */
+  .config-container{padding:20px;max-width:1100px;margin:0 auto}
+  .config-header-section{margin-bottom:20px}
+  .config-title{margin:0;font-size:18px;font-weight:600;color:var(--ink)}
+  .config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:20px}
+  .config-field{display:flex;flex-direction:column;gap:8px}
+  .config-field .config-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-soft)}
   .config-input{
-    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+    padding:10px 12px;border:1px solid var(--line);border-radius:8px;
     background:var(--panel);color:var(--ink);font-family:inherit;font-size:14px;
-    transition:border-color .2s;
+    transition:border-color .2s,background .2s;
   }
+  .config-input:hover{border-color:var(--gold)}
   .config-input:focus{outline:none;border-color:var(--gold);background:var(--paper-2)}
+  
+  .config-buttons{display:flex;gap:12px;justify-content:flex-start}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:12px 20px;
+    border:none;border-radius:8px;font-size:14px;font-weight:500;
+    cursor:pointer;transition:all .2s;font-family:inherit;
+  }
+  .btn-primary{
+    background:var(--accent);color:white;
+    box-shadow:0 4px 12px rgba(22,20,15,.15);
+  }
+  .btn-primary:hover{background:var(--gold-deep);transform:translateY(-1px);box-shadow:0 6px 16px rgba(22,20,15,.2)}
+  .btn-primary:active{transform:translateY(0)}
+  .btn-ghost{
+    background:transparent;border:1px solid var(--line);color:var(--ink);
+  }
+  .btn-ghost:hover{background:var(--line);border-color:var(--ink-soft)}
+  
+  @media(max-width:768px){
+    .config-grid{grid-template-columns:1fr}
+    .config-buttons{flex-wrap:wrap}
+  }
   
   /* ===== 6-Roles Badge ===== */
   .roles-badge{
@@ -708,16 +721,14 @@
         
         <!-- Config Questions Container -->
         <div class="config-container" id="board-config" style="display:none">
-          <!-- Q1: Tema -->
-          <div class="config-item">
-            <button class="config-header" onclick="toggleConfigDropdown(this)">
-              <span class="config-label">1️⃣ TEMA</span>
-              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
-            </button>
-            <div class="config-body">
-              <p class="config-question">What is the video theme or format?</p>
+          <div class="config-header-section">
+            <h3 class="config-title">Configure Your Storyboard</h3>
+          </div>
+          
+          <div class="config-grid">
+            <!-- Row 1: TEMA, Product Name, DURASI, BAHASA -->
+            <div class="config-field">
+              <label class="config-label">TEMA</label>
               <select id="input-tema" class="config-input">
                 <option value="">— Choose video theme —</option>
                 <option value="UGC (User Generated Content)">UGC (User Generated Content)</option>
@@ -734,18 +745,46 @@
                 <option value="Influencer Style">Influencer Style</option>
               </select>
             </div>
-          </div>
 
-          <!-- Q2: Style Visual -->
-          <div class="config-item">
-            <button class="config-header" onclick="toggleConfigDropdown(this)">
-              <span class="config-label">2️⃣ VISUAL STYLE</span>
-              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
-            </button>
-            <div class="config-body">
-              <p class="config-question">What cinematography & lighting style?</p>
+            <div class="config-field">
+              <label class="config-label">PRODUCT NAME</label>
+              <input type="text" id="board-product-name" class="config-input" placeholder="e.g., ASUS ZenBook 14">
+            </div>
+
+            <div class="config-field">
+              <label class="config-label">DURATION</label>
+              <select id="input-durasi" class="config-input">
+                <option value="">— Choose —</option>
+                <option value="10 secs">10 seconds</option>
+                <option value="15 secs">15 seconds</option>
+                <option value="20 secs">20 seconds</option>
+                <option value="30 secs">30 seconds</option>
+              </select>
+            </div>
+
+            <div class="config-field">
+              <label class="config-label">ASPECT RATIO</label>
+              <select id="input-ar" class="config-input">
+                <option value="">— Choose —</option>
+                <option value="16:9 (Landscape)">16:9 (Landscape)</option>
+                <option value="9:16 (Portrait)">9:16 (Portrait)</option>
+                <option value="1:1 (Square)">1:1 (Square)</option>
+              </select>
+            </div>
+
+            <!-- Row 2: LANGUAGE, STYLE -->
+            <div class="config-field">
+              <label class="config-label">LANGUAGE</label>
+              <select id="input-bahasa" class="config-input">
+                <option value="">— Choose —</option>
+                <option value="Malay">Malay</option>
+                <option value="English">English</option>
+                <option value="Mixed">Mixed (Malay + English)</option>
+              </select>
+            </div>
+
+            <div class="config-field">
+              <label class="config-label">VISUAL STYLE</label>
               <select id="input-style" class="config-input">
                 <option value="">— Choose lighting style —</option>
                 <option value="Cinematic">Cinematic</option>
@@ -762,76 +801,9 @@
                 <option value="Neon / Modern">Neon / Modern</option>
               </select>
             </div>
-          </div>
 
-          <!-- Q3: Bahasa -->
-          <div class="config-item">
-            <button class="config-header" onclick="toggleConfigDropdown(this)">
-              <span class="config-label">3️⃣ LANGUAGE</span>
-              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
-            </button>
-            <div class="config-body">
-              <p class="config-question">What language for on-screen text?</p>
-              <select id="input-bahasa" class="config-input">
-                <option value="">— Choose —</option>
-                <option value="Malay">Malay</option>
-                <option value="English">English</option>
-                <option value="Mixed">Mixed (Malay + English)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Q4: Duration -->
-          <div class="config-item">
-            <button class="config-header" onclick="toggleConfigDropdown(this)">
-              <span class="config-label">4️⃣ DURATION</span>
-              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
-            </button>
-            <div class="config-body">
-              <p class="config-question">How long should the video be?</p>
-              <select id="input-durasi" class="config-input">
-                <option value="">— Choose —</option>
-                <option value="10 secs">10 seconds</option>
-                <option value="15 secs">15 seconds</option>
-                <option value="20 secs">20 seconds</option>
-                <option value="30 secs">30 seconds</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Q5: Aspect Ratio -->
-          <div class="config-item">
-            <button class="config-header" onclick="toggleConfigDropdown(this)">
-              <span class="config-label">5️⃣ ASPECT RATIO</span>
-              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
-            </button>
-            <div class="config-body">
-              <p class="config-question">Choose your platform's aspect ratio:</p>
-              <select id="input-ar" class="config-input">
-                <option value="">— Choose —</option>
-                <option value="16:9 (Landscape)">16:9 (Landscape)</option>
-                <option value="9:16 (Portrait)">9:16 (Portrait)</option>
-                <option value="1:1 (Square)">1:1 (Square)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Q6: Cast / Model -->
-          <div class="config-item">
-            <button class="config-header" onclick="toggleConfigDropdown(this)">
-              <span class="config-label">6️⃣ CAST / MODEL</span>
-              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
-            </button>
-            <div class="config-body">
-              <p class="config-question">What type of cast or talent?</p>
+            <div class="config-field">
+              <label class="config-label">CAST / MODEL</label>
               <select id="input-cast" class="config-input">
                 <option value="">— Choose cast type —</option>
                 <option value="Relatable Person (Everyday)">Relatable Person (Everyday)</option>
@@ -842,6 +814,23 @@
                 <option value="Diverse / Mixed Cast">Diverse / Mixed Cast</option>
               </select>
             </div>
+          </div>
+
+          <!-- Full-width Buttons -->
+          <div class="config-buttons">
+            <button class="btn btn-primary" id="board-generate-btn" onclick="handleBoardGenerate()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span id="board-gen-label">Generate Storyboard</span>
+            </button>
+            <button class="btn btn-ghost" onclick="resetBoard()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2-8.83"></path>
+              </svg>
+              <span id="board-reset-label">Reset</span>
+            </button>
           </div>
         </div>
 
@@ -1708,6 +1697,20 @@ function isBoardConfigReady(){
   return hasImage && config ? config : null;
 }
 
+function handleBoardGenerate(){
+  const config = getBoardConfigAnswers();
+  if(!config){
+    toast(LANG==='ms'?'Sila isi semua 6 soalan':'Please fill all 6 questions');
+    return;
+  }
+  if(!S.board._productImgs){
+    toast(LANG==='ms'?'Sila muat naik gambar produk':'Please upload product image');
+    return;
+  }
+  S.board.answers = config;
+  autogenerateBoardStoryboard();
+}
+
 function askBoardQuestion(qi){
   S.board.qi=qi;
   const q=QUESTIONS[LANG][qi];
@@ -1721,7 +1724,7 @@ function sendBoard(){
   const ta=document.getElementById('board-input');
   const text=ta.value.trim();
   
-  // Check if user pressed enter with config ready (dropdown mode)
+  // Check if user pressed enter with config ready (grid mode)
   const configReady = isBoardConfigReady();
   if(configReady && S.board.productKnown){
     // Auto-generate storyboard
@@ -1731,7 +1734,7 @@ function sendBoard(){
     return;
   }
   
-  // Otherwise use normal chat flow
+  // Otherwise use normal chat flow (for backward compatibility)
   if(!text && attachments.board.length===0) return;
   submitBoard(text);
   ta.value=''; ta.style.height='auto';
@@ -1786,10 +1789,16 @@ async function submitBoard(text){
       const configContainer = document.getElementById('board-config');
       if(configContainer) configContainer.style.display='block';
       
+      // Update button labels based on language
+      const genLabel = document.getElementById('board-gen-label');
+      const resetLabel = document.getElementById('board-reset-label');
+      if(genLabel) genLabel.textContent = LANG==='ms' ? 'Jana Storyboard' : 'Generate Storyboard';
+      if(resetLabel) resetLabel.textContent = LANG==='ms' ? 'Set Semula' : 'Reset';
+      
       // Scroll to config
       setTimeout(()=>{
         configContainer?.scrollIntoView({behavior:'smooth',block:'nearest'});
-        // Auto-focus first dropdown
+        // Auto-focus first field
         document.getElementById('input-tema')?.focus();
       }, 300);
       return;
