@@ -1245,7 +1245,7 @@ function boardImagePrompt(){
   const style = a.style?.val||'cinematic realistic';
   const tema = a.tema?.val||'lifestyle';
   const cast = a.cast?.val||'product only';
-  const lang = a.bahasa?.k==='2'?'English':a.bahasa?.k==='3'?'mixed Malay+English':'Bahasa Melayu';
+  const lang = a.bahasa?.k==='2'?'English':a.bahasa?.k==='3'?'mixed Malay+English':a.bahasa?.k==='4'?'No Sound / ASMR Ambient':'Bahasa Melayu';
   const product = S.board.product || 'the user\'s product';
   const hasRef = !!S.board._productImgs || (a.cast?.k==='5' && attachments.board.length>0);
   return `You are an Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.
@@ -1263,6 +1263,21 @@ NARRATIVE STRUCTURE:
 - Resolution (panel ${panels} = HERO SHOT): Product hero moment, CTA, brand tagline
 
 DIALOG & ON-SCREEN TEXT (CRITICAL — must match video timing AND feel NATURAL):
+${lang==='No Sound / ASMR Ambient'?`
+ASMR / NO SOUND MODE:
+- NO DIALOG or voice-over. Silent video with rich ambient/ASMR sounds ONLY.
+- Each panel caption format: "[Scene X] [Timestamp] [Visual description]. ASMR Sounds: '[crisp, detailed sound description]'."
+- ASMR focus: texture, tactile details, close-ups, macro shots, slow pans, product interaction sounds
+- Sound descriptions MUST be hyper-specific and sensory-rich:
+  * "Crisp crinkle of unboxing paper, pause, soft rustle of tissue inside"
+  * "Delicate click as product lid opens, whisper-quiet, reveals contents"
+  * "Soft fingertips gliding over smooth glass surface, gentle tap of product against desk"
+  * "Slow brush stroke motion, barely audible whisper of bristles on texture"
+- No background music, just ambient/ASMR sounds and product interaction sounds
+- Pacing SLOWER and more meditative than regular videos — let sounds breathe
+- Visual cues: close-ups, macro shots, slow reveals, hands interacting with product, textures emphasized
+- ASMR is the entire narrative — visual + sound storytelling without words
+`:`
 - Each panel MUST have a specific dialog/VO line or instruction, calculated for the scene duration
 - Total duration = ${dur}. Panel count = ${panels}. Average per-panel = ${Math.round(parseInt(dur.match(/\d+/)[0])/panels*10)/10}s
 - Scene-by-scene timing breakdown: Calculate timestamp for each panel based on narrative pacing
@@ -1279,7 +1294,7 @@ DIALOG TONE & AUTHENTICITY (CRITICAL):
   * ${lang==='ms'?'"Honestly, susah la nak jumpa yang elok macam ni" bukan "Sulit mencari produk berkualiti seperti ini"':'Natural: "Honestly, its hard to find something like this" NOT "It is challenging to locate such quality"'}
   * ${lang==='ms'?'Honest surprise: "Wow, rasa dia macam..." bukan "Sensasi yang dihasilkan adalah..."':'Real reaction: "Wait, this actually..." NOT "The tactile sensation demonstrates..."'}
 - Each scene dialog should FLOW naturally from previous scene — conversation, not list of facts
-- Use rhetorical questions, pauses, genuine emotions: curiosity, surprise, satisfaction
+- Use rhetorical questions, pauses, genuine emotions: curiosity, surprise, satisfaction`}
 - Avoid: corporate language, marketing jargon, overly polished delivery
 
 DIALOG STRUCTURE:
@@ -1551,7 +1566,7 @@ const QUESTIONS = {
       ['10','Stop Motion — Animasi frame-by-frame, produk berkembang/bergerak. Unik, menarik perhatian, bercerita kreatif.'],
     ]},
     {slot:'bahasa',icon:'📝',title:'Soalan 3 dari 6 — Bahasa yang digunakan:',opts:[
-      ['1','Bahasa Melayu'],['2','English'],['3','Campur BM + English'],
+      ['1','Bahasa Melayu'],['2','English'],['3','Campur BM + English'],['4','Tiada Bunyi / Senyap (ASMR Ambient)'],
     ]},
     {slot:'durasi',icon:'⏱️',title:'Soalan 4 dari 6 — Berapa lama video?',opts:[
       ['1','10 saat — 6 panel (Pace cepat, ringkas)'],
@@ -1594,7 +1609,7 @@ const QUESTIONS = {
       ['10','Stop Motion — Frame-by-frame animation, product evolves/moves. Unique, attention-grabbing, creative storytelling.'],
     ]},
     {slot:'bahasa',icon:'📝',title:'Question 3 of 6 — Language used:',opts:[
-      ['1','Bahasa Melayu'],['2','English'],['3','Mixed BM + English'],
+      ['1','Bahasa Melayu'],['2','English'],['3','Mixed BM + English'],['4','No Sound / Silent (ASMR Ambient)'],
     ]},
     {slot:'durasi',icon:'⏱️',title:'Question 4 of 6 — Video length?',opts:[
       ['1','10s — 6 panels (Faster pacing, snappy)'],
