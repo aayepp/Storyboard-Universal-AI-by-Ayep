@@ -415,11 +415,12 @@
   
   /* hover tooltip */
   .summary-card .tooltip{
-    display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:var(--glass-panel);border:1px solid var(--glass-border);border-radius:9px;padding:10px 12px;
-    font-size:11px;color:var(--muted);line-height:1.5;width:300px;margin-top:8px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.3);backdrop-filter:var(--glass-blur);z-index:1000;
-    pointer-events:none;white-space:normal;min-height:auto;overflow:visible;text-overflow:clip;
+    display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:var(--glass-panel);border:1px solid var(--glass-border);border-radius:9px;padding:12px 14px;
+    font-size:12px;color:var(--muted);line-height:1.6;width:320px;margin-top:10px;
+    box-shadow:0 8px 16px rgba(0,0,0,0.4);backdrop-filter:var(--glass-blur);z-index:10000;
+    pointer-events:none;white-space:normal;min-height:auto;overflow:visible;text-overflow:clip;visibility:visible;opacity:1;
   }
+  .summary-card .row:hover .tooltip{display:block !important}
   .summary-card .tooltip:before{content:'';position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid var(--glass-panel)}
 
   .hint{font-size:12.5px;color:var(--muted);line-height:1.6}
@@ -1110,10 +1111,10 @@ function renderPicks(tab, picks){
   const wrap=document.createElement('div'); wrap.className='picks';
   picks.forEach(p=>{
     const btn=document.createElement('button'); btn.className='pick';
-    // Extract short name (before " — ") for button display
+    // Show FULL label in button, short name extracted for display
     const shortLabel = p.label.includes(' — ') ? p.label.split(' — ')[0] : p.label;
-    btn.innerHTML=`<span class="k">${p.k}</span>${shortLabel}`;
-    btn.title=p.label; // full text in tooltip
+    btn.innerHTML=`<span class="k">${p.k}</span>${p.label}`; // FULL label visible
+    btn.title=p.label;
     btn.onclick=()=>{ tab==='sheet'?submitSheet(p.k):submitBoard(p.k) };
     wrap.appendChild(btn);
   });
@@ -1621,15 +1622,24 @@ function updateSummary(slot, k, val){
   if(row){
     const valEl = row.querySelector('.val');
     const tooltipEl = row.querySelector('.tooltip');
+    if(!valEl || !tooltipEl) {
+      console.error(`[${slot}] Missing elements:`, {val: !!valEl, tooltip: !!tooltipEl});
+      return;
+    }
     // split by em-dash
     const parts = val.split(' — ');
     const shortName = parts[0] || val;
-    const fullDesc = parts[1] || parts[0] || val; // fallback to full val if no description
+    const fullDesc = parts[1] || parts[0] || val; // full description
     
+    // SUMMARY PANEL: show SHORT NAME ONLY in val
     valEl.textContent = k+'. '+shortName;
     valEl.classList.remove('empty');
-    tooltipEl.textContent = fullDesc; // set tooltip text directly
-    console.log(`[${slot}] tooltip set to:`, fullDesc); // DEBUG
+    
+    // TOOLTIP on hover: show FULL DETAILS
+    tooltipEl.textContent = fullDesc;
+    console.log(`[${slot}] summary set:`, {short: shortName, desc: fullDesc.slice(0,50)+'...'});
+  } else {
+    console.error(`[${slot}] Row not found`);
   }
 }
 function bootBoard(){
