@@ -1262,7 +1262,7 @@ NARRATIVE STRUCTURE:
 - Climax (panels 9-11): Transformation moment, social proof, lifestyle elevation
 - Resolution (panel ${panels} = HERO SHOT): Product hero moment, CTA, brand tagline
 
-DIALOG & ON-SCREEN TEXT (CRITICAL — must match video timing):
+DIALOG & ON-SCREEN TEXT (CRITICAL — must match video timing AND feel NATURAL):
 - Each panel MUST have a specific dialog/VO line or instruction, calculated for the scene duration
 - Total duration = ${dur}. Panel count = ${panels}. Average per-panel = ${Math.round(parseInt(dur.match(/\d+/)[0])/panels*10)/10}s
 - Scene-by-scene timing breakdown: Calculate timestamp for each panel based on narrative pacing
@@ -1270,14 +1270,30 @@ DIALOG & ON-SCREEN TEXT (CRITICAL — must match video timing):
   * Panels 3-${Math.max(panels-2, 5)} (Build): natural pacing, each ~${Math.round(parseInt(dur.match(/\d+/)[0])/panels*100)/100}s (show benefit progression)
   * Panel ${panels-1} (Climax): ~${Math.round(parseInt(dur.match(/\d+/)[0])*0.15*100)/100}s (transformation/social proof)
   * Panel ${panels} (HERO SHOT): minimum 2-3 seconds RESERVED STRICTLY (product showcase + CTA + brand tagline — DO NOT RUSH)
+
+DIALOG TONE & AUTHENTICITY (CRITICAL):
+- Dialog MUST sound like real humans talking casually, NOT scripted or robotic
+- Use conversational ${lang} with natural fillers: "kinda", "like", "you know", "honestly", "wait", "hmm"
+- Examples (for ${lang==='ms'?'Bahasa Melayu':'English'}):
+  * ${lang==='ms'?'Santai: "Eh, tunggu, ni benda ni memang okay eh..." Bukan: "Produk ini mempunyai kualiti yang luar biasa"':'Casual: "Okay, so like, this thing actually works..." NOT: "This product demonstrates exceptional quality"'}
+  * ${lang==='ms'?'"Honestly, susah la nak jumpa yang elok macam ni" bukan "Sulit mencari produk berkualiti seperti ini"':'Natural: "Honestly, its hard to find something like this" NOT "It is challenging to locate such quality"'}
+  * ${lang==='ms'?'Honest surprise: "Wow, rasa dia macam..." bukan "Sensasi yang dihasilkan adalah..."':'Real reaction: "Wait, this actually..." NOT "The tactile sensation demonstrates..."'}
+- Each scene dialog should FLOW naturally from previous scene — conversation, not list of facts
+- Use rhetorical questions, pauses, genuine emotions: curiosity, surprise, satisfaction
+- Avoid: corporate language, marketing jargon, overly polished delivery
+
+DIALOG STRUCTURE:
 - Each panel caption format: "[Scene X] [Timestamp] [Visual description]. Dialog/VO: '[exact line in ${lang}]'. Audio: [SFX/music cue]."
 - Dialog must be SHORT per panel but COMPLETE across all panels — no incomplete sentences in hero shot
-- Example for 20s/12 panels (~1.67s per panel): Scene 1 (0:00-0:02): Setup shot, VO: "Ever wished your laptop was..." Scene 12 (Hero, 0:17-0:20): Product centered, VO: "ASUS ZenBook 14. Shop now."
+- Example for 20s/12 panels (~1.67s per panel): 
+  * Scene 1 (0:00-0:02): Setup shot, VO: "Eh, ada problem ke tu?" (casual question, hook)
+  * Scene 5 (0:07-0:09): Product in hand, VO: "Wah, ni memang okaylah..." (natural reaction)
+  * Scene 12 (Hero, 0:17-0:20): Product centered, VO: "This one. Get it." (simple, confident close)
 - **HERO SHOT RULE (FINAL PANEL):** Reserve the last ${Math.max(2, Math.round(parseInt(dur.match(/\d+/)[0])*0.15))}+ seconds EXCLUSIVELY for the hero shot. Panel ${panels} must be simple, clear, prominent. Do NOT use it to finish a sentence from panel ${panels-1}. Complete all narrative by panel ${panels-1}.
 - Include natural dialog ${lang} where appropriate (spoken moments, testimonials, questions, CTAs)
 - Each panel caption must be DESCRIPTIVE + ACTIONABLE for video AI (describe camera movement, sound/ASMR cue, actor emotion, product highlight)
-- Example caption: "Wide shot of girl unboxing. ASMR: crisp paper sound. Says: 'Wow, this quality!' Camera pulls back to show product on desk."
-- Dialogue must feel authentic, not salesy. Natural conversation, relatable problems, genuine benefit discovery.
+- Example caption: "Wide shot of girl unboxing. ASMR: crisp paper sound. She laughs, says: 'Eh, quality ni okay la!'. Camera pulls back to show product on desk, sunlight glinting."
+- Dialogue must feel AUTHENTIC, not salesy. Natural conversation, relatable problems, genuine benefit discovery. Sound like friends talking, not sales pitch.
 
 TECHNICAL FOR VIDEO:
 - Each panel: clear scene number, timestamp (calculated from ${dur} total), visual description with camera direction
