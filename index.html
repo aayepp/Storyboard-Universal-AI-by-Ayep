@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Universal Gen by Ayep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16140f;
+    --ink-soft:#3a352c;
+    --paper:#f6f4ef;
+    --paper-2:#efece4;
+    --panel:#fffefb;
+    --line:#e6e1d6;
+    --line-strong:#d4cdbd;
+    --gold:#b89968;
+    --gold-deep:#9a7e52;
+    --gold-soft:#f0e9dc;
+    --accent:#b89968;
+    --accent-soft:#f0e9dc;
+    --accent-ink:#7d6334;
+    --muted:#857d6e;
+    --muted-2:#a9a193;
+    --good:#5b7a52;
+    --good-soft:#eaf0e5;
+    --danger:#a8533f;
+    --sheen:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,0) 38%);
+    --shadow-sm:0 1px 2px rgba(22,20,15,.04), 0 1px 0 rgba(255,255,255,.6) inset;
+    --shadow:0 1px 0 rgba(255,255,255,.7) inset, 0 2px 4px rgba(22,20,15,.04), 0 16px 40px -18px rgba(22,20,15,.18);
+    --shadow-lg:0 1px 0 rgba(255,255,255,.8) inset, 0 30px 70px -30px rgba(22,20,15,.4);
+    --radius:18px;
+    --radius-sm:12px;
+    --glass-bar:rgba(250,251,253,.8);
+    --glass-panel:rgba(250,251,253,.75);
+    --glass-border:rgba(43,159,217,.3);
+    --glass-blur:saturate(220%) blur(32px);
+    --glass-inset:0 1px 0 rgba(255,255,255,.85) inset, 0 -1px 0 rgba(0,0,0,.05) inset;
+  }
+  [data-theme="dark"]{
+    --ink:#f4efe4;
+    --ink-soft:#cfc7b6;
+    --paper:#0e0d0b;
+    --paper-2:#16140f;
+    --panel:#1a1813;
+    --line:#2c2820;
+    --line-strong:#3a352a;
+    --gold:#d6b878;
+    --gold-deep:#c2a05f;
+    --gold-soft:#2a2419;
+    --accent:#d6b878;
+    --accent-soft:#2a2419;
+    --accent-ink:#e3c789;
+    --muted:#938b7a;
+    --muted-2:#6f685a;
+    --good:#7da06f;
+    --good-soft:#1e2419;
+    --danger:#cc6b54;
+    --sheen:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0) 38%);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.03) inset;
+    --shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 2px 6px rgba(0,0,0,.4), 0 18px 44px -18px rgba(0,0,0,.7);
+    --shadow-lg:0 1px 0 rgba(255,255,255,.05) inset, 0 30px 80px -28px rgba(0,0,0,.85);
+    --glass-bar:rgba(20,18,14,.75);
+    --glass-panel:rgba(20,18,14,.7);
+    --glass-border:rgba(214,184,120,.22);
+    --glass-blur:saturate(220%) blur(32px);
+    --glass-inset:0 1px 0 rgba(255,255,255,.1) inset, 0 -1px 0 rgba(0,0,0,.45) inset;
+  }
+  [data-color-theme="ocean"]{
+    --ink:#0f1419;
+    --ink-soft:#2a3441;
+    --paper:#f0f4f9;
+    --paper-2:#e8ecf2;
+    --panel:#fafbfd;
+    --line:#dce4ec;
+    --line-strong:#c5d0dd;
+    --gold:#2b9fd9;
+    --gold-deep:#1a7fb8;
+    --gold-soft:#d4ecf7;
+    --accent:#2b9fd9;
+    --accent-soft:#d4ecf7;
+    --accent-ink:#0d5a8a;
+    --muted:#5a6b7d;
+    --muted-2:#7d8fa1;
+    --good:#3ba574;
+    --good-soft:#e0f2ed;
+    --glass-bar:rgba(240,244,249,.72);
+    --glass-panel:rgba(250,251,253,.68);
+    --glass-border:rgba(43,159,217,.25);
+    --glass-blur:saturate(200%) backdrop-filter blur(28px);
+  }
+  [data-color-theme="ocean"][data-theme="dark"]{
+    --ink:#eceff5;
+    --ink-soft:#b8c9dc;
+    --paper:#0a0f17;
+    --paper-2:#111820;
+    --panel:#14192a;
+    --line:#2a3545;
+    --line-strong:#3d4a5f;
+    --gold:#3db8f5;
+    --gold-deep:#2894d4;
+    --gold-soft:#1e3d56;
+    --accent:#3db8f5;
+    --accent-soft:#1e3d56;
+    --accent-ink:#7dc7ff;
+    --muted:#7d8fa1;
+    --muted-2:#5a6b7d;
+    --glass-bar:rgba(20,26,45,.75);
+    --glass-panel:rgba(20,26,45,.7);
+    --glass-border:rgba(61,184,245,.3);
+    --glass-blur:saturate(220%) blur(32px);
+    --glass-inset:0 1px 0 rgba(255,255,255,.1) inset, 0 -1px 0 rgba(0,0,0,.45) inset;
+  }
+  :root{
+  [data-theme="dark"] body{
+    background-image:
+      radial-gradient(1200px 520px at 85% -10%, rgba(214,184,120,.10), transparent 60%),
+      radial-gradient(900px 520px at -5% 0%, rgba(214,184,120,.05), transparent 55%);
+  }
+  [data-theme="dark"] .clap{background:linear-gradient(160deg,#2a261d,#0b0a08)}
+  [data-theme="dark"] .clap:before{opacity:1}
+  [data-theme="dark"] .msg.ai .avatar,
+  [data-theme="dark"] .send,
+  [data-theme="dark"] .img-btn.primary,
+  [data-theme="dark"] .copybox-btn,
+  [data-theme="dark"] .btn-primary,
+  [data-theme="dark"] .tab.on .num,
+  [data-theme="dark"] .step-list li.active .s-num{
+    background:linear-gradient(160deg,#322c20,#13110c);
+  }
+  [data-theme="dark"] .lang-toggle button.on{background:var(--gold);color:#15120c}
+  [data-theme="dark"] .bubble{border-color:var(--line)}
+  [data-theme="dark"] .composer textarea,
+  [data-theme="dark"] .modal-body input{background:#13110c}
+  [data-theme="dark"] .composer textarea:focus,
+  [data-theme="dark"] .modal-body input:focus{background:#16140f}
+  [data-theme="dark"] .pick,
+  [data-theme="dark"] .img-btn,
+  [data-theme="dark"] .chip,
+  [data-theme="dark"] .composer textarea{color:var(--ink)}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:15px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1200px 500px at 85% -10%, rgba(184,153,104,.10), transparent 60%),
+      radial-gradient(900px 500px at -5% 0%, rgba(184,153,104,.06), transparent 55%);
+    background-attachment:fixed;
+  }
+  .mono{font-family:'JetBrains Mono',monospace}
+  .display{font-family:'Fraunces',serif}
+
+  /* ===== Top bar ===== */
+  header.topbar{
+    position:sticky;top:0;z-index:40;
+    background:var(--glass-bar);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    border-bottom:1px solid var(--glass-border);
+    box-shadow:var(--glass-inset);
+  }
+  .topbar-inner{
+    max-width:1120px;margin:0 auto;padding:16px 22px;
+    display:flex;align-items:center;gap:18px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;min-width:0}
+  .clap{
+    width:44px;height:44px;border-radius:12px;flex:none;
+    background:linear-gradient(160deg,#26221a,#100e0a);position:relative;overflow:hidden;
+    box-shadow:var(--shadow), 0 0 0 1px rgba(184,153,104,.25);
+  }
+  .clap:before{
+    content:"";position:absolute;top:0;left:0;right:0;height:15px;
+    background:repeating-linear-gradient(118deg,var(--gold) 0 8px,#100e0a 8px 16px);
+    opacity:.92;
+  }
+  .clap:after{
+    content:"";position:absolute;inset:15px 8px 9px 8px;border-radius:3px;
+    background:linear-gradient(135deg,rgba(184,153,104,.22),transparent);
+  }
+  .brand h1{
+    font-family:'Fraunces';font-size:21px;font-weight:600;margin:0;
+    letter-spacing:-.015em;white-space:nowrap;line-height:1.1;
+    background:linear-gradient(100deg, var(--ink) 0%, var(--ink) 38%, var(--gold-deep) 78%, var(--gold) 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  }
+  .brand h1 em{
+    font-style:italic;font-weight:500;
+    -webkit-text-fill-color:var(--gold-deep);color:var(--gold-deep);
+  }
+  [data-theme="dark"] .brand h1{
+    background:linear-gradient(100deg, #f4efe4 0%, #f4efe4 34%, var(--gold) 74%, #ecd49a 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  [data-theme="dark"] .brand h1 em{-webkit-text-fill-color:var(--gold);color:var(--gold)}
+  .brand span{display:block;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
+  .spacer{flex:1}
+  .lang-toggle{
+    display:flex;border:1px solid var(--glass-border);border-radius:999px;overflow:hidden;
+    font-size:12px;font-weight:600;background:var(--glass-panel);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    box-shadow:var(--shadow-sm), var(--glass-inset);
+  }
+  .lang-toggle button{
+    border:0;background:transparent;padding:7px 15px;cursor:pointer;color:var(--muted);
+    font-family:'Inter';font-weight:600;transition:.18s;letter-spacing:.02em;
+  }
+  .lang-toggle button.on{background:var(--ink);color:var(--gold-soft)}
+  .key-btn{
+    border:1px solid var(--glass-border);background:var(--glass-panel);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:600;cursor:pointer;
+    display:flex;align-items:center;gap:8px;color:var(--ink);box-shadow:var(--shadow-sm), var(--glass-inset);transition:.18s;
+  }
+  .key-btn:hover{border-color:var(--gold)}
+  .key-btn .dot{width:8px;height:8px;border-radius:50%;background:var(--danger);box-shadow:0 0 0 3px rgba(168,83,63,.14)}
+  .theme-btn{
+    border:1px solid var(--glass-border);background:var(--glass-panel);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border-radius:999px;
+    width:38px;height:38px;display:grid;place-items:center;cursor:pointer;color:var(--ink);
+    box-shadow:var(--shadow-sm), var(--glass-inset);transition:.18s;flex:none;
+  }
+  .theme-btn:hover{border-color:var(--gold);color:var(--gold-deep)}
+  .color-btn{
+    border:1px solid var(--glass-border);background:var(--glass-panel);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    border-radius:999px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer;
+    box-shadow:var(--shadow-sm), var(--glass-inset);transition:.18s;flex:none;position:relative;
+  }
+  .color-btn:hover{border-color:var(--gold);transform:translateY(-1px);box-shadow:var(--shadow)}
+  .color-dot{
+    width:16px;height:16px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px rgba(0,0,0,.15);
+    display:block;transition:.18s;
+  }
+  .color-btn:hover .color-dot{box-shadow:0 0 12px var(--gold),inset 0 0 4px rgba(255,255,255,.3)}
+  .theme-btn .ic-moon{display:none}
+  .theme-btn .ic-sun{display:block}
+  [data-theme="dark"] .theme-btn .ic-sun{display:none}
+  [data-theme="dark"] .theme-btn .ic-moon{display:block}
+  .key-btn.ok .dot{background:var(--good);box-shadow:0 0 0 3px rgba(91,122,82,.16)}
+
+  /* ===== Tabs ===== */
+  .tabs{max-width:1120px;margin:0 auto;padding:0 22px;display:flex;gap:6px}
+  .tab{
+    border:0;background:transparent;cursor:pointer;
+    padding:16px 22px 14px;font-family:'Fraunces';font-weight:600;font-size:15.5px;
+    color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;
+    display:flex;align-items:center;gap:11px;letter-spacing:-.01em;transition:.18s;
+  }
+  .tab:hover{color:var(--ink-soft);transform:translateY(-1px)}
+  .tab .num{
+    font-family:'JetBrains Mono';font-size:11px;width:24px;height:24px;border-radius:7px;
+    background:var(--paper-2);color:var(--muted);display:grid;place-items:center;font-weight:500;
+    border:1px solid var(--line);transition:.18s;
+  }
+  .tab.on{color:var(--ink);border-bottom-color:var(--gold)}
+  .tab.on .num{background:linear-gradient(160deg,#26221a,#100e0a);color:var(--gold);border-color:transparent}
+
+  /* ===== Layout ===== */
+  main{max-width:1120px;margin:0 auto;padding:28px 22px 90px}
+  .stage{display:grid;grid-template-columns:1fr;gap:24px}
+  @media(min-width:900px){.stage{grid-template-columns:minmax(0,1fr) 366px}}
+
+  .panel{
+    background:var(--glass-panel);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    border:1px solid var(--glass-border);border-radius:var(--radius);
+    box-shadow:var(--shadow), var(--glass-inset);overflow:hidden;position:relative;
+    animation:scale-pop .4s cubic-bezier(.2,.8,.2,1);
+  }
+  .panel:before{
+    content:"";position:absolute;inset:0 0 auto 0;height:120px;background:var(--sheen);
+    pointer-events:none;opacity:.7;
+  }
+  .panel-head{
+    padding:17px 20px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:11px;position:relative;
+  }
+  .panel-head .eyebrow{
+    font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold-deep);font-weight:500;
+  }
+  .panel-head h2{font-family:'Fraunces';font-size:17px;margin:0;font-weight:600;letter-spacing:-.01em}
+
+  /* ===== Chat / flow area ===== */
+  .flow{padding:0;display:flex;flex-direction:column;min-height:440px}
+  .msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;max-height:64vh}
+  .msg{display:flex;gap:12px;align-items:flex-start;animation:rise .4s cubic-bezier(.15,.8,.2,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .avatar{
+    width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;
+    font-size:16px;font-weight:600;
+  }
+  .msg.ai .avatar{background:linear-gradient(160deg,var(--gold-deep),var(--gold));color:#fff;box-shadow:0 0 0 1px rgba(184,153,104,.25)}
+  .msg.ai .avatar:before{content:"✨";display:inline-block}
+  .msg:has(.thinking) .avatar:before{animation:pulse 1s ease-in-out infinite}
+  @keyframes pulse{0%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.15)}100%{opacity:1;transform:scale(1)}}
+  .msg.user .avatar{background:linear-gradient(160deg,var(--gold),var(--gold-deep));color:#fff}
+  .msg.user .avatar:before{content:"👤"}
+  .bubble{
+    border-radius:13px;padding:13px 16px;font-size:14px;max-width:100%;
+    border:1px solid var(--line);background:var(--panel);color:var(--ink);white-space:pre-wrap;word-break:break-word;
+    box-shadow:var(--shadow-sm);line-height:1.6;
+  }
+  .msg.user{flex-direction:row-reverse}
+  .msg.user .bubble{background:var(--gold-soft);border-color:#e4d8bf}
+  .bubble img{max-width:100%;border-radius:10px;border:1px solid var(--line);margin-top:8px;box-shadow:var(--shadow)}
+  .bubble .gen-img{margin-top:4px}
+  .bubble strong{font-weight:600;color:var(--ink)}
+  .bubble table{border-collapse:collapse;width:100%;font-size:11.5px;margin-top:10px;border-radius:8px;overflow:hidden}
+  .bubble th,.bubble td{border:1px solid var(--line-strong);padding:5px 7px;text-align:left;vertical-align:top}
+  .bubble th{background:var(--ink);color:var(--gold-soft);font-weight:600;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.03em}
+  .bubble .hero-row{background:var(--gold-soft)}
+
+  .thinking{
+    display:flex;gap:6px;padding:6px 5px;align-items:center;
+    background:linear-gradient(90deg,rgba(184,153,104,.12),rgba(184,153,104,.05),rgba(184,153,104,.12));
+    border-radius:7px;width:fit-content;background-size:200% 100%;animation:shimmer 2s infinite;
+  }
+  .thinking span{
+    width:7px;height:7px;border-radius:50%;background:var(--gold);animation:bounce 1.2s infinite;
+    box-shadow:0 0 5px rgba(184,153,104,.5);
+  }
+  .thinking span:nth-child(2){animation-delay:.15s}
+  .thinking span:nth-child(3){animation-delay:.3s}
+  @keyframes pulse-glow{0%{box-shadow:0 0 0 0 rgba(184,153,104,.6)}70%{box-shadow:0 0 0 10px rgba(184,153,104,0)}100%{box-shadow:0 0 0 0 rgba(184,153,104,0)}}
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  @keyframes slide-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fade-in{from{opacity:0}to{opacity:1}}
+  @keyframes scale-pop{0%{transform:scale(.85);opacity:0}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+  @keyframes shimmer{0%{background-position:-1000px 0}100%{background-position:1000px 0}}
+
+  /* ===== Composer ===== */
+  .composer{border-top:1px solid var(--glass-border);padding:15px;background:transparent;position:relative}
+  .attach-row{display:flex;gap:9px;margin-bottom:10px;flex-wrap:wrap}
+  .chip{
+    font-size:12px;border:1px solid var(--glass-border);border-radius:999px;
+    padding:6px 13px;background:var(--glass-panel);cursor:pointer;color:var(--ink);font-weight:500;
+    display:flex;align-items:center;gap:7px;transition:.16s;box-shadow:var(--shadow-sm),var(--glass-inset);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  }
+  .chip:hover{border-color:var(--gold);color:var(--accent-ink);transform:translateY(-2px)}
+  .chip.preview{padding:4px 5px 4px 10px}
+  .chip.preview img{width:28px;height:28px;border-radius:6px;object-fit:cover}
+  .chip .x{font-weight:700;color:var(--muted);padding:0 4px}
+  .composer-input{display:flex;gap:10px;align-items:flex-end}
+  .composer textarea{
+    flex:1;border:1px solid var(--glass-border);border-radius:12px;padding:12px 14px;
+    font-family:'Inter';font-size:14px;resize:none;outline:none;background:var(--glass-panel);color:var(--ink);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    max-height:130px;line-height:1.5;transition:.16s;box-shadow:var(--shadow-sm),var(--glass-inset);
+  }
+  .composer textarea::placeholder{color:var(--muted)}
+  .composer textarea:focus{border-color:var(--gold);box-shadow:var(--glass-inset),0 0 0 4px rgba(184,153,104,.15)}
+  .send{
+    border:0;background:linear-gradient(160deg, var(--gold-deep), var(--gold-deep));color:#fff;border-radius:12px;
+    width:46px;height:46px;flex:none;cursor:pointer;display:grid;place-items:center;
+    transition:.2s;box-shadow:var(--shadow);opacity:.85;
+  }
+  .send:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);animation:pulse-glow .6s infinite;opacity:1}
+  .send:active{transform:translateY(0)}
+
+  /* quick-pick buttons */
+  .picks{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .pick{
+    border:1px solid var(--glass-border);background:var(--glass-panel);border-radius:10px;
+    padding:8px 13px;font-size:13px;cursor:pointer;font-weight:500;color:var(--ink);
+    transition:.16s;font-family:'Inter';box-shadow:var(--shadow-sm),var(--glass-inset);
+    animation:slide-up .3s ease-out backwards;
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  }
+  .pick:nth-child(1){animation-delay:.05s}
+  .pick:nth-child(2){animation-delay:.1s}
+  .pick:nth-child(3){animation-delay:.15s}
+  .pick:nth-child(4){animation-delay:.2s}
+  .pick:nth-child(5){animation-delay:.25s}
+  .pick:nth-child(6){animation-delay:.3s}
+  .pick:hover{border-color:var(--gold);background:var(--gold-soft);color:var(--accent-ink);transform:translateY(-3px);box-shadow:var(--shadow)}
+  .pick .k{font-family:'JetBrains Mono';font-size:11px;color:var(--gold-deep);margin-right:7px;font-weight:600}
+
+  /* ===== Side rail ===== */
+  .rail{display:flex;flex-direction:column;gap:20px}
+  .rail .panel-head{padding:15px 17px}
+  .rail-body{padding:17px}
+  .step-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+  .step-list li{
+    display:flex;gap:12px;align-items:center;padding:9px 8px;border-radius:9px;font-size:13px;
+    color:var(--muted);transition:.18s;
+  }
+  .step-list li .s-num{
+    font-family:'JetBrains Mono';font-size:11px;width:24px;height:24px;border-radius:7px;flex:none;
+    background:var(--paper-2);color:var(--muted);display:grid;place-items:center;font-weight:500;
+    border:1px solid var(--line);transition:.18s;
+  }
+  .step-list li.active{color:var(--ink);background:var(--gold-soft);font-weight:600}
+  .step-list li.active .s-num{background:linear-gradient(160deg,var(--gold),var(--gold-deep));color:#fff;border-color:transparent}
+  .step-list li.done{color:var(--ink-soft)}
+  .step-list li.done .s-num{background:var(--good);color:#fff;border-color:transparent}
+
+  .summary-card{font-size:13px}
+  .summary-card .row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .summary-card .row:last-child{border-bottom:0}
+  .summary-card .lbl{color:var(--muted);display:flex;align-items:center;gap:7px}
+  .summary-card .val{font-weight:600;text-align:right}
+  .summary-card .val.empty{color:var(--muted-2);font-weight:400;font-style:italic}
+
+  .hint{font-size:12.5px;color:var(--muted);line-height:1.6}
+  .howto-list{margin:0;padding:0;list-style:none;counter-reset:ht;display:flex;flex-direction:column;gap:9px}
+  .howto-list li{
+    position:relative;padding-left:32px;font-size:12.5px;color:var(--ink-soft);line-height:1.5;counter-increment:ht;
+  }
+  .howto-list li:before{
+    content:counter(ht);position:absolute;left:0;top:0;width:21px;height:21px;border-radius:6px;
+    background:var(--gold-soft);color:var(--gold-deep);font-family:'JetBrains Mono';font-size:11px;font-weight:600;
+    display:grid;place-items:center;border:1px solid var(--glass-border);
+  }
+  .hint b{color:var(--ink)}
+
+  .reset-link{
+    background:transparent;border:0;color:var(--muted);font-size:12.5px;cursor:pointer;
+    text-decoration:underline;text-underline-offset:3px;font-family:'Inter';padding:0;transition:.16s;
+  }
+  .reset-link:hover{color:var(--accent-ink)}
+
+  /* ===== image action buttons ===== */
+  .img-actions{display:flex;gap:9px;margin-top:11px}
+  .img-btn{
+    display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);
+    background:#fff;border-radius:9px;padding:8px 14px;font-size:12.5px;font-weight:600;
+    cursor:pointer;color:var(--ink);font-family:'Inter';transition:.16s;box-shadow:var(--shadow-sm);
+  }
+  .img-btn:hover{border-color:var(--gold);color:var(--accent-ink);transform:translateY(-2px);box-shadow:var(--shadow)}
+  .img-btn.primary{background:linear-gradient(160deg,#26221a,#100e0a);color:var(--gold);border-color:transparent}
+  .img-btn.primary:hover{box-shadow:var(--shadow);color:var(--gold-soft);animation:pulse-glow .6s infinite}
+  .img-btn svg{flex:none}
+
+  /* ===== copyable code box ===== */
+  .copybox{
+    margin-top:11px;border:1px solid var(--line-strong);border-radius:12px;overflow:hidden;
+    background:#fcfbf7;box-shadow:var(--shadow-sm);
+  }
+  .copybox-text{
+    padding:13px 15px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.65;
+    color:var(--ink-soft);white-space:pre-wrap;word-break:break-word;border-bottom:1px solid var(--glass-border);
+    background:var(--glass-panel);max-height:340px;overflow:auto;
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  }
+  .copybox-btn{
+    width:100%;border:0;background:linear-gradient(160deg,#26221a,#100e0a);color:var(--gold);padding:11px;cursor:pointer;
+    font-family:'Inter';font-weight:600;font-size:13px;display:flex;align-items:center;
+    justify-content:center;gap:8px;transition:.18s;
+  }
+  .copybox-btn:hover{color:var(--gold-soft)}
+  .ai-tool-link{
+    display:inline-block;padding:5px 11px;border:1px solid var(--glass-border);border-radius:7px;
+    font-size:11px;font-weight:600;color:var(--ink);background:var(--glass-panel);text-decoration:none;
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);transition:.16s;
+  }
+  .ai-tool-link:hover{border-color:var(--gold);color:var(--gold-deep);transform:translateY(-1px)}
+
+  /* ===== Modal ===== */
+  .modal-bg{
+    position:fixed;inset:0;background:rgba(22,20,15,.5);backdrop-filter:blur(5px);
+    z-index:100;display:none;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-bg.show{display:flex;animation:rise .25s ease}
+  .modal{
+    background:var(--glass-panel);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    border-radius:20px;max-width:450px;width:100%;
+    box-shadow:var(--shadow-lg), var(--glass-inset);overflow:hidden;border:1px solid var(--glass-border);position:relative;
+  }
+  .modal:before{content:"";position:absolute;inset:0 0 auto 0;height:90px;background:var(--sheen);pointer-events:none}
+  .modal-head{padding:24px 24px 0;position:relative}
+  .modal-head h3{font-family:'Fraunces';margin:0 0 6px;font-size:20px;font-weight:600}
+  .modal-head p{margin:0;color:var(--muted);font-size:13.5px}
+  .modal-body{padding:20px 24px 24px}
+  .modal-body label{font-size:12px;font-weight:600;display:block;margin-bottom:8px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+  .modal-body input{
+    width:100%;border:1px solid var(--line-strong);border-radius:11px;padding:12px 14px;
+    font-family:'JetBrains Mono';font-size:13px;outline:none;transition:.16s;
+  }
+  .modal-body input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,153,104,.1)}
+  .modal-body .help{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
+  .modal-body .help a{color:var(--accent-ink)}
+  .modal-actions{display:flex;gap:10px;margin-top:18px}
+  .btn{
+    border:0;border-radius:11px;padding:12px 17px;font-weight:600;font-size:13.5px;cursor:pointer;
+    font-family:'Inter';flex:1;transition:.18s;
+  }
+  .btn-primary{background:linear-gradient(160deg,#26221a,#100e0a);color:var(--gold)}
+  .btn-primary:hover{box-shadow:var(--shadow);color:var(--gold-soft)}
+  .btn-ghost{background:transparent;border:1px solid var(--line-strong);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--gold)}
+
+  /* ===== Lightbox ===== */
+  .lightbox{
+    position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;
+    background:rgba(16,14,10,.9);backdrop-filter:blur(6px);padding:24px;flex-direction:column;gap:18px;
+  }
+  .lightbox.show{display:flex;animation:rise .22s ease}
+  .lightbox img{max-width:92vw;max-height:80vh;border-radius:12px;box-shadow:0 30px 90px rgba(0,0,0,.6);background:#fff}
+  .lightbox-bar{display:flex;gap:11px}
+  .lightbox-bar button{
+    border:0;border-radius:11px;padding:12px 22px;font-weight:600;font-size:14px;cursor:pointer;
+    font-family:'Inter';display:inline-flex;align-items:center;gap:8px;transition:.18s;
+  }
+  .lb-dl{background:linear-gradient(160deg,var(--gold-deep),var(--gold));color:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.2),var(--shadow-sm)}
+  .lb-dl:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(0,0,0,.2),var(--shadow);animation:pulse-glow .6s infinite}
+  .lb-close{background:rgba(255,255,255,.12);color:#fff;backdrop-filter:blur(4px)}
+  .lb-close:hover{background:rgba(255,255,255,.2)}
+
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:var(--gold-soft);padding:12px 20px;border-radius:12px;font-size:13.5px;
+    z-index:120;opacity:0;transition:.28s;font-weight:500;box-shadow:var(--shadow-lg);
+    border:1px solid rgba(184,153,104,.25);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .view{display:none}
+  .view.on{display:block;animation:rise .35s ease}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:99px;border:3px solid var(--paper)}
+  ::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+
+  /* ===== Footer ===== */
+  .site-footer{
+    margin-top:20px;border-top:1px solid var(--glass-border);
+    background:var(--glass-bar);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    box-shadow:var(--glass-inset);
+  }
+  .footer-inner{max-width:1120px;margin:0 auto;padding:34px 22px 40px}
+  .footer-top{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .footer-brand{display:flex;align-items:center;gap:13px}
+  .footer-clap{
+    width:40px;height:40px;border-radius:11px;flex:none;
+    background:linear-gradient(160deg,#26221a,#100e0a);position:relative;overflow:hidden;
+    box-shadow:var(--shadow), 0 0 0 1px rgba(184,153,104,.25);
+  }
+  .footer-clap:before{
+    content:"";position:absolute;top:0;left:0;right:0;height:14px;
+    background:repeating-linear-gradient(118deg,var(--gold) 0 7px,#100e0a 7px 14px);opacity:.92;
+  }
+  .footer-title{font-family:'Fraunces';font-size:18px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+  .footer-by{font-size:12.5px;color:var(--muted);margin-top:1px}
+  .footer-by em{font-style:italic;color:var(--gold-deep);font-weight:500}
+  .footer-stats{display:flex;align-items:center;gap:20px}
+  .fstat{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .fnum{font-family:'Fraunces';font-size:24px;font-weight:600;color:var(--gold-deep);line-height:1}
+  .flabel{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .fdiv{width:1px;height:30px;background:var(--glass-border)}
+  .footer-note{
+    margin:24px 0 0;font-size:12.5px;line-height:1.7;color:var(--muted);max-width:680px;
+  }
+  .footer-bottom{
+    margin-top:22px;padding-top:18px;border-top:1px solid var(--glass-border);
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-size:12px;color:var(--muted);
+  }
+  .footer-credit strong{color:var(--ink);font-weight:600}
+  .footer-credit em{font-style:italic;color:var(--gold-deep)}
+  .footer-made{color:var(--muted-2)}
+  @media(max-width:560px){
+    .footer-stats{gap:14px}
+    .fnum{font-size:20px}
+    .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+  }
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="clap"></div>
+      <div>
+        <h1 class="display">Smart Universal Gen</h1>
+        <span class="footer-by" style="display:block;margin-top:6px">crafted <em>by Ayep</em></span>
+        <span data-i="tagline">AI Creative Director — Reference sheets & storyboards for affiliate video</span>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+      <svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M22 12h-2.5M4.5 12H2M19 5l-1.8 1.8M6.8 17.2L5 19M19 19l-1.8-1.8M6.8 6.8L5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8 8 0 119.5 4a6.5 6.5 0 0010.5 10.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="color-btn" id="colorBtn" onclick="toggleColorTheme()" title="Color theme" aria-label="Color theme">
+      <span class="color-dot"></span>
+    </button>
+    <div class="lang-toggle">
+      <button id="lang-ms" onclick="setLang('ms')">BM</button>
+      <button id="lang-en" class="on" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="key-btn" id="keyBtn" onclick="openKey()">
+      <span class="dot"></span><span data-i="apikey">API Key</span>
+    </button>
+  </div>
+  <div class="tabs">
+    <button class="tab on" id="tab-sheet" onclick="switchTab('sheet')">
+      <span class="num">1</span><span data-i="tab1">Character Sheets Gen</span>
+    </button>
+    <button class="tab" id="tab-board" onclick="switchTab('board')">
+      <span class="num">2</span><span data-i="tab2">Universal Storyboard Gen</span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- ===================== TAB 1: SMART SHEET ===================== -->
+  <section class="view on" id="view-sheet">
+    <div class="stage">
+      <div class="panel flow">
+        <div class="panel-head">
+          <span class="eyebrow">Tab 1</span>
+          <h2 class="display" data-i="sheetTitle">Character / Product Reference Sheet</h2>
+        </div>
+        <div class="msgs" id="sheet-msgs"></div>
+        <div class="composer">
+          <div class="attach-row" id="sheet-attach"></div>
+          <div class="composer-input">
+            <textarea id="sheet-input" rows="1" data-i-ph="phSheet" placeholder="Taip jawapan atau nombor pilihan…"></textarea>
+            <button class="send" id="sheet-send" onclick="sendSheet()" title="Hantar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="rail">
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow">Progress</span></div>
+          <div class="rail-body">
+            <ul class="step-list" id="sheet-steps">
+              <li data-step="1"><span class="s-num">1</span><span data-i="ss1">Upload gambar + nama</span></li>
+              <li data-step="2"><span class="s-num">2</span><span data-i="ss2">Sahkan objek</span></li>
+              <li data-step="3"><span class="s-num">3</span><span data-i="ss3">Pilih tetapan</span></li>
+              <li data-step="4"><span class="s-num">4</span><span data-i="ss4">Jana imej sheet</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow" data-i="howto">Cara guna</span></div>
+          <div class="rail-body">
+            <ol class="howto-list" data-i="sheetHint"></ol>
+            <div style="margin-top:14px"><button class="reset-link" onclick="resetSheet()" data-i="resetSheet">↺ Mula semula sheet</button></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 2: STORYBOARD ===================== -->
+  <section class="view" id="view-board">
+    <div class="stage">
+      <div class="panel flow">
+        <div class="panel-head">
+          <span class="eyebrow">Tab 2</span>
+          <h2 class="display" data-i="boardTitle">Storyboard Poster Generator</h2>
+        </div>
+        <div class="msgs" id="board-msgs"></div>
+        <div class="composer">
+          <div class="attach-row" id="board-attach"></div>
+          <div class="composer-input">
+            <textarea id="board-input" rows="1" data-i-ph="phBoard" placeholder="Taip jawapan atau nombor pilihan…"></textarea>
+            <button class="send" id="board-send" onclick="sendBoard()" title="Hantar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="rail">
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow">Brief</span><h2 class="display" data-i="briefTitle" style="font-size:14px">Pilihan anda</h2></div>
+          <div class="rail-body">
+            <div class="summary-card" id="board-summary">
+              <div class="row"><span class="lbl">🎬 <span data-i="qTema">Tema</span></span><span class="val empty" data-slot="tema">—</span></div>
+              <div class="row"><span class="lbl">🎨 <span data-i="qStyle">Style</span></span><span class="val empty" data-slot="style">—</span></div>
+              <div class="row"><span class="lbl">📝 <span data-i="qBahasa">Bahasa</span></span><span class="val empty" data-slot="bahasa">—</span></div>
+              <div class="row"><span class="lbl">⏱️ <span data-i="qDurasi">Durasi</span></span><span class="val empty" data-slot="durasi">—</span></div>
+              <div class="row"><span class="lbl">📱 <span data-i="qAr">Aspect Ratio</span></span><span class="val empty" data-slot="ar">—</span></div>
+              <div class="row"><span class="lbl">👥 <span data-i="qCast">Cast</span></span><span class="val empty" data-slot="cast">—</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow" data-i="howto">Cara guna</span></div>
+          <div class="rail-body">
+            <p class="hint" data-i="boardHint">Jawab <b>6 soalan</b> satu demi satu. Pada hujung, pilih <b>jana</b> untuk dapat satu imej poster storyboard dengan grid panel + Hero Shot di scene terakhir.</p>
+            <p class="hint" style="margin-top:12px" data-i="videoRefLabel"><b>Ayat rujukan video:</b></p>
+            <p class="hint" style="margin-top:6px;font-size:12px;color:var(--muted)" data-i="videoRefHint">Use this sentence in AI tools prompt (Veo, Runway, Kling, etc.) to generate video from the generated storyboard.</p>
+            <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:7px">
+              <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="ai-tool-link">Gemini</a>
+              <a href="https://labs.google/fx/tools/flow" target="_blank" rel="noopener" class="ai-tool-link">Flow AI</a>
+              <a href="https://openai.com/chatgpt/" target="_blank" rel="noopener" class="ai-tool-link">ChatGPT</a>
+              <a href="https://seedance2.ai/" target="_blank" rel="noopener" class="ai-tool-link">Seedance 2.0</a>
+              <a href="https://kling.ai/" target="_blank" rel="noopener" class="ai-tool-link">Kling</a>
+            </div>
+            <p class="hint" style="margin-top:8px;font-size:11px">
+              <span style="color:var(--muted-2)" data-i="toolsLabel">AI Video Tools:</span>
+              <a href="https://gemini.google.com" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">Gemini</a>
+              <a href="https://chatgpt.com" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">ChatGPT</a>
+              <a href="https://www.runway.ml" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">Runway</a>
+              <a href="https://kling.ai" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;margin:0 6px">Kling</a>
+            </p>
+            <div class="copybox" style="margin-top:7px">
+              <div class="copybox-text" id="howto-video-text">Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion</div>
+              <button class="copybox-btn" onclick="copyHowtoVideo(this)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg>
+                <span data-i="copyBtn">Salin</span>
+              </button>
+            </div>
+            <div style="margin-top:14px"><button class="reset-link" onclick="resetBoard()" data-i="resetBoard">↺ Mula semula storyboard</button></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-clap"></div>
+        <div>
+          <div class="footer-title display">Smart Universal Gen</div>
+          <div class="footer-by">crafted <em>by Ayep</em></div>
+        </div>
+      </div>
+      <div class="footer-stats">
+        <div class="fstat"><span class="fnum display">∞</span><span class="flabel" data-i="fstat3l">Create your best idea</span></div>
+      </div>
+    </div>
+
+    <p class="footer-note" data-i="footerNote">Built for advertising creatives — turn a single product photo into reference sheets and shoot-ready storyboards. Powered by Google Gemini. Images are AI-generated and may vary; review before production use. Your API key stays in your browser only.</p>
+
+    <div class="footer-bottom">
+      <span class="footer-credit">© <span id="footer-year">2026</span> — <strong>Smart Universal Gen <em>by Ayep</em></strong>. <span data-i="footerRights">All rights reserved.</span></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== API KEY MODAL ===== -->
+<div class="modal-bg" id="keyModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 class="display" data-i="keyTitle">Sambung Gemini API</h3>
+      <p data-i="keySub">Tampal API key Gemini anda. Disimpan dalam pelayar ini sahaja.</p>
+    </div>
+    <div class="modal-body">
+      <label data-i="keyLabel">Gemini API Key</label>
+      <div style="display:flex;gap:10px;align-items:center">
+        <input id="keyInput" type="password" placeholder="AIza…" autocomplete="off" spellcheck="false" style="flex:1">
+        <span id="keyValidInd" style="font-size:18px;min-width:24px;text-align:center">✓</span>
+      </div>
+      <p class="help" data-i="keyHelp">Dapatkan key percuma di <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Key disimpan di peranti anda (localStorage), tidak dihantar ke mana-mana selain Google.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeKey()" data-i="cancel">Batal</button>
+        <button class="btn btn-primary" onclick="saveKey()" data-i="save">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <img id="lightbox-img" src="" alt="preview">
+  <div class="lightbox-bar">
+    <button class="lb-dl" id="lightbox-dl">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i="save">Muat turun</span>
+    </button>
+    <button class="lb-close" onclick="closeLightbox()" data-i="cancel">Tutup</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   STATE
+===================================================================== */
+const KEY_LS = 'gemini_api_key_v1';
+let LANG = 'en';
+let API_KEY = localStorage.getItem(KEY_LS) || '';
+const TEXT_MODEL = 'gemini-flash-latest';
+const IMAGE_MODEL = 'gemini-3.1-flash-image';
+
+/* ---- per-tab conversation state ---- */
+const S = {
+  sheet: { step:1, history:[], image:null, busy:false, object:null, type:null, angles:null },
+  board: { step:0, qi:0, answers:{}, history:[], image:null, busy:false }
+};
+
+/* =====================================================================
+   I18N
+===================================================================== */
+const I18N = {
+  ms:{
+    tagline:'Character sheets & storyboard generator',
+    apikey:'API Key', tab1:'Character Sheets Gen', tab2:'Universal Storyboard Gen',
+    sheetTitle:'Reference Sheet Watak / Produk',
+    boardTitle:'Penjana Poster Storyboard',
+    phSheet:'Taip jawapan atau nombor pilihan…',
+    phBoard:'Taip jawapan atau nombor pilihan…',
+    ss1:'Upload gambar + nama', ss2:'Sahkan objek', ss3:'Pilih tetapan', ss4:'Jana imej sheet',
+    howto:'Cara guna',
+    sheetHint:'<li>Upload gambar produk/watak + bagi nama</li><li>Sahkan nama tepat</li><li>Pilih tetapan (style, angle)</li><li>Dapat satu imej reference sheet penuh</li>',
+    resetSheet:'↺ Mula semula sheet',
+    briefTitle:'Pilihan anda',
+    qTema:'Tema', qStyle:'Style', qBahasa:'Bahasa', qDurasi:'Durasi', qAr:'Aspect Ratio', qCast:'Cast',
+    boardHint:'Jawab <b>6 soalan</b> satu demi satu. Pada hujung, pilih <b>jana</b> untuk dapat satu imej poster storyboard dengan grid panel + Hero Shot di scene terakhir.',
+    videoRefLabel:'<b>Ayat rujukan video:</b>', toolsLabel:'Alat Video AI:',
+    videoRefHint:'Guna ayat ini dalam prompt AI (Veo, Runway, Kling, dll) untuk Jana video dari storyboard yang dijana.', copyBtn:'Salin',
+    resetBoard:'↺ Mula semula storyboard',
+    fstat1l:'Alat studio', fstat2l:'Panel / board', fstat3l:'Create your best idea',
+    footerNote:'Dibina untuk kreatif pengiklanan — tukar satu gambar produk kepada reference sheet dan storyboard sedia untuk shoot. Dikuasakan oleh Google Gemini. Imej dijana AI dan mungkin berbeza; sila semak sebelum guna untuk produksi. API key anda kekal dalam pelayar anda sahaja.',
+    footerRights:'Hak cipta terpelihara.',
+    footerMade:'Direka & dibina dengan teliti 🎬',
+    keyTitle:'Sambung Gemini API', keySub:'Tampal API key Gemini anda. Disimpan dalam pelayar ini sahaja.',
+    keyLabel:'Gemini API Key',
+    keyHelp:'Dapatkan key percuma di <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Key disimpan di peranti anda (localStorage), tidak dihantar ke mana-mana selain Google.',
+    cancel:'Batal', save:'Simpan',
+    attachImg:'📎 Lampir gambar',
+    needKey:'Sila set Gemini API key dahulu.',
+    keySaved:'API key disimpan ✓', keyCleared:'API key dipadam',
+    genImg:'Sedang menjana imej…', thinking:'Sedang fikir…',
+    errGen:'Penjanaan imej gagal. Cuba lagi atau periksa API key.',
+    imgFail:'⚠️ Imej tak berjaya dijana kali ini. Cuba taip "jana lagi".',
+  },
+  en:{
+    tagline:'Character sheets & storyboard generator',
+    apikey:'API Key', tab1:'Character Sheets Gen', tab2:'Universal Storyboard Gen',
+    sheetTitle:'Character / Product Reference Sheet',
+    boardTitle:'Storyboard Poster Generator',
+    phSheet:'Type your answer or option number…',
+    phBoard:'Type your answer or option number…',
+    ss1:'Upload image + name', ss2:'Verify object', ss3:'Choose settings', ss4:'Generate sheet image',
+    howto:'How to use',
+    sheetHint:'<li>Upload your product/character image + give it a name</li><li>Confirm the exact name</li><li>Pick settings (style, angles)</li><li>Get one full reference sheet image</li>',
+    resetSheet:'↺ Restart sheet',
+    briefTitle:'Your choices',
+    qTema:'Theme', qStyle:'Style', qBahasa:'Language', qDurasi:'Duration', qAr:'Aspect Ratio', qCast:'Cast',
+    boardHint:'Answer <b>6 questions</b> one at a time. At the end, choose <b>generate</b> to get one storyboard poster image with a panel grid + a Hero Shot on the final scene.',
+    videoRefLabel:'<b>Video reference sentence:</b>', toolsLabel:'AI Video Tools:',
+    videoRefHint:'Use this sentence in AI tools prompt (Veo, Runway, Kling, etc.) to generate video from the generated storyboard.', copyBtn:'Copy',
+    resetBoard:'↺ Restart storyboard',
+    fstat1l:'Studio tools', fstat2l:'Panels / board', fstat3l:'Create your best idea',
+    footerNote:'Built for advertising creatives — turn a single product photo into reference sheets and shoot-ready storyboards. Powered by Google Gemini. Images are AI-generated and may vary; review before production use. Your API key stays in your browser only.',
+    footerRights:'All rights reserved.',
+    footerMade:'Designed & built with care 🎬',
+    keyTitle:'Connect Gemini API', keySub:'Paste your Gemini API key. Stored only in this browser.',
+    keyLabel:'Gemini API Key',
+    keyHelp:'Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. The key stays on your device (localStorage), sent only to Google.',
+    cancel:'Cancel', save:'Save',
+    attachImg:'📎 Attach image',
+    needKey:'Please set your Gemini API key first.',
+    keySaved:'API key saved ✓', keyCleared:'API key cleared',
+    genImg:'Generating image…', thinking:'Thinking…',
+    errGen:'Image generation failed. Try again or check the API key.',
+    imgFail:'⚠️ Image didn\'t generate this time. Type "regenerate" to retry.',
+  }
+};
+function t(k){return (I18N[LANG]&&I18N[LANG][k])||k}
+
+function setLang(l){
+  LANG=l;
+  document.getElementById('lang-ms').classList.toggle('on',l==='ms');
+  document.getElementById('lang-en').classList.toggle('on',l==='en');
+  document.documentElement.lang = l==='ms'?'ms':'en';
+  document.querySelectorAll('[data-i]').forEach(el=>{
+    const k=el.getAttribute('data-i'); if(I18N[l][k]!==undefined) el.innerHTML=I18N[l][k];
+  });
+  document.querySelectorAll('[data-i-ph]').forEach(el=>{
+    const k=el.getAttribute('data-i-ph'); if(I18N[l][k]!==undefined) el.placeholder=I18N[l][k];
+  });
+  renderAttachChips('sheet'); renderAttachChips('board');
+  // re-fire greeting if conversations empty
+  if(S.sheet.history.length===0) bootSheet();
+  if(S.board.history.length===0) bootBoard();
+}
+
+/* =====================================================================
+   UI HELPERS
+===================================================================== */
+function toast(msg){
+  const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show');
+  clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),2600);
+}
+function switchTab(tab){
+  document.getElementById('tab-sheet').classList.toggle('on',tab==='sheet');
+  document.getElementById('tab-board').classList.toggle('on',tab==='board');
+  document.getElementById('view-sheet').classList.toggle('on',tab==='sheet');
+  document.getElementById('view-board').classList.toggle('on',tab==='board');
+}
+function refreshKeyBtn(){
+  const b=document.getElementById('keyBtn');
+  b.classList.toggle('ok', !!API_KEY);
+}
+function openKey(){
+  document.getElementById('keyInput').value=API_KEY;
+  const ind=document.getElementById('keyValidInd');
+  ind.textContent=API_KEY?'✓':'?';
+  ind.style.color=API_KEY?'var(--good)':'var(--muted)';
+  document.getElementById('keyModal').classList.add('show');
+}
+
+/* ----- image preview (lightbox) + download ----- */
+function openLightbox(src){
+  const lb=document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src=src;
+  document.querySelector('#lightbox-dl span').textContent = LANG==='ms'?'Muat turun':'Download';
+  document.getElementById('lightbox-dl').onclick=()=>downloadImage(src,'image-'+Date.now()+'.png');
+  lb.classList.add('show');
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('show')}
+function downloadImage(src,filename){
+  const a=document.createElement('a');
+  a.href=src; a.download=filename||('image-'+Date.now()+'.png');
+  document.body.appendChild(a); a.click(); a.remove();
+  toast(LANG==='ms'?'Imej dimuat turun ✓':'Image downloaded ✓');
+}
+function copyHowtoVideo(btn){
+  const txt=document.getElementById('howto-video-text').textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const span=btn.querySelector('span');
+    const old=span.textContent;
+    span.textContent=LANG==='ms'?'Disalin!':'Copied!';
+    toast(LANG==='ms'?'Teks disalin ✓':'Text copied ✓');
+    setTimeout(()=>{span.textContent=old},1800);
+  });
+}
+function closeKey(){document.getElementById('keyModal').classList.remove('show')}
+function saveKey(){
+  const v=document.getElementById('keyInput').value.trim();
+  const ind=document.getElementById('keyValidInd');
+  if(!v){ API_KEY=''; localStorage.removeItem(KEY_LS); refreshKeyBtn(); closeKey(); toast(t('keyCleared')); return; }
+  // test key validity
+  ind.textContent='⏳'; ind.style.color='var(--muted)';
+  fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(v),{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{role:'user',parts:[{text:'test'}]}]})
+  }).then(r=>{
+    if(r.ok){ 
+      API_KEY=v; localStorage.setItem(KEY_LS,v); 
+      ind.textContent='✓'; ind.style.color='var(--good)'; 
+      toast(t('keySaved')); 
+      setTimeout(()=>closeKey(), 800);
+    }else{ 
+      ind.textContent='✗'; ind.style.color='var(--danger)'; 
+      toast(LANG==='ms'?'API key tidak sah':'Invalid API key'); 
+    }
+    refreshKeyBtn();
+  }).catch(e=>{ ind.textContent='✗'; ind.style.color='var(--danger)'; toast(LANG==='ms'?'Gagal semak key':'Failed to check key'); refreshKeyBtn(); });
+}
+
+/* auto-grow textareas */
+['sheet-input','board-input'].forEach(id=>{
+  const ta=document.getElementById(id);
+  ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,120)+'px'});
+  ta.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();id==='sheet-input'?sendSheet():sendBoard()}
+  });
+});
+
+/* =====================================================================
+   ATTACHMENTS (image upload)
+===================================================================== */
+const attachments = { sheet:[], board:[] };
+function renderAttachChips(tab){
+  const wrap=document.getElementById(tab+'-attach'); wrap.innerHTML='';
+  // attach button
+  const add=document.createElement('label'); add.className='chip';
+  add.innerHTML=`<input type="file" accept="image/*" hidden> ${t('attachImg')}`;
+  add.querySelector('input').addEventListener('change',e=>handleFile(e,tab));
+  wrap.appendChild(add);
+  // previews
+  attachments[tab].forEach((a,i)=>{
+    const c=document.createElement('div'); c.className='chip preview';
+    c.innerHTML=`<img src="${a.dataUrl}"><span class="x">✕</span>`;
+    c.querySelector('.x').onclick=()=>{attachments[tab].splice(i,1);renderAttachChips(tab)};
+    wrap.appendChild(c);
+  });
+}
+function handleFile(e,tab){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    attachments[tab].push({dataUrl:r.result, mime:f.type});
+    renderAttachChips(tab);
+  };
+  r.readAsDataURL(f);
+}
+
+/* =====================================================================
+   MESSAGE RENDERING
+===================================================================== */
+function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function mdLite(s){
+  // minimal markdown: **bold**, line breaks already preserved by pre-wrap; tables handled separately
+  s=escapeHtml(s);
+  s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  // pipe tables
+  if(/\n\|.*\|/.test('\n'+s)){
+    s=s.replace(/((?:^|\n)\|.+\|(?:\n\|.+\|)+)/g,(blk)=>{
+      const rows=blk.trim().split('\n').map(r=>r.trim());
+      let html='<table>';
+      rows.forEach((r,ri)=>{
+        if(/^\|[\s\-:|]+\|$/.test(r)) return; // separator
+        const cells=r.slice(1,-1).split('|').map(c=>c.trim());
+        const tag = ri===0 ? 'th':'td';
+        const isHero = /hero/i.test(r);
+        html+=`<tr class="${isHero?'hero-row':''}">`+cells.map(c=>`<${tag}>${c}</${tag}>`).join('')+'</tr>';
+      });
+      return html+'</table>';
+    });
+  }
+  return s;
+}
+function addMsg(tab, role, content, imgUrl){
+  const box=document.getElementById(tab+'-msgs');
+  const m=document.createElement('div'); m.className='msg '+role;
+  const av=document.createElement('div'); av.className='avatar'; av.textContent=role==='ai'?'◐':'You'.slice(0,1);
+  if(role==='ai') av.textContent='◐'; else av.textContent='∎';
+  const b=document.createElement('div'); b.className='bubble';
+  if(content) b.innerHTML=mdLite(content);
+  if(imgUrl){
+    const im=document.createElement('img');im.src=imgUrl;im.className='gen-img';
+    im.style.cursor='zoom-in'; im.onclick=()=>openLightbox(imgUrl);
+    b.appendChild(im);
+    const bar=document.createElement('div'); bar.className='img-actions';
+    const fname = (tab==='sheet'?'reference-sheet':'storyboard')+'-'+Date.now()+'.png';
+    const pv=document.createElement('button'); pv.className='img-btn';
+    pv.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg> '+(LANG==='ms'?'Preview':'Preview');
+    pv.onclick=()=>openLightbox(imgUrl);
+    const dl=document.createElement('button'); dl.className='img-btn primary';
+    dl.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> '+(LANG==='ms'?'Muat turun':'Download');
+    dl.onclick=()=>downloadImage(imgUrl,fname);
+    bar.appendChild(pv); bar.appendChild(dl); b.appendChild(bar);
+  }
+  m.appendChild(av); m.appendChild(b); box.appendChild(m);
+  box.scrollTop=box.scrollHeight;
+  return b;
+}
+function addThinking(tab,label){
+  const box=document.getElementById(tab+'-msgs');
+  const m=document.createElement('div'); m.className='msg ai'; m.dataset.thinking='1';
+  m.innerHTML=`<div class="avatar">◐</div><div class="bubble"><div class="thinking"><span></span><span></span><span></span></div></div>`;
+  box.appendChild(m); box.scrollTop=box.scrollHeight; return m;
+}
+function removeThinking(tab){
+  const box=document.getElementById(tab+'-msgs');
+  box.querySelectorAll('[data-thinking]').forEach(n=>n.remove());
+}
+function renderPicks(tab, picks){
+  // picks: [{k:'1', label:'...'}]
+  const box=document.getElementById(tab+'-msgs');
+  const last=box.querySelector('.msg.ai:last-child .bubble') || addMsg(tab,'ai','');
+  const wrap=document.createElement('div'); wrap.className='picks';
+  picks.forEach(p=>{
+    const btn=document.createElement('button'); btn.className='pick';
+    btn.innerHTML=`<span class="k">${p.k}</span>${p.label}`;
+    btn.onclick=()=>{ tab==='sheet'?submitSheet(p.k):submitBoard(p.k) };
+    wrap.appendChild(btn);
+  });
+  last.appendChild(wrap); box.scrollTop=box.scrollHeight;
+}
+
+/* =====================================================================
+   GEMINI API
+===================================================================== */
+async function geminiText(systemPrompt, history){
+  const contents = history.map(h=>({
+    role: h.role==='ai'?'model':'user',
+    parts: h.parts
+  }));
+  const body={
+    systemInstruction:{parts:[{text:systemPrompt}]},
+    contents,
+    generationConfig:{temperature:0.7,maxOutputTokens:2048}
+  };
+  const candidates=[TEXT_MODEL,'gemini-flash-latest','gemini-3.5-flash','gemini-3.1-flash-lite','gemini-2.5-flash'];
+  let lastErr='';
+  for(const model of [...new Set(candidates)]){
+    try{
+      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`,{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
+      });
+      if(!r.ok){ lastErr=(await r.text()).slice(0,200);
+        if(/"code":\s*404/.test(lastErr) || /not found|no longer available|not supported/i.test(lastErr)) continue;
+        throw new Error('Text API: '+lastErr);
+      }
+      const data=await r.json();
+      const parts=data.candidates?.[0]?.content?.parts||[];
+      return parts.map(p=>p.text||'').join('').trim();
+    }catch(e){ lastErr=String(e.message).slice(0,200); }
+  }
+  throw new Error('Text API: '+lastErr);
+}
+
+async function geminiImage(promptText, refImages, preferPro){
+  // refImages: [{dataUrl, mime}]
+  const parts=[{text:promptText}];
+  (refImages||[]).forEach(im=>{
+    parts.push({inlineData:{mimeType:im.mime||'image/png',data:im.dataUrl.split(',')[1]}});
+  });
+  const body={ contents:[{role:'user',parts}] };
+  // When reference images are supplied, prefer Nano Banana Pro for better fidelity.
+  const candidates = preferPro
+    ? ['gemini-3-pro-image', IMAGE_MODEL, 'gemini-3.1-flash-image', 'gemini-2.5-flash-image']
+    : [IMAGE_MODEL, 'gemini-3-pro-image', 'gemini-3.1-flash-image', 'gemini-2.5-flash-image'];
+  let lastErr='';
+  for(const model of [...new Set(candidates)]){
+    try{
+      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`,{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
+      });
+      if(!r.ok){ lastErr=(await r.text()).slice(0,200);
+        // 404 => model name gone, try next; other errors => stop and report
+        if(/"code":\s*404/.test(lastErr) || /not found|no longer available|not supported/i.test(lastErr)) continue;
+        throw new Error('Image API: '+lastErr);
+      }
+      const data=await r.json();
+      const ps=data.candidates?.[0]?.content?.parts||[];
+      let imgUrl=null, caption='';
+      ps.forEach(p=>{
+        if(p.inlineData) imgUrl='data:'+(p.inlineData.mimeType||'image/png')+';base64,'+p.inlineData.data;
+        if(p.text) caption+=p.text;
+      });
+      if(imgUrl) return {imgUrl, caption, model};
+      // no image returned but call ok — try next model
+      lastErr='No image in response from '+model;
+    }catch(e){ lastErr=String(e.message).slice(0,200); }
+  }
+  throw new Error('Image API: '+lastErr);
+}
+
+/* =====================================================================
+   SYSTEM PROMPTS
+===================================================================== */
+function sheetSystemPrompt(){
+  const lang = LANG==='ms'?'Bahasa Melayu (boleh campur English untuk istilah industri)':'English (you may mix Malay terms if user does)';
+  return `You are a Smart Reference Sheet Creator for advertising production. You help users create CHARACTER or PRODUCT reference sheets as professional visual grid images.
+
+REPLY LANGUAGE: ${lang}. Keep replies concise and friendly. Use numbered menus.
+
+STRICT FLOW (one step per reply, never skip):
+STEP 1 — Welcome: ask user to upload an image + give a name (e.g. "ASUS ZenBook 14 OLED" or "Sarah, 28yo").
+STEP 2 — Verify object: confirm the EXACT name & model. Only real colors, real materials, real features, exact logo. No hallucination.
+STEP 3 — Suggest settings then show this menu:
+  For CHARACTER: STYLE, EXPRESSIONS, AGE, COLOR.
+  For PRODUCT: VIEWS, POSITIONS, DETAIL, COLORS, STYLE.
+  Recommend one option per setting with a short reason. Then show:
+  "1️⃣ Generate visual sheet image now
+   2️⃣ Change one setting
+   3️⃣ More info on specs
+   4️⃣ Choose angle count (8 / 10 / 12)"
+STEP 4 — Act on the choice.
+
+IMAGE GENERATION RULE: You DO NOT generate images yourself in text. When the user is ready to generate (chose option 1, or after picking angle count), end your reply with a single line exactly:
+[[GENERATE_SHEET]]
+…on its own line. The app will then render a real image. Before that line, give a one-sentence confirmation of what will be drawn.
+
+NEVER write "[[GENERATE_SHEET]]" until the object name is verified and settings are chosen. If no image was uploaded yet, ask for one first — do NOT emit the token.
+
+Keep menus as numbered lists so the app can show quick-pick buttons. Always be warm and direct.`;
+}
+
+function sheetImagePrompt(){
+  const o=S.sheet.object||'the subject';
+  const ang=S.sheet.angles||10;
+  const isChar=(S.sheet.type==='character');
+  const hasRef = (S.sheet._lastImgs && S.sheet._lastImgs.length>0);
+  return `Create ONE complete professional REFERENCE SHEET as a single unified grid image.
+
+${hasRef?`REFERENCE PHOTO PROVIDED: The attached image shows the EXACT real subject to use. Study it closely — its precise shape, exact colors, logo, text, buttons, ports, materials and proportions. Reproduce THIS SAME subject in every panel. Do NOT invent, redesign, or substitute a different object. The reference photo is the single source of truth for what the subject looks like.
+`:''}Subject: ${o}
+Type: ${isChar?'CHARACTER':'PRODUCT'} reference sheet.
+Layout: a clean studio reference sheet with a header bar reading "${isChar?'CHARACTER SHEET':'PRODUCT SHEET'}" and the subject name "${o}", followed by an organized grid of ${ang} labelled angle/view panels (front, 3/4, side, back, top, detail/close-ups${isChar?', plus expression variations':''}).
+Style: professional, neutral studio background, soft even lighting, consistent identity across every panel — same ${isChar?'face, hair, outfit, body proportions':'shape, color, logo, materials, buttons/ports'} in every panel${hasRef?', matching the reference photo exactly':''}. ${isChar?'':'Keep the logo and brand details EXACT and authentic — do not invent features.'}
+Each panel clearly labelled with its angle/view name. Tidy aligned grid, white/light background, thin borders, modern sans-serif labels. ONE single image only.`;
+}
+
+function boardSystemPrompt(){
+  const lang = LANG==='ms'?'Bahasa Melayu':'English';
+  return `You are a Creative Director & Storyboard Artist AI for video ads (TVC, social video). Your job: guide the user to build a STORYBOARD POSTER (one static grid image).
+
+REPLY LANGUAGE: ${lang}. Be concise, warm, use numbered menus.
+
+The app handles the 6-question flow and image generation itself — you are only invoked for free-form help, clarifications, and the final scene table. Follow the app's instruction in each message. When asked to produce the scene table, output a markdown table with columns: Scene | Time | Visual | Dialog/VO | Overlay Text | Audio/SFX. The final scene MUST be the HERO SHOT (label it clearly). Number of scenes: 10s=8, 20s=12, 30s=9 panels.`;
+}
+
+function boardImagePrompt(){
+  const a=S.board.answers;
+  const dur=a.durasi?.val||'20s';
+  const panels = a.durasi?.k==='1'?8 : a.durasi?.k==='3'?9 : 12;
+  const ar = a.ar?.val||'16:9';
+  const style = a.style?.val||'cinematic realistic';
+  const tema = a.tema?.val||'lifestyle';
+  const cast = a.cast?.val||'product only';
+  const lang = a.bahasa?.k==='2'?'English':a.bahasa?.k==='3'?'mixed Malay+English':'Bahasa Melayu';
+  const product = S.board.product || 'the user\'s product';
+  const hasRef = !!S.board._productImgs || (a.cast?.k==='5' && attachments.board.length>0);
+  return `You are an Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.
+
+Create ONE complete professional AFFILIATE STORYBOARD POSTER as a single static grid image. This storyboard will be the reference for AI video generation (Veo, Kling, Runway).
+
+${hasRef?`REFERENCE PHOTO PROVIDED: The attached image shows the EXACT product to use. Study it carefully — its precise shape, exact colors, logo placement, buttons, ports, proportions and materials. Reproduce THIS SAME product in every single panel. Do NOT redesign, restyle, recolor, or imagine a different version of it. Treat the reference as the single source of truth for the product's appearance.
+`:''}PRODUCT: ${product}. Every panel and the Hero Shot must feature this exact product.
+
+NARRATIVE STRUCTURE:
+- Build a compelling ${tema} narrative arc across ${panels} panels
+- Setup (panels 1-2): Hook attention, establish problem/desire, introduce ${product}
+- Build (panels 3-8): Show benefit progression, emotional connection, product integration, real-world usage
+- Climax (panels 9-11): Transformation moment, social proof, lifestyle elevation
+- Resolution (panel ${panels} = HERO SHOT): Product hero moment, CTA, brand tagline
+
+DIALOG & ON-SCREEN TEXT (critical for video generation):
+- Include natural dialog ${lang} where appropriate (spoken moments, testimonials, questions, CTAs)
+- Each panel caption must be DESCRIPTIVE + ACTIONABLE for video AI (describe camera movement, sound/ASMR cue, actor emotion, product highlight)
+- Example caption: "Wide shot of girl unboxing. ASMR: crisp paper sound. Says: 'Wow, this quality!' Camera pulls back to show product on desk."
+- Dialogue must feel authentic, not salesy. Natural conversation, relatable problems, genuine benefit discovery.
+
+TECHNICAL FOR VIDEO:
+- Each panel: clear scene number, timestamp (calculated from ${dur} total), visual description with camera direction
+- Include sensory details (lighting, audio cues, texture, movement) for ASMR + immersion
+- Specify shot type (wide, close-up, POV, overhead) and camera movement (pan, zoom, slow reveal)
+- Ensure smooth visual continuity for video stitching
+
+HEADER: large title "STORYBOARD", subtitle = "${product}", badges: DURATION ${dur} • STYLE ${style} • FORMAT ${ar} • CAST ${cast}.
+GRID: exactly ${panels} numbered scene panels arranged 4 per row (last row may have fewer). 
+Each panel: 
+  - Scene number (top-left, bold)
+  - Timestamp (top-right, e.g., 0:00–0:02)
+  - Clean scene illustration in "${style}" style
+  - Detailed caption below: scene action + dialog (if any) + camera/audio cues for video generation
+
+THEME: ${tema}. Narrative must align with ${tema} aesthetics (lifestyle = aspirational-real; problem-solution = relatable-resolution; testimonial = authentic-trustworthy).
+LANGUAGE: On-screen dialog and captions in ${lang}. Keep tone natural, conversational, NOT corporate.
+
+FINAL PANEL = HERO SHOT (Panel ${panels}):
+- ${product} centered, studio lighting, clean white/gradient background
+- Large product name, logo, key benefit, and clear CTA ("Shop Now", "Learn More", etc.)
+- Label: "HERO SHOT" 
+- This panel closes the story and directs viewer to action
+
+CONSISTENCY (CRITICAL): ${product} must look 100% IDENTICAL across all ${panels} panels — same exact shape, color, logo, and details${hasRef?' as the reference photo':''}. Only the camera angle, framing, context, and character actions change; the product identity NEVER changes. ${hasRef?'If unsure about a detail, copy it from the reference photo rather than inventing it.':''}
+
+VISUAL: Professional, clean layout. Light/white background. Bold modern sans-serif header. Black thin border around entire poster. Consistent typography. Tidy aligned grid. ONE single poster image only.
+
+OUTPUT: A cohesive storyboard ready for professional video production. Every panel must be specific enough for an AI video tool to generate accurate scenes. Every dialog line and caption must be included so video AI knows exactly what to show and say.`;
+}
+
+/* =====================================================================
+   TAB 1 — SMART SHEET FLOW
+===================================================================== */
+function setSheetStep(n){
+  S.sheet.step=n;
+  document.querySelectorAll('#sheet-steps li').forEach(li=>{
+    const s=+li.dataset.step;
+    li.classList.toggle('active',s===n);
+    li.classList.toggle('done',s<n);
+  });
+}
+function bootSheet(){
+  document.getElementById('sheet-msgs').innerHTML='';
+  S.sheet={step:1,history:[],image:null,busy:false,object:null,type:null,angles:null};
+  setSheetStep(1);
+  const greet = LANG==='ms'
+    ? 'Hai! 👋 Saya **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, dan AI Image Prompt Engineer.\n\nTugas: Transform your product photo jadi **professional reference sheet** — authentic, natural, conversion-focused, siap untuk AI generation.\n\n**Langkah 1:** Lampir gambar produk (📎 di bawah) + beri nama (contoh: "iPhone 16 Pro" atau "Luxury Watch Gold").'
+    : 'Hi! 👋 I\'m your **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.\n\nMy role: Transform your product photo into a **professional reference sheet** — authentic, natural, conversion-focused, ready for AI generation.\n\n**Step 1:** Attach your product image (📎 below) + give it a name (example: "iPhone 16 Pro" or "Luxury Watch Gold").';
+  addMsg('sheet','ai',greet);
+}
+function resetSheet(){bootSheet();renderAttachChips('sheet');toast(LANG==='ms'?'Sheet dimulakan semula':'Sheet restarted')}
+
+function sendSheet(){
+  const ta=document.getElementById('sheet-input');
+  const text=ta.value.trim();
+  if(!text && attachments.sheet.length===0) return;
+  submitSheet(text);
+  ta.value=''; ta.style.height='auto';
+}
+async function submitSheet(text){
+  // retry generation
+  if(text.toLowerCase().includes('retry') || text.toLowerCase().includes('coba') || text.includes('retry-gen')){
+    generateSheetImage();
+    return;
+  }
+  // special case: use sheet image for storyboard
+  if(text.toLowerCase().includes('guna storyboard') || text.toLowerCase().includes('storyboard gen')){
+    if(!S.sheet.image){
+      addMsg('sheet','ai', LANG==='ms'?'Sila jana sheet dulu':'Please generate sheet first');
+      return;
+    }
+    // copy image to board attachments
+    const sheetImg={dataUrl:S.sheet.image, mime:'image/png'};
+    attachments.board=[sheetImg];
+    renderAttachChips('board');
+    // switch to tab 2
+    switchTab('board');
+    addMsg('board','ai', LANG==='ms'
+      ? '✅ Gambar sheet berjaya dipindahkan! Sekarang jawab 6 soalan untuk jana storyboard.'
+      : '✅ Sheet image transferred! Now answer 6 questions to generate storyboard.');
+    return;
+  }
+  if(!API_KEY){toast(t('needKey'));openKey();return}
+  if(S.sheet.busy) return;
+  const imgs=attachments.sheet.slice();
+  // render user msg
+  let ub=addMsg('sheet','user',text||'(gambar dilampirkan)');
+  imgs.forEach(im=>{const i=document.createElement('img');i.src=im.dataUrl;ub.appendChild(i)});
+  // push to history
+  const parts=[]; if(text) parts.push({text});
+  imgs.forEach(im=>parts.push({inlineData:{mimeType:im.mime,data:im.dataUrl.split(',')[1]}}));
+  S.sheet.history.push({role:'user',parts});
+  if(imgs.length){ S.sheet._lastImgs = imgs; attachments.sheet=[]; renderAttachChips('sheet'); }
+
+  S.sheet.busy=true; document.getElementById('sheet-send').disabled=true;
+  const th=addThinking('sheet');
+  try{
+    let reply=await geminiText(sheetSystemPrompt(),S.sheet.history);
+    removeThinking('sheet');
+    // detect generate token
+    const wantGen=/\[\[GENERATE_SHEET\]\]/.test(reply);
+    reply=reply.replace(/\[\[GENERATE_SHEET\]\]/g,'').trim();
+
+    // try to capture object name / type / angles from reply heuristically
+    captureSheetMeta(reply,text);
+
+    if(reply) addMsg('sheet','ai',reply);
+    S.sheet.history.push({role:'ai',parts:[{text:reply}]});
+    // advance steps
+    if(S.sheet._lastImgs && S.sheet.step<2) setSheetStep(2);
+
+    if(wantGen){ setSheetStep(4); await generateSheetImage(); }
+    else { offerSheetPicks(reply); }
+  }catch(err){
+    removeThinking('sheet');
+    addMsg('sheet','ai','⚠️ '+t('errGen')+'\n\n`'+String(err.message).slice(0,180)+'`');
+  }finally{
+    S.sheet.busy=false; document.getElementById('sheet-send').disabled=false;
+  }
+}
+function captureSheetMeta(reply,userText){
+  const all=(reply+' '+userText).toLowerCase();
+  const charHints=/character|watak|orang|person|\byo\b|tahun|umur|woman|man|girl|boy|lelaki|perempuan|wanita|face|wajah/;
+  const prodHints=/product|produk|gajet|gadget|device|peranti|laptop|phone|telefon|bottle|botol|car|kereta|shoe|kasut|watch|jam|camera|kamera|headphone|earbud|console|machine|mesin|drink|minuman|food|makanan/;
+  if(charHints.test(all) && !prodHints.test(all)) S.sheet.type='character';
+  else if(prodHints.test(all)) S.sheet.type='product';
+  else if(!S.sheet.type) S.sheet.type='product'; // safe default — most uploads are products
+  const angM=(userText||'').match(/\b(8|10|12)\b/); if(angM && S.sheet.step>=3) S.sheet.angles=+angM[1];
+  // object name: first quoted token in user text
+  if(!S.sheet.object && userText){
+    const q=userText.match(/"([^"]+)"/); if(q) S.sheet.object=q[1];
+    else if(userText.length<60 && S.sheet.step<=2) S.sheet.object=userText;
+  }
+}
+function offerSheetPicks(reply){
+  // detect numbered menu in reply → render quick picks
+  const picks=[];
+  const re=/(?:^|\n)\s*([1-9])[\.\)️⃣]+\s*(.+?)(?=\n|$)/g; let m;
+  while((m=re.exec(reply))!==null){
+    const label=m[2].replace(/[️⃣]/g,'').trim().slice(0,60);
+    if(label) picks.push({k:m[1],label});
+  }
+  if(picks.length>=2 && picks.length<=8){ if(S.sheet.step<3) setSheetStep(3); renderPicks('sheet',picks); }
+}
+async function generateSheetImage(){
+  const refs=S.sheet._lastImgs||[];
+  if(refs.length===0){
+    addMsg('sheet','ai', LANG==='ms'
+      ? '⚠️ Saya tak nampak gambar yang diupload. Sila lampir gambar produk/watak (📎 di bawah) dahulu sebelum jana sheet.'
+      : '⚠️ I don\'t see an uploaded image. Please attach the product/character photo (📎 below) before generating the sheet.');
+    return;
+  }
+  const th=addThinking('sheet');
+  const note=addMsg('sheet','ai',t('genImg'));
+  
+  // timeout protection: if stuck > 45s, show retry button
+  const timeoutId = setTimeout(()=>{
+    if(note && note.parentNode){
+      removeThinking('sheet'); note.remove();
+      addMsg('sheet','ai', LANG==='ms'
+        ? '⏱️ **Permintaan mengambil masa terlalu lama.** Server mungkin sibuk atau koneksi terputus. Sila cuba lagi.'
+        : '⏱️ **Request is taking too long.** Server might be busy or connection lost. Please try again.');
+      const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
+      renderPicks('sheet',[{k:'retry-gen',label:retryLabel}]);
+    }
+  }, 45000);
+  
+  try{
+    const {imgUrl,caption}=await geminiImage(sheetImagePrompt(),refs, refs.length>0);
+    clearTimeout(timeoutId);
+    removeThinking('sheet');
+    note.remove();
+    if(imgUrl){
+      S.sheet.image=imgUrl;
+      addMsg('sheet','ai', LANG==='ms'?'✅ **Reference sheet siap!**':'✅ **Reference sheet ready!**', imgUrl);
+      const menu = LANG==='ms'
+        ? 'Apa seterusnya?\n1. Jana semula sheet\n2. Tukar tetapan\n3. Tukar angle (8/10/12)\n4. Guna untuk Universal Storyboard Gen'
+        : 'What next?\n1. Regenerate sheet\n2. Change settings\n3. Change angles (8/10/12)\n4. Use for Universal Storyboard Gen';
+      addMsg('sheet','ai',menu);
+      renderPicks('sheet',[
+        {k:'jana semula', label: LANG==='ms'?'Jana semula':'Regenerate'},
+        {k:'tukar tetapan', label: LANG==='ms'?'Tukar tetapan':'Change settings'},
+        {k:'tukar angle', label: LANG==='ms'?'Tukar angle':'Change angles'},
+        {k:'guna storyboard', label: LANG==='ms'?'Storyboard Gen →':'→ Storyboard Gen'},
+      ]);
+    }else{
+      addMsg('sheet','ai',t('imgFail'));
+    }
+  }catch(err){
+    clearTimeout(timeoutId);
+    removeThinking('sheet'); note.remove();
+    const errMsg = String(err.message).slice(0,180);
+    const isServerError = err.message.includes('503') || err.message.includes('timeout') || err.message.includes('429');
+    addMsg('sheet','ai', isServerError
+      ? (LANG==='ms'?'⚠️ **Server sedang sibuk.** API Gemini mengalami beban tinggi. Sila tunggu beberapa saat dan coba lagi.':'⚠️ **Server busy.** Gemini API is temporarily overloaded. Please wait a moment and try again.')
+      : '⚠️ '+t('errGen')+'\n\n`'+errMsg+'`');
+    const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
+    renderPicks('sheet',[{k:'retry-gen',label:retryLabel}]);
+  }
+}
+
+/* =====================================================================
+   TAB 2 — STORYBOARD FLOW (6 questions, app-driven)
+===================================================================== */
+const QUESTIONS = {
+  ms:[
+    {slot:'tema',icon:'🎬',title:'Soalan 1 dari 6 — Apa tema storyboard anda?',opts:[
+      ['1','Lifestyle & Aspirational'],['2','Problem-Solution'],['3','Testimoni / Social Proof'],
+      ['4','Storytelling / Emosional'],['5','Komedi / Lighthearted'],['6','Product Demo / Showcase'],
+      ['7','Before-After'],['8','Unboxing / Reveal'],['9','ASMR'],
+    ]},
+    {slot:'style',icon:'🎨',title:'Soalan 2 dari 6 — Pilih style visual imej:',opts:[
+      ['1','Sketch Klasik'],['2','Comic / Berwarna'],['3','Cinematic Realistic'],
+      ['4','Flat Illustration'],['5','Minimalist Line Art'],['6','Stop Motion'],
+    ]},
+    {slot:'bahasa',icon:'📝',title:'Soalan 3 dari 6 — Bahasa yang digunakan:',opts:[
+      ['1','Bahasa Melayu'],['2','English'],['3','Campur BM + English'],
+    ]},
+    {slot:'durasi',icon:'⏱️',title:'Soalan 4 dari 6 — Berapa lama video?',opts:[
+      ['1','10 saat — bumper (8 panel)'],['2','20 saat — standard (12 panel)'],['3','30 saat — TVC (9 panel)'],
+    ]},
+    {slot:'ar',icon:'📱',title:'Soalan 5 dari 6 — Format skrin:',opts:[
+      ['1','16:9 Landscape — YouTube/TV'],['2','9:16 Portrait — TikTok/Reels'],['3','1:1 Square — IG/FB Feed'],
+    ]},
+    {slot:'cast',icon:'👥',title:'Soalan 6 dari 6 — Siapa/apa dalam video?',opts:[
+      ['1','Perempuan Muslimah (bertudung)'],['2','Lelaki dewasa'],['3','Perempuan (tiada tudung)'],
+      ['4','Keluarga / Pelbagai watak'],['5','Guna gambar upload'],['6','Tiada watak — produk sahaja'],
+    ]},
+  ],
+  en:[
+    {slot:'tema',icon:'🎬',title:'Question 1 of 6 — What is your storyboard theme?',opts:[
+      ['1','Lifestyle & Aspirational'],['2','Problem-Solution'],['3','Testimonial / Social Proof'],
+      ['4','Storytelling / Emotional'],['5','Comedy / Lighthearted'],['6','Product Demo / Showcase'],
+      ['7','Before-After'],['8','Unboxing / Reveal'],['9','ASMR'],
+    ]},
+    {slot:'style',icon:'🎨',title:'Question 2 of 6 — Choose the visual style:',opts:[
+      ['1','Classic Sketch'],['2','Comic / Colored'],['3','Cinematic Realistic'],
+      ['4','Flat Illustration'],['5','Minimalist Line Art'],['6','Stop Motion'],
+    ]},
+    {slot:'bahasa',icon:'📝',title:'Question 3 of 6 — Language used:',opts:[
+      ['1','Bahasa Melayu'],['2','English'],['3','Mixed BM + English'],
+    ]},
+    {slot:'durasi',icon:'⏱️',title:'Question 4 of 6 — Video length?',opts:[
+      ['1','10s — bumper (8 panels)'],['2','20s — standard (12 panels)'],['3','30s — TVC (9 panels)'],
+    ]},
+    {slot:'ar',icon:'📱',title:'Question 5 of 6 — Screen format:',opts:[
+      ['1','16:9 Landscape — YouTube/TV'],['2','9:16 Portrait — TikTok/Reels'],['3','1:1 Square — IG/FB Feed'],
+    ]},
+    {slot:'cast',icon:'👥',title:'Question 6 of 6 — Who/what is in the video?',opts:[
+      ['1','Muslim woman (hijab)'],['2','Adult man'],['3','Woman (no hijab)'],
+      ['4','Family / Mixed cast'],['5','Use uploaded image'],['6','No people — product only'],
+    ]},
+  ]
+};
+const SLOT_DOM = {tema:'tema',style:'style',bahasa:'bahasa',durasi:'durasi',ar:'ar',cast:'cast'};
+
+function setSlotVal(slot,k,val){
+  const el=document.querySelector(`#board-summary [data-slot="${slot}"]`);
+  if(el){el.textContent=`${k}. ${val}`;el.classList.remove('empty')}
+}
+function clearSummary(){
+  document.querySelectorAll('#board-summary .val').forEach(el=>{el.textContent='—';el.classList.add('empty')});
+}
+function bootBoard(){
+  document.getElementById('board-msgs').innerHTML='';
+  S.board={step:0,qi:0,answers:{},history:[],image:null,busy:false,productKnown:false,product:null};
+  clearSummary();
+  const greet = LANG==='ms'
+    ? 'Hai! 👋 Saya **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, dan AI Image Prompt Engineer.\n\nTugas: Bina **storyboard poster affiliate profesional** — authentic, natural, conversion-focused, sensory-rich, siap untuk AI Video generation (Veo, Kling, Runway).\n\n**Langkah 1:** Lampir gambar produk (📎 di bawah), kemudian hantar. Selepas itu, 6 soalan untuk build narrative yang convert.'
+    : 'Hi! 👋 I\'m your **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.\n\nMy role: Build a **professional affiliate storyboard** — authentic, natural, conversion-focused, sensory-rich, ready for AI Video generation (Veo, Kling, Runway).\n\n**Step 1:** Attach your product image (📎 below), then send. After that, 6 questions to craft a narrative that converts.';
+  addMsg('board','ai',greet);
+  // NOTE: questions start only AFTER an image is uploaded (Step 0).
+}
+function resetBoard(){bootBoard();renderAttachChips('board');toast(LANG==='ms'?'Storyboard dimulakan semula':'Storyboard restarted')}
+
+function askBoardQuestion(qi){
+  S.board.qi=qi;
+  const q=QUESTIONS[LANG][qi];
+  const lines=q.opts.map(o=>`${o[0]}. ${o[1]}`).join('\n');
+  const progress = qi>0 ? `(${qi}/6 ${LANG==='ms'?'selesai':'done'})\n\n` : '';
+  addMsg('board','ai',`${progress}${q.icon} **${q.title}**\n\n${lines}`);
+  renderPicks('board', q.opts.map(o=>({k:o[0],label:o[1]})));
+}
+
+function sendBoard(){
+  const ta=document.getElementById('board-input');
+  const text=ta.value.trim();
+  if(!text && attachments.board.length===0) return;
+  submitBoard(text);
+  ta.value=''; ta.style.height='auto';
+}
+async function submitBoard(text){
+  // retry generation
+  if(text.toLowerCase().includes('retry') || text.toLowerCase().includes('coba') || text.includes('retry-gen')){
+    generateBoardImage();
+    return;
+  }
+  if(!API_KEY){toast(t('needKey'));openKey();return}
+  if(S.board.busy) return;
+
+  // echo user
+  let ub=addMsg('board','user',text||'(gambar dilampirkan)');
+  attachments.board.forEach(im=>{const i=document.createElement('img');i.src=im.dataUrl;ub.appendChild(i)});
+
+  const lc=(text||'').toLowerCase().trim();
+
+  /* ---- STEP 0 — must upload an image before any question ---- */
+  if(!S.board.productKnown){
+    if(attachments.board.length>0){
+      S.board._productImgs = attachments.board.slice();
+      attachments.board=[]; renderAttachChips('board');
+      S.board.product = text && text.trim() ? text.trim() : (LANG==='ms'?'produk anda':'your product');
+      S.board.productKnown=true;
+      addMsg('board','ai', LANG==='ms'
+        ? '✅ Gambar diterima! Sekarang mari mula 6 soalan 👇'
+        : '✅ Image received! Now let\'s start the 6 questions 👇');
+      askBoardQuestion(0);
+      return;
+    }
+    addMsg('board','ai', LANG==='ms'
+      ? 'Sila **lampir gambar produk** dahulu (📎 di bawah) sebelum kita mula soalan.'
+      : 'Please **attach a product image** first (📎 below) before we start the questions.');
+    return;
+  }
+
+  /* ---- collecting answers (initial flow OR a single re-ask after summary) ---- */
+  const reasking = S.board._reaskAfter===true;
+  if(S.board.qi<6 && (Object.keys(S.board.answers).length<6 || reasking)){
+    const q=QUESTIONS[LANG][S.board.qi];
+    // accept exact number that matches an option key
+    const pick=q.opts.find(o=>o[0]===lc || o[0]===text.trim());
+    if(!pick){
+      addMsg('board','ai', LANG==='ms'
+        ? `Sila taip nombor pilihan (cth "${q.opts[0][0]}"). Pilihan: ${q.opts.map(o=>o[0]).join(', ')}.`
+        : `Please type an option number (e.g. "${q.opts[0][0]}"). Options: ${q.opts.map(o=>o[0]).join(', ')}.`);
+      renderPicks('board', q.opts.map(o=>({k:o[0],label:o[1]})));
+      return;
+    }
+    // F5 guard (before storing)
+    if(q.slot==='cast' && pick[0]==='5' && attachments.board.length===0){
+      addMsg('board','ai', LANG==='ms'
+        ? 'Anda pilih **guna gambar upload**. Sila lampir gambar watak/produk dahulu (📎 di bawah), kemudian taip "5" lagi.'
+        : 'You chose **use uploaded image**. Please attach the character/product photo first (📎 below), then type "5" again.');
+      return;
+    }
+    // store
+    S.board.answers[q.slot]={k:pick[0],val:pick[1]};
+    setSlotVal(q.slot,pick[0],pick[1]);
+
+    // single re-ask path → back to summary
+    if(reasking){
+      S.board._reaskAfter=false; S.board.qi=6;
+      addMsg('board','ai', `✅ ${labelFor(q.slot)}: ${pick[0]}. ${pick[1]}`);
+      showBoardSummary();
+      return;
+    }
+
+    const nextQ=S.board.qi+1;
+    addMsg('board','ai', `✅ ${labelFor(q.slot)}: ${pick[0]}. ${pick[1]} — (${nextQ}/6 ${LANG==='ms'?'selesai':'done'})`);
+
+    if(nextQ<6){ askBoardQuestion(nextQ); }
+    else { S.board.qi=6; showBoardSummary(); }
+    return;
+  }
+
+  /* ---- after summary: handle menu choices ---- */
+  await handleBoardMenu(lc, text);
+}
+function labelFor(slot){
+  const map={tema:t('qTema'),style:t('qStyle'),bahasa:t('qBahasa'),durasi:t('qDurasi'),ar:t('qAr'),cast:t('qCast')};
+  return map[slot]||slot;
+}
+function showBoardSummary(){
+  const a=S.board.answers;
+  const music = pickMusic(a);
+  const sum = LANG==='ms'
+    ? `✅ **Pilihan anda siap!**\n\n🎬 TEMA: ${a.tema.k}. ${a.tema.val}\n🎨 STYLE: ${a.style.k}. ${a.style.val}\n📝 BAHASA: ${a.bahasa.k}. ${a.bahasa.val}\n⏱️ DURASI: ${a.durasi.k}. ${a.durasi.val}\n📱 ASPECT RATIO: ${a.ar.k}. ${a.ar.val}\n👥 CAST: ${a.cast.k}. ${a.cast.val}\n\n🎵 MUSIC STYLE (auto): ${music}`
+    : `✅ **Your choices are set!**\n\n🎬 THEME: ${a.tema.k}. ${a.tema.val}\n🎨 STYLE: ${a.style.k}. ${a.style.val}\n📝 LANGUAGE: ${a.bahasa.k}. ${a.bahasa.val}\n⏱️ DURATION: ${a.durasi.k}. ${a.durasi.val}\n📱 ASPECT RATIO: ${a.ar.k}. ${a.ar.val}\n👥 CAST: ${a.cast.k}. ${a.cast.val}\n\n🎵 MUSIC STYLE (auto): ${music}`;
+  addMsg('board','ai',sum);
+  const menu = LANG==='ms'
+    ? '🚀 **Sedia untuk teruskan?**\n\n1. Jana gambar storyboard sekarang\n2. Ubah pilihan (taip "ubah" + slot)\n3. Ulang semua dari awal'
+    : '🚀 **Ready to continue?**\n\n1. Generate storyboard image now\n2. Change a choice (type "change" + slot)\n3. Restart all questions';
+  addMsg('board','ai',menu);
+  renderPicks('board',[
+    {k:'1',label: LANG==='ms'?'Jana storyboard':'Generate storyboard'},
+    {k:'2',label: LANG==='ms'?'Ubah pilihan':'Change a choice'},
+    {k:'3',label: LANG==='ms'?'Ulang semua':'Restart all'},
+  ]);
+}
+function pickMusic(a){
+  const t=a.tema?.k;
+  if(t==='9') return LANG==='ms'?'Minimal ambient / SFX-driven':'Minimal ambient / SFX-driven';
+  if(t==='5') return LANG==='ms'?'Upbeat playful / quirky':'Upbeat playful / quirky';
+  if(t==='4') return LANG==='ms'?'Emotional cinematic / piano strings':'Emotional cinematic / piano strings';
+  if(t==='1') return LANG==='ms'?'Aspirational uplifting pop':'Aspirational uplifting pop';
+  return LANG==='ms'?'Modern upbeat commercial':'Modern upbeat commercial';
+}
+
+async function handleBoardMenu(lc, raw){
+  // post-generation & post-summary menu
+  if(lc==='3' || /ulang|restart/.test(lc)){ resetBoard(); return; }
+  if(lc==='2' || /ubah|change/.test(lc)){
+    addMsg('board','ai', LANG==='ms'
+      ? 'Slot mana nak ubah? Taip: **tema / style / bahasa / durasi / ar / cast**.'
+      : 'Which slot to change? Type: **tema / style / bahasa / durasi / ar / cast**.');
+    return;
+  }
+  // change specific slot
+  const slotMap={tema:0,style:1,bahasa:2,durasi:3,'aspect':4,ar:4,cast:5,durasi:3};
+  for(const key in slotMap){
+    if(lc.includes(key)){
+      const qi=slotMap[key];
+      const slot=QUESTIONS[LANG][qi].slot;
+      delete S.board.answers[slot];
+      const el=document.querySelector(`#board-summary [data-slot="${slot}"]`); el.textContent='—'; el.classList.add('empty');
+      S.board.qi=qi;
+      askBoardQuestion(qi);
+      // after re-answering, we need to jump back to summary — handle by checking completeness in submit
+      S.board._reaskAfter=true;
+      return;
+    }
+  }
+  // generate
+  if(lc==='1' || /jana|generate|storyboard/.test(lc)){
+    await generateBoardImage();
+    return;
+  }
+  // regenerate / fix consistency from post-image menu
+  if(/regenerate|jana semula|betulkan|consistency|konsisten/.test(lc)){
+    await generateBoardImage(true);
+    return;
+  }
+  if(/video json|json/.test(lc)){
+    await generateVideoJson();
+    return;
+  }
+  if(/video instruction|arahan video|video/.test(lc)){
+    showVideoInstruction();
+    return;
+  }
+  if(/export|shot list|teks/.test(lc)){
+    await exportShotList();
+    return;
+  }
+  // fallback: free chat
+  await boardFreeChat(raw);
+}
+
+async function generateBoardImage(isFix){
+  if(Object.keys(S.board.answers).length<6){
+    addMsg('board','ai', LANG==='ms'?'Jawab semua 6 soalan dahulu sebelum jana.':'Answer all 6 questions before generating.');
+    return;
+  }
+  S.board.busy=true; document.getElementById('board-send').disabled=true;
+  const th=addThinking('board');
+  const note=addMsg('board','ai',t('genImg'));
+  
+  // timeout protection: if stuck > 45s, show retry button
+  const timeoutId = setTimeout(()=>{
+    if(note && note.parentNode){
+      removeThinking('board'); note.remove();
+      addMsg('board','ai', LANG==='ms'
+        ? '⏱️ **Permintaan mengambil masa terlalu lama.** Server mungkin sibuk atau koneksi terputus. Sila cuba lagi.'
+        : '⏱️ **Request is taking too long.** Server might be busy or connection lost. Please try again.');
+      const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
+      renderPicks('board',[{k:'retry-gen',label:retryLabel}]);
+      S.board.busy=false; document.getElementById('board-send').disabled=false;
+    }
+  }, 45000);
+  
+  try{
+    // reference images: product photo from Step 0 + any F5 upload
+    let refs = [];
+    if(S.board._productImgs) refs = refs.concat(S.board._productImgs);
+    if(S.board.answers.cast?.k==='5') refs = refs.concat(attachments.board.slice());
+    let prompt=boardImagePrompt();
+    if(isFix) prompt+='\n\nCRITICAL: previous attempt had inconsistent product look. Re-anchor the EXACT product identity from the reference photo and make it 100% IDENTICAL across ALL panels — same shape, color, logo, details. Do not redesign it.';
+    const {imgUrl}=await geminiImage(prompt, refs, refs.length>0);
+    clearTimeout(timeoutId);
+    removeThinking('board'); note.remove();
+    if(imgUrl){
+      S.board.image=imgUrl;
+      addMsg('board','ai', LANG==='ms'?'✅ **Storyboard anda siap!**':'✅ **Your storyboard is ready!**', imgUrl);
+      await exportShotList(true); // show table
+      await generateVideoJson();  // auto video prompt JSON
+      showPostImageMenu();
+    }else{
+      addMsg('board','ai',t('imgFail'));
+      showPostImageMenu();
+    }
+  }catch(err){
+    clearTimeout(timeoutId);
+    removeThinking('board'); note.remove();
+    const errMsg = String(err.message).slice(0,180);
+    const isServerError = err.message.includes('503') || err.message.includes('timeout') || err.message.includes('429');
+    addMsg('board','ai', isServerError
+      ? (LANG==='ms'?'⚠️ **Server sedang sibuk.** API Gemini mengalami beban tinggi. Sila tunggu beberapa saat dan coba lagi.':'⚠️ **Server busy.** Gemini API is temporarily overloaded. Please wait a moment and try again.')
+      : '⚠️ '+t('errGen')+'\n\n`'+errMsg+'`');
+    const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
+    renderPicks('board',[{k:'retry-gen',label:retryLabel}]);
+  }finally{
+    S.board.busy=false; document.getElementById('board-send').disabled=false;
+  }
+}
+function showPostImageMenu(){
+  const menu = LANG==='ms'
+    ? '✅ **Apa nak buat seterusnya?**\n\n1. Teks arahan video (salin → tampal ke tool video)\n2. Video prompt JSON (jana semula)\n3. Ubah scene / style / durasi\n4. Regenerate poster ini\n5. Jana semula & betulkan konsistensi\n6. Mula semula'
+    : '✅ **What next?**\n\n1. Video instruction text (copy → paste into a video tool)\n2. Video prompt JSON (regenerate)\n3. Change scene / style / duration\n4. Regenerate this poster\n5. Regenerate & fix consistency\n6. Restart';
+  addMsg('board','ai',menu);
+  renderPicks('board',[
+    {k:'video instruction',label: LANG==='ms'?'🎬 Teks arahan video':'🎬 Video instruction text'},
+    {k:'video json',label: LANG==='ms'?'🎞️ Video prompt JSON':'🎞️ Video prompt JSON'},
+    {k:'2',label: LANG==='ms'?'Ubah pilihan':'Change a choice'},
+    {k:'regenerate',label: LANG==='ms'?'Regenerate':'Regenerate'},
+    {k:'betulkan konsistensi',label: LANG==='ms'?'Betulkan konsistensi':'Fix consistency'},
+    {k:'3',label: LANG==='ms'?'Mula semula':'Restart'},
+  ]);
+}
+
+function showVideoInstruction(){
+  const VIDEO_TEXT = 'Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion';
+  const intro = LANG==='ms'
+    ? '🎬 **Teks arahan video** — salin teks di bawah dan tampal ke tool video anda (cth Veo, Runway, Kling), bersama imej storyboard sebagai rujukan:'
+    : '🎬 **Video instruction text** — copy the text below and paste it into your video tool (e.g. Veo, Runway, Kling), along with the storyboard image as reference:';
+  addMsg('board','ai',intro);
+  // copyable box appended to last AI bubble
+  const box=document.getElementById('board-msgs');
+  const bubble=box.querySelector('.msg.ai:last-child .bubble');
+  const wrap=document.createElement('div'); wrap.className='copybox';
+  const pre=document.createElement('div'); pre.className='copybox-text'; pre.textContent=VIDEO_TEXT;
+  const btn=document.createElement('button'); btn.className='copybox-btn';
+  btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg> '+(LANG==='ms'?'Salin':'Copy');
+  btn.onclick=()=>{
+    navigator.clipboard.writeText(VIDEO_TEXT).then(()=>{
+      btn.innerHTML='✓ '+(LANG==='ms'?'Disalin!':'Copied!');
+      toast(LANG==='ms'?'Teks disalin ✓':'Text copied ✓');
+      setTimeout(()=>{btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg> '+(LANG==='ms'?'Salin':'Copy')},2000);
+    });
+  };
+  wrap.appendChild(pre); wrap.appendChild(btn); bubble.appendChild(wrap);
+  box.scrollTop=box.scrollHeight;
+  // tip + re-show menu
+  addMsg('board','ai', LANG==='ms'
+    ? '💡 Tip: muat turun imej storyboard (butang di atas), upload ke tool video sebagai rujukan, kemudian tampal teks di atas.'
+    : '💡 Tip: download the storyboard image (button above), upload it to your video tool as reference, then paste the text above.');
+}
+
+/* ----- reusable copyable code box appended to the last AI bubble ----- */
+function addCopyBox(text, btnLabel){
+  const box=document.getElementById('board-msgs');
+  const bubble=box.querySelector('.msg.ai:last-child .bubble');
+  if(!bubble) return;
+  const wrap=document.createElement('div'); wrap.className='copybox';
+  const pre=document.createElement('div'); pre.className='copybox-text'; pre.textContent=text;
+  const btn=document.createElement('button'); btn.className='copybox-btn';
+  const label=btnLabel||(LANG==='ms'?'Salin':'Copy');
+  btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg> '+label;
+  btn.onclick=()=>{
+    navigator.clipboard.writeText(text).then(()=>{
+      btn.innerHTML='✓ '+(LANG==='ms'?'Disalin!':'Copied!');
+      toast(LANG==='ms'?'Disalin ✓':'Copied ✓');
+      setTimeout(()=>{btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg> '+label},1800);
+    });
+  };
+  wrap.appendChild(pre); wrap.appendChild(btn); bubble.appendChild(wrap);
+  box.scrollTop=box.scrollHeight;
+}
+
+async function generateVideoJson(){
+  const a=S.board.answers;
+  if(Object.keys(a).length<6) return;
+  const panels = a.durasi.k==='1'?8 : a.durasi.k==='3'?9 : 12;
+  const dur = a.durasi.k==='1'?10 : a.durasi.k==='3'?30 : 20;
+  const haveImg = !!S.board.image;
+  const th=addThinking('board');
+  try{
+    const instruction = `Output ONLY valid JSON (no markdown, no backticks, no commentary).${haveImg?' An image of the FINISHED storyboard poster is attached. Read each numbered panel in the image carefully and base every scene STRICTLY on what is actually drawn in that panel — the real visual, composition, action and on-screen text shown. Do NOT invent scenes that are not in the image. Match the JSON scenes 1:1 to the panels in the poster, in the same order.':''} Create a video generation prompt JSON for an AI video tool (Veo/Runway/Kling) based on this storyboard.
+
+Product: ${S.board.product||'product'}. Theme: ${a.tema.val}. Visual style: ${a.style.val}. Total duration: ${dur}s. Aspect ratio: ${a.ar.val}. Cast: ${a.cast.val}. On-screen dialogue language: Malay.
+
+JSON shape:
+{
+  "video_prompt": {
+    "global": {
+      "instruction": "Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion",
+      "product": "...",
+      "style": "...",
+      "aspect_ratio": "...",
+      "total_duration_seconds": ${dur},
+      "motion": "smooth motion",
+      "dialogue_language": "Malay"
+    },
+    "scenes": [
+      { "scene": 1, "start": "0s", "end": "Xs", "visual": "...", "action": "...", "camera": "...", "dialogue_malay": "...", "on_screen_text": "...", "audio_sfx": "..." }
+    ]
+  }
+}
+
+${haveImg?`Generate one scene per panel visible in the attached poster (about ${panels}).`:`Generate exactly ${panels} scenes`} with realistic timestamps that sum to ${dur}s. The final scene is the HERO SHOT end card (logo + tagline + CTA). Keep each field concise. Dialogue must be in Malay. Every "visual" field must describe what is literally shown in that panel of the poster.`;
+
+    // build the user turn — include the finished storyboard image so the model SEES it
+    const parts=[{text:instruction}];
+    if(haveImg){
+      parts.push({inlineData:{mimeType:'image/png', data:S.board.image.split(',')[1]}});
+    }
+    const reply=await geminiText(boardSystemPrompt(),[{role:'user',parts}]);
+    removeThinking('board');
+    let json=reply.replace(/```json|```/g,'').trim();
+    let pretty=json;
+    try{ pretty=JSON.stringify(JSON.parse(json),null,2); }catch(e){}
+    addMsg('board','ai', LANG==='ms'
+      ? '🎞️ **Video Prompt JSON** — dibaca terus dari gambar storyboard, siap untuk salin:'
+      : '🎞️ **Video Prompt JSON** — read directly from the storyboard image, ready to copy:');
+    addCopyBox(pretty, LANG==='ms'?'Salin JSON':'Copy JSON');
+  }catch(err){
+    removeThinking('board');
+    addMsg('board','ai', LANG==='ms'
+      ? '(Video prompt JSON tak dapat dijana kali ini — cuba pilih "Teks arahan video" dalam menu.)'
+      : '(Couldn\'t build the video prompt JSON this time — try "Video instruction text" in the menu.)');
+  }
+}
+
+async function exportShotList(silent){
+  const a=S.board.answers;
+  if(Object.keys(a).length<6){ if(!silent) addMsg('board','ai','—'); return; }
+  S.board.busy=true; document.getElementById('board-send').disabled=true;
+  const th=addThinking('board');
+  try{
+    const panels = a.durasi.k==='1'?8 : a.durasi.k==='3'?9 : 12;
+    const haveImg=!!S.board.image;
+    const instruction = `Produce ONLY a markdown scene table for this storyboard.${haveImg?' An image of the FINISHED storyboard poster is attached — read each numbered panel and base each row STRICTLY on what is actually drawn in that panel, in the same order. Do not invent scenes not in the image.':` ${panels} scenes.`} Columns: Scene | ${LANG==='ms'?'Masa':'Time'} | Visual | ${LANG==='ms'?'Dialog/VO':'Dialog/VO'} | ${LANG==='ms'?'Teks Overlay':'Overlay'} | Audio/SFX.
+Theme: ${a.tema.val}. Style: ${a.style.val}. Language of on-screen text: ${a.bahasa.val}. Duration: ${a.durasi.val}. Aspect: ${a.ar.val}. Cast: ${a.cast.val}.
+Realistic timestamps that add up to the duration. The FINAL scene MUST be labelled "HERO SHOT" in the Scene column. Add one line ABOVE the table: "**Music:** <genre>". Output the music line then the table, nothing else.`;
+    const parts=[{text:instruction}];
+    if(haveImg) parts.push({inlineData:{mimeType:'image/png',data:S.board.image.split(',')[1]}});
+    const reply=await geminiText(boardSystemPrompt(),[{role:'user',parts}]);
+    removeThinking('board');
+    addMsg('board','ai',reply);
+  }catch(err){
+    removeThinking('board');
+    if(!silent) addMsg('board','ai','⚠️ '+t('errGen'));
+  }finally{
+    S.board.busy=false; document.getElementById('board-send').disabled=false;
+  }
+}
+
+async function boardFreeChat(raw){
+  S.board.busy=true; document.getElementById('board-send').disabled=true;
+  const th=addThinking('board');
+  try{
+    const reply=await geminiText(boardSystemPrompt(),[
+      {role:'user',parts:[{text:`Context: user is building a storyboard with these choices: ${JSON.stringify(S.board.answers)}. User said: "${raw}". Reply helpfully and briefly.`}]}
+    ]);
+    removeThinking('board');
+    addMsg('board','ai',reply||'…');
+  }catch(err){
+    removeThinking('board');
+    addMsg('board','ai','⚠️ '+t('errGen'));
+  }finally{
+    S.board.busy=false; document.getElementById('board-send').disabled=false;
+  }
+}
+
+/* =====================================================================
+   INIT
+===================================================================== */
+const THEME_LS='theme_pref_v1';
+const COLOR_THEME_LS='color_theme_pref_v1';
+const COLOR_THEMES=['gold','ocean'];
+let currentColorTheme='gold';
+function applyTheme(theme){
+  if(theme==='dark') document.documentElement.setAttribute('data-theme','dark');
+  else document.documentElement.removeAttribute('data-theme');
+}
+function toggleColorTheme(){
+  const idx=COLOR_THEMES.indexOf(currentColorTheme);
+  const next=COLOR_THEMES[(idx+1)%COLOR_THEMES.length];
+  applyColorTheme(next);
+  try{localStorage.setItem(COLOR_THEME_LS,next)}catch(e){}
+  toast(next==='ocean'?'Ocean':next==='sunset'?'Sunset':'Gold');
+}
+function applyColorTheme(theme){
+  currentColorTheme=theme;
+  if(theme==='gold') document.documentElement.removeAttribute('data-color-theme');
+  else document.documentElement.setAttribute('data-color-theme',theme);
+}
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';
+  const next=cur==='dark'?'light':'dark';
+  applyTheme(next);
+  try{localStorage.setItem(THEME_LS,next)}catch(e){}
+  toast(next==='dark'?(LANG==='ms'?'Mod gelap':'Dark mode'):(LANG==='ms'?'Mod cerah':'Light mode'));
+}
+function init(){
+  // color theme: saved pref, else default gold
+  let savedColor=null; try{savedColor=localStorage.getItem(COLOR_THEME_LS)}catch(e){}
+  applyColorTheme(savedColor||'ocean');
+  // light/dark theme: saved pref, else follow system
+  let savedTheme=null; try{savedTheme=localStorage.getItem(THEME_LS)}catch(e){}
+  if(!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) savedTheme='dark';
+  applyTheme(savedTheme);
+  const fy=document.getElementById('footer-year'); if(fy) fy.textContent=new Date().getFullYear();
+  refreshKeyBtn();
+  setLang('en');
+  renderAttachChips('sheet'); renderAttachChips('board');
+  bootSheet(); bootBoard();
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'){closeLightbox();} });
+  if(!API_KEY){ setTimeout(openKey,400); }
+}
+init();
+</script>
+</body>
+</html>
