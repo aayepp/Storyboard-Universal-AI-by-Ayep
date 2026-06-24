@@ -1664,9 +1664,8 @@ function resetBoard(){
 function askBoardQuestion(qi){
   S.board.qi=qi;
   const q=QUESTIONS[LANG][qi];
-  const lines=q.opts.map(o=>`${o[0]}. ${o[1]}`).join('\n');
   const progress = qi>0 ? `(${qi}/6 ${LANG==='ms'?'selesai':'done'})\n\n` : '';
-  addMsg('board','ai',`${progress}${q.icon} **${q.title}**\n\n${lines}`);
+  addMsg('board','ai',`${progress}${q.icon} **${q.title}**`);
   renderPicks('board', q.opts.map(o=>({k:o[0],label:o[1]})));
 }
 
