@@ -1817,29 +1817,31 @@ async function generateVideoJson(){
   const haveImg = !!S.board.image;
   const th=addThinking('board');
   try{
-    const instruction = `Output ONLY valid JSON (no markdown, no backticks, no commentary).${haveImg?' An image of the FINISHED storyboard poster is attached. Read each numbered panel in the image carefully and base every scene STRICTLY on what is actually drawn in that panel — the real visual, composition, action and on-screen text shown. Do NOT invent scenes that are not in the image. Match the JSON scenes 1:1 to the panels in the poster, in the same order.':''} Create a video generation prompt JSON for an AI video tool (Veo/Runway/Kling) based on this storyboard.
+    const instruction = `Output ONLY valid JSON (no markdown, no backticks, no commentary).${haveImg?' An image of the FINISHED storyboard poster is attached. Read each numbered panel in the image carefully and base every scene STRICTLY on what is actually drawn in that panel — the real visual, composition, action, on-screen text, AND ALL DIALOG shown. Extract EVERY piece of dialogue text visible in each panel caption and on-screen. Do NOT invent scenes or dialog that are not in the image. Match the JSON scenes 1:1 to the panels in the poster, in the same order.':''} Create a video generation prompt JSON for an AI video tool (Veo/Runway/Kling) based on this storyboard.
 
-Product: ${S.board.product||'product'}. Theme: ${a.tema.val}. Visual style: ${a.style.val}. Total duration: ${dur}s. Aspect ratio: ${a.ar.val}. Cast: ${a.cast.val}. On-screen dialogue language: Malay.
+Product: ${S.board.product||'product'}. Theme: ${a.tema.val}. Visual style: ${a.style.val}. Total duration: ${dur}s. Aspect ratio: ${a.ar.val}. Cast: ${a.cast.val}. On-screen dialogue language: ${a.bahasa?.val||'Malay'}.
+
+CRITICAL: The "dialogue_malay" field must contain EVERY spoken line, on-screen text, and dialog instruction from the storyboard panel captions. If a panel shows dialog like "Wow, this quality!" or "Shop Now", it MUST be in the dialogue_malay field exactly as shown. The JSON is the script — include everything needed for video generation.
 
 JSON shape:
 {
   "video_prompt": {
     "global": {
-      "instruction": "Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion",
+      "instruction": "Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in ${a.bahasa?.val||'Malay'}, Characters and Colors in Smooth Motion",
       "product": "...",
       "style": "...",
       "aspect_ratio": "...",
       "total_duration_seconds": ${dur},
       "motion": "smooth motion",
-      "dialogue_language": "Malay"
+      "dialogue_language": "${a.bahasa?.val||'Malay'}"
     },
     "scenes": [
-      { "scene": 1, "start": "0s", "end": "Xs", "visual": "...", "action": "...", "camera": "...", "dialogue_malay": "...", "on_screen_text": "...", "audio_sfx": "..." }
+      { "scene": 1, "start": "0s", "end": "Xs", "visual": "...", "action": "...", "camera": "...", "dialogue_malay": "...[FULL DIALOG FROM PANEL]...", "on_screen_text": "...", "audio_sfx": "..." }
     ]
   }
 }
 
-${haveImg?`Generate one scene per panel visible in the attached poster (about ${panels}).`:`Generate exactly ${panels} scenes`} with realistic timestamps that sum to ${dur}s. The final scene is the HERO SHOT end card (logo + tagline + CTA). Keep each field concise. Dialogue must be in Malay. Every "visual" field must describe what is literally shown in that panel of the poster.`;
+${haveImg?`Generate one scene per panel visible in the attached poster (about ${panels}).`:`Generate exactly ${panels} scenes`} with realistic timestamps that sum to ${dur}s. The final scene is the HERO SHOT end card (logo + tagline + CTA). Keep each field concise. Dialogue must be in ${a.bahasa?.val||'Malay'}. Every "visual" field must describe what is literally shown in that panel of the poster. IMPORTANT: dialogue_malay must include EVERY line of dialog from the storyboard panel captions — this becomes the video script.`;
 
     // build the user turn — include the finished storyboard image so the model SEES it
     const parts=[{text:instruction}];
