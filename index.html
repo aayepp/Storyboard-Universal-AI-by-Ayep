@@ -567,60 +567,49 @@
   .footer-credit strong{color:var(--ink);font-weight:600}
   .footer-credit em{font-style:italic;color:var(--gold-deep)}
   .footer-made{color:var(--muted-2)}
+  
+  /* ===== Config dropdown layout ===== */
+  .config-container{display:grid;gap:12px;padding:20px;max-width:1100px;margin:0 auto}
+  .config-item{border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;background:var(--panel)}
+  .config-header{
+    width:100%;padding:16px;border:none;background:transparent;
+    cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+    font-size:14px;font-weight:500;color:var(--ink);text-align:left;
+    transition:background .2s;font-family:inherit;
+  }
+  .config-header:hover{background:var(--line)}
+  .config-header.active{background:var(--line-strong)}
+  .chevron{transition:transform .3s}
+  .config-header.active .chevron{transform:rotate(180deg)}
+  .config-label{display:flex;align-items:center;gap:10px;flex:1;font-weight:600;color:var(--ink)}
+  .config-body{padding:0 16px;max-height:0;overflow:hidden;opacity:0;transition:all .3s ease}
+  .config-body.show{padding:0 16px 16px;max-height:500px;opacity:1}
+  .config-question{margin:12px 0 10px;font-size:13px;color:var(--ink-soft);font-weight:500}
+  .config-input{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+    background:var(--panel);color:var(--ink);font-family:inherit;font-size:14px;
+    transition:border-color .2s;
+  }
+  .config-input:focus{outline:none;border-color:var(--gold);background:var(--paper-2)}
+  
+  /* ===== 6-Roles Badge ===== */
+  .roles-badge{
+    padding:12px 20px;background:var(--glass-panel);
+    border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    box-shadow:var(--glass-inset);
+    font-size:12px;color:var(--ink-soft);text-align:center;line-height:1.6;
+  }
+  .roles-badge em{font-style:italic;color:var(--gold);font-weight:500}
+  
   @media(max-width:560px){
     .footer-stats{gap:14px}
     .fnum{font-size:20px}
     .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px}
   }
 
-
-  /* Affiliate glass morphism */
-  #view-affiliate .affiliate-glass {
-    background: var(--glass-panel);
-    -webkit-backdrop-filter: var(--glass-blur);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow), var(--glass-inset);
-  }
-  #view-affiliate .affiliate-input {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    color: var(--ink);
-  }
-  #view-affiliate .affiliate-input:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 2px rgba(184,153,104,.1);
-  }
-  #view-affiliate .affiliate-btn {
-    background: var(--gold);
-    color: #fff;
-    border: none;
-    font-weight: 600;
-    transition: all 0.2s;
-    cursor: pointer;
-  }
-  #view-affiliate .affiliate-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-  #view-affiliate .affiliate-btn-secondary {
-    background: var(--paper);
-    color: var(--ink);
-    border: 1px solid var(--line);
-  }
-  #view-affiliate .affiliate-card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 16px;
-    transition: all 0.2s;
-  }
-  #view-affiliate .affiliate-card:hover {
-    box-shadow: var(--shadow);
-  }
 </style>
 </head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <body>
 
 <header class="topbar">
@@ -656,11 +645,13 @@
     <button class="tab" id="tab-board" onclick="switchTab('board')">
       <span class="num">2</span><span data-i="tab2">Universal Storyboard Gen</span>
     </button>
-    <button class="tab" id="tab-affiliate" onclick="switchTab('affiliate')">
-      <span class="num">3</span><span>Affiliate Generator</span>
-    </button>
   </div>
 </header>
+
+<!-- 6-Roles Badge -->
+<div class="roles-badge">
+  🎯 <em>Affiliate Strategist</em> • 🎬 <em>UGC Director</em> • 📖 <em>Storyteller</em> • 🎧 <em>ASMR Director</em> • ⚙️ <em>Video Engineer</em> • 🎨 <em>Image Engineer</em>
+</div>
 
 <main>
   <!-- ===================== TAB 1: SMART SHEET ===================== -->
@@ -714,7 +705,149 @@
           <span class="eyebrow">Tab 2</span>
           <h2 class="display" data-i="boardTitle">Storyboard Poster Generator</h2>
         </div>
-        <div class="msgs" id="board-msgs"></div>
+        
+        <!-- Config Questions Container -->
+        <div class="config-container" id="board-config">
+          <!-- Q1: Tema -->
+          <div class="config-item">
+            <button class="config-header" onclick="toggleConfigDropdown(this)">
+              <span class="config-label">1️⃣ TEMA</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </button>
+            <div class="config-body">
+              <p class="config-question">What is the video theme or format?</p>
+              <select id="input-tema" class="config-input">
+                <option value="">— Choose video theme —</option>
+                <option value="UGC (User Generated Content)">UGC (User Generated Content)</option>
+                <option value="Unboxing">Unboxing</option>
+                <option value="Stop Motion">Stop Motion</option>
+                <option value="ASMR">ASMR</option>
+                <option value="Tutorial / How-To">Tutorial / How-To</option>
+                <option value="Testimonial / Review">Testimonial / Review</option>
+                <option value="Lifestyle / Ambient">Lifestyle / Ambient</option>
+                <option value="Comedy / Humorous">Comedy / Humorous</option>
+                <option value="Product Showcase / Demo">Product Showcase / Demo</option>
+                <option value="Before & After">Before & After</option>
+                <option value="Behind-the-Scenes">Behind-the-Scenes</option>
+                <option value="Influencer Style">Influencer Style</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Q2: Style Visual -->
+          <div class="config-item">
+            <button class="config-header" onclick="toggleConfigDropdown(this)">
+              <span class="config-label">2️⃣ VISUAL STYLE</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </button>
+            <div class="config-body">
+              <p class="config-question">What cinematography & lighting style?</p>
+              <select id="input-style" class="config-input">
+                <option value="">— Choose lighting style —</option>
+                <option value="Cinematic">Cinematic</option>
+                <option value="Classic / Traditional">Classic / Traditional</option>
+                <option value="Moody / Dark">Moody / Dark</option>
+                <option value="Bright & Airy">Bright & Airy</option>
+                <option value="Warm Tone">Warm Tone</option>
+                <option value="Cool Tone">Cool Tone</option>
+                <option value="High Contrast">High Contrast</option>
+                <option value="Soft Focus">Soft Focus</option>
+                <option value="Dramatic Lighting">Dramatic Lighting</option>
+                <option value="Natural Lighting">Natural Lighting</option>
+                <option value="Studio Lighting">Studio Lighting</option>
+                <option value="Neon / Modern">Neon / Modern</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Q3: Bahasa -->
+          <div class="config-item">
+            <button class="config-header" onclick="toggleConfigDropdown(this)">
+              <span class="config-label">3️⃣ LANGUAGE</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </button>
+            <div class="config-body">
+              <p class="config-question">What language for on-screen text?</p>
+              <select id="input-bahasa" class="config-input">
+                <option value="">— Choose —</option>
+                <option value="Malay">Malay</option>
+                <option value="English">English</option>
+                <option value="Mixed">Mixed (Malay + English)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Q4: Duration -->
+          <div class="config-item">
+            <button class="config-header" onclick="toggleConfigDropdown(this)">
+              <span class="config-label">4️⃣ DURATION</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </button>
+            <div class="config-body">
+              <p class="config-question">How long should the video be?</p>
+              <select id="input-durasi" class="config-input">
+                <option value="">— Choose —</option>
+                <option value="10 secs">10 seconds</option>
+                <option value="15 secs">15 seconds</option>
+                <option value="20 secs">20 seconds</option>
+                <option value="30 secs">30 seconds</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Q5: Aspect Ratio -->
+          <div class="config-item">
+            <button class="config-header" onclick="toggleConfigDropdown(this)">
+              <span class="config-label">5️⃣ ASPECT RATIO</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </button>
+            <div class="config-body">
+              <p class="config-question">Choose your platform's aspect ratio:</p>
+              <select id="input-ar" class="config-input">
+                <option value="">— Choose —</option>
+                <option value="16:9 (Landscape)">16:9 (Landscape)</option>
+                <option value="9:16 (Portrait)">9:16 (Portrait)</option>
+                <option value="1:1 (Square)">1:1 (Square)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Q6: Cast / Model -->
+          <div class="config-item">
+            <button class="config-header" onclick="toggleConfigDropdown(this)">
+              <span class="config-label">6️⃣ CAST / MODEL</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </button>
+            <div class="config-body">
+              <p class="config-question">What type of cast or talent?</p>
+              <select id="input-cast" class="config-input">
+                <option value="">— Choose cast type —</option>
+                <option value="Relatable Person (Everyday)">Relatable Person (Everyday)</option>
+                <option value="Professional / Expert">Professional / Expert</option>
+                <option value="Young Woman / Female">Young Woman / Female</option>
+                <option value="Young Man / Male">Young Man / Male</option>
+                <option value="Family / Group">Family / Group</option>
+                <option value="Diverse / Mixed Cast">Diverse / Mixed Cast</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages Area (below config) -->
+        <div class="msgs" id="board-msgs" style="margin-top:30px"></div>
+        
         <div class="composer">
           <div class="attach-row" id="board-attach"></div>
           <div class="composer-input">
@@ -773,144 +906,6 @@
       </aside>
     </div>
   </section>
-
-  <!-- ===================== TAB 3: AFFILIATE GENERATOR ===================== -->
-  <section class="view" id="view-affiliate">
-    <div style="max-width:1120px;margin:0 auto;padding:22px;">
-      <div style="text-align:center;margin-bottom:28px;">
-        <h2 style="font-size:20px;font-weight:600;color:var(--gold);margin:0 0 8px 0;">Affiliate Storyboard Generator</h2>
-        <p style="color:var(--muted);margin:0;font-size:13px;">Create professional ASMR affiliate storyboards with Google Gemini</p>
-      </div>
-
-      <div class="affiliate-glass" style="border-radius:var(--radius);padding:20px;margin-bottom:18px;">
-        <h3 style="font-size:16px;font-weight:600;color:var(--ink);margin:0 0 14px 0;">📸 Product Image (Required)</h3>
-        <p style="color:var(--muted);margin:0 0 12px 0;font-size:13px;">Upload a clear photo of your product for accurate storyboard generation</p>
-        
-        <div id="affiliateImagePreview" style="margin-bottom:14px;"></div>
-        
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="document.getElementById('affiliateImageInput').click()" class="chip" style="display:flex;align-items:center;gap:7px;">
-            <span>📎 Attach image</span>
-          </button>
-          <button onclick="clearAffiliateImage()" class="chip" style="display:flex;align-items:center;gap:7px;">
-            <span>✕ Clear</span>
-          </button>
-        </div>
-        <input type="file" id="affiliateImageInput" accept="image/*" style="display:none;" onchange="handleAffiliateImageUpload(event)" />
-      </div>
-
-      <div class="affiliate-glass" style="border-radius:var(--radius);padding:20px;margin-bottom:18px;">
-        <h3 style="font-size:16px;font-weight:600;color:var(--ink);margin:0 0 14px 0;">Configure Your Storyboard</h3>
-        
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:14px;">
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Model Mode</label>
-            <select id="affiliateModelMode" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
-              <option value="auto">AUTO (recommended)</option>
-              <option value="show">SHOW MODEL</option>
-              <option value="faceless">FACELESS</option>
-              <option value="none">NO MODEL</option>
-            </select>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Product Name</label>
-            <input type="text" id="affiliateProductName" placeholder="e.g., Luxury Skincare Serum" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);" />
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Duration</label>
-            <select id="affiliateDuration" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
-              <option value="5">5 seconds</option>
-              <option value="10">10 seconds</option>
-              <option value="15" selected>15 seconds</option>
-              <option value="20">20 seconds</option>
-              <option value="30">30 seconds</option>
-              <option value="45">45 seconds</option>
-              <option value="60">60 seconds</option>
-            </select>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Platform</label>
-            <select id="affiliatePlatform" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
-              <option value="tiktok">TikTok</option>
-              <option value="shopee">Shopee</option>
-              <option value="tokopedia">Tokopedia</option>
-            </select>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Language</label>
-            <select id="affiliateLanguage" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
-              <option value="english" selected>English</option>
-              <option value="indonesia">Bahasa Indonesia</option>
-            </select>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Style</label>
-            <select id="affiliateStyle" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
-              <option value="unboxing">ASMR UNBOXING</option>
-              <option value="experience" selected>PRODUCT EXPERIENCE</option>
-              <option value="satisfying">SATISFYING</option>
-            </select>
-          </div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
-          <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Target Audience</label>
-          <textarea id="affiliateAudience" placeholder="e.g., Gen Z females, beauty enthusiasts..." class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);min-height:80px;font-family:inherit;"></textarea>
-        </div>
-
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="generateAffiliateStoryboard()" class="chip" style="display:flex;align-items:center;gap:7px;background:var(--gold);color:#fff;border-color:var(--gold);">
-            <span>✨ Generate Storyboard</span>
-          </button>
-          <button onclick="resetAffiliateForm()" class="chip" style="display:flex;align-items:center;gap:7px;">
-            <span>↻ Reset</span>
-          </button>
-        </div>
-      </div>
-
-      <div id="affiliateLoadingState" style="display:none;text-align:center;padding:40px 20px;color:var(--muted);">
-        <div style="display:inline-block;width:24px;height:24px;border:2px solid var(--gold-soft);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px;"></div>
-        <p>Generating your storyboard...</p>
-      </div>
-
-      <div id="affiliateOutputSection" style="display:none;">
-        <div style="text-align:center;margin-bottom:20px;">
-          <h3 style="color:var(--gold);margin:0 0 6px 0;">Your Professional Storyboard</h3>
-          <p style="color:var(--muted);margin:0 0 12px 0;font-size:12px;" id="affiliateMetadata"></p>
-          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-            <button onclick="exportAffiliateStoryboardAsImage()" class="chip" style="display:flex;align-items:center;gap:7px;background:var(--gold);color:#fff;border-color:var(--gold);">
-              <span>⬇️ Download Image</span>
-            </button>
-            <button onclick="printAffiliateStoryboard()" class="chip" style="display:flex;align-items:center;gap:7px;">
-              <span>🖨️ Print</span>
-            </button>
-          </div>
-        </div>
-        <div id="affiliateSceneContainer" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px;"></div>
-        <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;">
-          <h3 style="color:var(--gold);margin:0 0 14px 0;">Master Prompts</h3>
-          <div style="margin-bottom:14px;">
-            <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Image Prompt</p>
-            <div id="affiliateMasterImagePrompt" style="background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;font-size:12px;color:var(--muted);max-height:150px;overflow-y:auto;"></div>
-          </div>
-          <div>
-            <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Video Prompt</p>
-            <div id="affiliateMasterVideoPrompt" style="background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;font-size:12px;color:var(--muted);max-height:150px;overflow-y:auto;"></div>
-          </div>
-        </div>
-      </div>
-
-      <div id="affiliateErrorState" style="display:none;margin-top:20px;">
-        <div style="background:rgba(168,83,63,.1);border:1px solid var(--danger);color:var(--danger);padding:12px;border-radius:var(--radius-sm);margin-bottom:12px;" id="affiliateErrorMsg"></div>
-      </div>
-    </div>
-  </section>
-
 </main>
 
 <footer class="site-footer">
@@ -928,7 +923,7 @@
       </div>
     </div>
 
-    <p class="footer-note" data-i="footerNote">Built for advertising creatives — turn a single product photo into reference sheets and shoot-ready storyboards. Powered by Google Gemini. Images are AI-generated and may vary; review before production use. Your API key stays in your browser only.</p>
+    <p class="footer-note" data-i="footerNote"><strong>6-Role Framework:</strong> This tool combines 🎯 Affiliate Strategist, 🎬 UGC Director, 📖 Storyteller, 🎧 ASMR Director, ⚙️ Video Engineer, and 🎨 Image Engineer expertise to every output. Built for advertising creatives — turn a single product photo into reference sheets and shoot-ready storyboards. Powered by Google Gemini. Images are AI-generated and may vary; review before production use. Your API key stays in your browser only.</p>
 
     <div class="footer-bottom">
       <span class="footer-credit">© <span id="footer-year">2026</span> — <strong>Smart Universal Gen <em>by Ayep</em></strong>. <span data-i="footerRights">All rights reserved.</span></span>
@@ -1085,10 +1080,8 @@ function toast(msg){
 function switchTab(tab){
   document.getElementById('tab-sheet').classList.toggle('on',tab==='sheet');
   document.getElementById('tab-board').classList.toggle('on',tab==='board');
-  document.getElementById('tab-affiliate').classList.toggle('on',tab==='affiliate');
   document.getElementById('view-sheet').classList.toggle('on',tab==='sheet');
   document.getElementById('view-board').classList.toggle('on',tab==='board');
-  document.getElementById('view-affiliate').classList.toggle('on',tab==='affiliate');
 }
 function refreshKeyBtn(){
   const b=document.getElementById('keyBtn');
@@ -1128,6 +1121,19 @@ function copyHowtoVideo(btn){
   });
 }
 function closeKey(){document.getElementById('keyModal').classList.remove('show')}
+function toggleConfigDropdown(btn){
+  const item=btn.closest('.config-item');
+  const body=item.querySelector('.config-body');
+  const allItems=document.querySelectorAll('.config-item');
+  allItems.forEach(i=>{
+    if(i!==item){
+      i.querySelector('.config-header').classList.remove('active');
+      i.querySelector('.config-body').classList.remove('show');
+    }
+  });
+  btn.classList.toggle('active');
+  body.classList.toggle('show');
+}
 function saveKey(){
   const v=document.getElementById('keyInput').value.trim();
   const ind=document.getElementById('keyValidInd');
@@ -1337,30 +1343,31 @@ async function geminiImage(promptText, refImages, preferPro){
 ===================================================================== */
 function sheetSystemPrompt(){
   const lang = LANG==='ms'?'Bahasa Melayu (boleh campur English untuk istilah industri)':'English (you may mix Malay terms if user does)';
-  return `You are a Smart Reference Sheet Creator for advertising production. You help users create CHARACTER or PRODUCT reference sheets as professional visual grid images.
+  return `You are a Smart Reference Sheet Creator embodying 6 expert roles:
 
-REPLY LANGUAGE: ${lang}. Keep replies concise and friendly. Use numbered menus.
+🎯 **AFFILIATE STRATEGIST** — Keep the character/product on-brand. Highlight selling points, unique features, USP.
+🎬 **UGC DIRECTOR** — Show character authentically (relatable expressions, natural poses). Show product in real-world context.
+📖 **PRODUCT STORYTELLING DIRECTOR** — Each angle tells part of the narrative. Front = hero view. 3/4 = action view. Details = craftsmanship story.
+🎧 **ASMR/Sensory DIRECTOR** — Suggest textures, materials, tactile details in angle labels. Help visualize sensory appeal.
+⚙️ **AI VIDEO PROMPT ENGINEER** — Frame each angle with video production intent: "usable for mid-shot", "detail for close-up montage".
+🎨 **AI IMAGE PROMPT ENGINEER** — Precise visual directives: lighting setup, background treatment, focal depth, color consistency.
 
-STRICT FLOW (one step per reply, never skip):
-STEP 1 — Welcome: ask user to upload an image + give a name (e.g. "ASUS ZenBook 14 OLED" or "Sarah, 28yo").
-STEP 2 — Verify object: confirm the EXACT name & model. Only real colors, real materials, real features, exact logo. No hallucination.
-STEP 3 — Suggest settings then show this menu:
+REPLY LANGUAGE: ${lang}. Concise, warm, numbered menus.
+
+STRICT FLOW (one step per reply):
+STEP 1 — Welcome: ask for image + name.
+STEP 2 — Verify EXACT name/model/character. Only real details, no hallucination.
+STEP 3 — Suggest settings + menu:
   For CHARACTER: STYLE, EXPRESSIONS, AGE, COLOR.
   For PRODUCT: VIEWS, POSITIONS, DETAIL, COLORS, STYLE.
-  Recommend one option per setting with a short reason. Then show:
-  "1️⃣ Generate visual sheet image now
-   2️⃣ Change one setting
-   3️⃣ More info on specs
-   4️⃣ Choose angle count (8 / 10 / 12)"
-STEP 4 — Act on the choice.
+  Then show: "1️⃣ Generate now | 2️⃣ Change setting | 3️⃣ More info | 4️⃣ Angle count"
+STEP 4 — Act on choice.
 
-IMAGE GENERATION RULE: You DO NOT generate images yourself in text. When the user is ready to generate (chose option 1, or after picking angle count), end your reply with a single line exactly:
+IMAGE GENERATION RULE: When ready (option 1 or after picking angles), end reply with:
 [[GENERATE_SHEET]]
-…on its own line. The app will then render a real image. Before that line, give a one-sentence confirmation of what will be drawn.
+on its own line. App renders real image. Before that, confirm in one sentence.
 
-NEVER write "[[GENERATE_SHEET]]" until the object name is verified and settings are chosen. If no image was uploaded yet, ask for one first — do NOT emit the token.
-
-Keep menus as numbered lists so the app can show quick-pick buttons. Always be warm and direct.`;
+Never emit [[GENERATE_SHEET]] until image uploaded + name verified + settings chosen.`;
 }
 
 function sheetImagePrompt(){
@@ -1368,23 +1375,48 @@ function sheetImagePrompt(){
   const ang=S.sheet.angles||10;
   const isChar=(S.sheet.type==='character');
   const hasRef = (S.sheet._lastImgs && S.sheet._lastImgs.length>0);
-  return `Create ONE complete professional REFERENCE SHEET as a single unified grid image.
+  return `You are a combined REFERENCE SHEET CREATOR with 6 expert lenses. Create ONE professional reference sheet grid image.
 
-${hasRef?`REFERENCE PHOTO PROVIDED: The attached image shows the EXACT real subject to use. Study it closely — its precise shape, exact colors, logo, text, buttons, ports, materials and proportions. Reproduce THIS SAME subject in every panel. Do NOT invent, redesign, or substitute a different object. The reference photo is the single source of truth for what the subject looks like.
+**ROLE FRAMEWORK:**
+🎯 **Affiliate/Brand** — Keep product/character on-brand, unique features visible, value proposition clear.
+🎬 **UGC Director** — Authentic poses, relatable expressions, natural product usage angles.
+📖 **Storyteller** — Each angle = part of narrative. Front=hero. 3/4=action. Detail=craftsmanship.
+🎧 **ASMR Director** — Label textures, materials, tactile qualities. ["Soft fabric"], ["Metallic finish"], ["Smooth texture"].
+⚙️ **Video Engineer** — Frame each angle as video-usable: "Mid-shot angle", "Close-up detail", "Wide lifestyle shot".
+🎨 **Image Engineer** — Precise visuals: studio lighting, background neutrality, color accuracy, focal depth per angle.
+
+${hasRef?`REFERENCE PHOTO PROVIDED: Study the attached image closely. Its shape, colors, logo, text, buttons, materials, proportions are EXACT. Reproduce identically in every panel. Do NOT invent or substitute. Reference = source of truth.
 `:''}Subject: ${o}
 Type: ${isChar?'CHARACTER':'PRODUCT'} reference sheet.
-Layout: a clean studio reference sheet with a header bar reading "${isChar?'CHARACTER SHEET':'PRODUCT SHEET'}" and the subject name "${o}", followed by an organized grid of ${ang} labelled angle/view panels (front, 3/4, side, back, top, detail/close-ups${isChar?', plus expression variations':''}).
-Style: professional, neutral studio background, soft even lighting, consistent identity across every panel — same ${isChar?'face, hair, outfit, body proportions':'shape, color, logo, materials, buttons/ports'} in every panel${hasRef?', matching the reference photo exactly':''}. ${isChar?'':'Keep the logo and brand details EXACT and authentic — do not invent features.'}
-Each panel clearly labelled with its angle/view name. Tidy aligned grid, white/light background, thin borders, modern sans-serif labels. ONE single image only.`;
+
+Layout: Professional studio sheet. Header bar: "${isChar?'CHARACTER SHEET':'PRODUCT SHEET'}" + subject name "${o}". Grid of ${ang} labelled angle/view panels.
+
+Angles: ${isChar?'Front, 3/4, side, back, top, detail/close-ups, expression variations':'Front, 3/4, side, back, top/bottom, detail shots, lifestyle context'}
+
+Style: Professional, neutral studio background, soft even lighting. IDENTICAL ${isChar?'face, hair, outfit, body proportions':'shape, color, logo, materials, buttons'} across every panel${hasRef?', matching reference photo exactly':''}. ${isChar?'No inconsistency in appearance.':'Authentic logo and brand details only.'}
+
+Each panel: Clear label (angle name + sensory/video cue). Tidy grid, white/light bg, thin borders, modern sans-serif. ONE image only.`;
 }
 
 function boardSystemPrompt(){
   const lang = LANG==='ms'?'Bahasa Melayu':'English';
-  return `You are a Creative Director & Storyboard Artist AI for video ads (TVC, social video). Your job: guide the user to build a STORYBOARD POSTER (one static grid image).
+  return `You embody 6 expert roles in ONE AI director:
 
-REPLY LANGUAGE: ${lang}. Be concise, warm, use numbered menus.
+🎯 **AFFILIATE STRATEGIST** — Maximize conversion intent. Every scene has a clear CTA, benefits highlight, value proposition. Think ROI, click-through rates, viewer motivation to act.
 
-The app handles the 6-question flow and image generation itself — you are only invoked for free-form help, clarifications, and the final scene table. Follow the app's instruction in each message. When asked to produce the scene table, output a markdown table with columns: Scene | Time | Visual | Dialog/VO | Overlay Text | Audio/SFX. The final scene MUST be the HERO SHOT (label it clearly). Number of scenes: 10s=8, 20s=12, 30s=9 panels.`;
+🎬 **UGC DIRECTOR** — Create authentic, relatable content. Organic movements, natural dialogue, everyday scenarios. Make viewers see themselves in the product story.
+
+📖 **PRODUCT STORYTELLING DIRECTOR** — Craft narrative arc: problem intro → product reveal → transformation/benefit → hero shot/CTA. Emotional resonance, not just features.
+
+🎧 **ASMR CONTENT DIRECTOR** — Pacing cues: moments of silence, sensory details (textures, sounds, tactile feedback). Suggest audio mood: "satisfying click", "soft ambient", "product jingle". Add breathing room between intense scenes.
+
+⚙️ **AI VIDEO PROMPT ENGINEER** — Output structured, specific scene descriptions: camera angle (wide/close/detail), motion (static/slow pan/zoom), lighting mood, sound design cue.
+
+🎨 **AI IMAGE PROMPT ENGINEER** — Detailed visual language: composition rules, lighting technique, color palette, mood, specific product angle/zoom level, background treatment.
+
+REPLY LANGUAGE: ${lang}. Be concise, warm, numbered menus.
+
+Your job: guide storyboard builds. When asked for scene table, output markdown with columns: Scene | Time | Visual | Dialog/VO | Overlay | Audio/SFX. Final scene = HERO SHOT. Keep affiliate + storytelling intent alive in every scene.`;
 }
 
 function boardImagePrompt(){
@@ -1398,16 +1430,38 @@ function boardImagePrompt(){
   const lang = a.bahasa?.k==='2'?'English':a.bahasa?.k==='3'?'mixed Malay+English':'Bahasa Melayu';
   const product = S.board.product || 'the user\'s product';
   const hasRef = !!S.board._productImgs || (a.cast?.k==='5' && attachments.board.length>0);
-  return `Create ONE complete advertising STORYBOARD POSTER as a single static grid image.
+  return `You are a combined AI STORYBOARD CREATOR with 6 expert lenses. Create ONE complete advertising STORYBOARD POSTER as a single static grid image.
 
-${hasRef?`REFERENCE PHOTO PROVIDED: The attached image shows the EXACT product to use. Study it carefully — its precise shape, exact colors, logo placement, buttons, ports, proportions and materials. Reproduce THIS SAME product in every single panel. Do NOT redesign, restyle, recolor, or imagine a different version of it. Treat the reference as the single source of truth for the product's appearance.
-`:''}PRODUCT: ${product}. Every panel and the Hero Shot must feature this exact product.
-HEADER: large title "STORYBOARD", subtitle = "${product}", and badges: DURATION ${dur} • STYLE ${style} • FORMAT ${ar} • CAST ${cast}.
-GRID: exactly ${panels} numbered scene panels arranged 4 per row. Each panel: scene number (top-left), timestamp (top-right), the scene illustration in "${style}" style, and a one-line caption below.
-THEME: ${tema}. On-screen text/captions in ${lang}. Each panel composition reflects aspect ratio ${ar}.
-FINAL PANEL = HERO SHOT: ${product} centered, clean, best lighting, with logo + tagline + CTA, acting as the end card. Label it "HERO SHOT".
-CONSISTENCY (CRITICAL): ${product} must look 100% IDENTICAL across all ${panels} panels — same exact shape, color, logo, and details${hasRef?' as the reference photo':''}. Only the camera angle/shot type changes between panels; the product identity never changes. ${hasRef?'If unsure about a detail, copy it from the reference photo rather than inventing it.':''}
-VISUAL: light/white background, thin black border around the poster, bold modern sans-serif header, tidy aligned grid. ONE single poster image only.`;
+**ROLE FRAMEWORK:**
+🎯 **Affiliate Strategist** — Ensure every scene drives toward conversion. CTA clarity, benefit messaging, urgency if applicable.
+🎬 **UGC Director** — Make it relatable, organic. Real person vibes, natural product usage, authentic reactions.
+📖 **Storyteller** — Build narrative arc: Problem → Solution → Transformation → Call-to-Action. Emotional journey.
+🎧 **ASMR Director** — Include sensory cues in captions: [soft click], [satisfying texture], [gentle ambient sound]. Pace it with breathing room.
+⚙️ **Video Prompt Engineer** — Frame each scene for video: camera direction, movement type, lighting state, mood.
+🎨 **Image Engineer** — Precise visual language: composition, lighting technique, color palette, product angle/zoom.
+
+${hasRef?`REFERENCE PHOTO PROVIDED: The attached image shows the EXACT product. Study its shape, colors, logo placement, buttons, proportions, materials. Reproduce THIS SAME product identically in every panel. Do NOT redesign or recolor.
+`:''}PRODUCT: ${product}. EVERY panel must feature this exact product.
+
+HEADER: Large bold title "STORYBOARD", subtitle = "${product}", badges: DURATION ${dur} • STYLE ${style} • FORMAT ${ar} • CAST ${cast}.
+
+GRID: Exactly ${panels} numbered scene panels in 4-per-row layout.
+
+EACH PANEL:
+- Top-left: Scene number
+- Top-right: Timestamp
+- Center: Scene illustration in "${style}" style (${tema} theme, ${cast} cast, ${lang} on-screen text)
+- Bottom: One-line caption + ASMR/sensory cue in brackets [like this]
+
+NARRATIVE STRUCTURE (Storytelling + Affiliate Intent):
+Panels 1-2: Problem/Hook — grab attention, relatable pain point
+Panels 3-${Math.floor(panels/2)}: Product Reveal + Usage — show it in action, benefits visible
+Panels ${Math.floor(panels/2)+1}-${panels-1}: Transformation/Lifestyle — user enjoying benefit, emotional payoff
+Panel ${panels}: HERO SHOT — ${product} centered, pristine lighting, logo+tagline+CTA clear. Label "HERO SHOT".
+
+CONSISTENCY (CRITICAL): ${product} must be 100% IDENTICAL across ALL ${panels} panels — same shape, color, logo, details${hasRef?' as reference photo':''}. Only camera angle/shot type changes; product identity stays constant.
+
+VISUAL STYLE: Light/white background, thin black border, bold modern sans-serif header, tidy grid alignment. ONE poster image only.`;
 }
 
 /* =====================================================================
@@ -1426,8 +1480,8 @@ function bootSheet(){
   S.sheet={step:1,history:[],image:null,busy:false,object:null,type:null,angles:null};
   setSheetStep(1);
   const greet = LANG==='ms'
-    ? 'Hai! 👋 Saya bantu anda bina **reference sheet** watak atau produk sebagai satu imej grid profesional.\n\n**Langkah 1:** Lampir gambar (butang 📎 di bawah) + bagi nama.\nContoh: gambar laptop + "ASUS ZenBook 14 OLED" atau gambar orang + "Sarah, 28 tahun".'
-    : 'Hi! 👋 I help you build a **character or product reference sheet** as one professional grid image.\n\n**Step 1:** Attach an image (📎 button below) + give it a name.\nExample: a laptop photo + "ASUS ZenBook 14 OLED" or a person + "Sarah, 28yo".';
+    ? 'Hai! 👋 Saya **6-role Creative Director AI**: 🎯 Affiliate Strategist • 🎬 UGC Director • 📖 Storyteller • 🎧 ASMR Director • ⚙️ Video Engineer • 🎨 Image Engineer.\n\nSaya bantu anda bina **reference sheet** watak atau produk sebagai satu imej grid profesional.\n\n**Langkah 1:** Lampir gambar (butang 📎 di bawah) + bagi nama.\nContoh: gambar laptop + "ASUS ZenBook 14 OLED" atau gambar orang + "Sarah, 28 tahun".'
+    : 'Hi! 👋 I\'m a **6-role Creative Director AI**: 🎯 Affiliate Strategist • 🎬 UGC Director • 📖 Storyteller • 🎧 ASMR Director • ⚙️ Video Engineer • 🎨 Image Engineer.\n\nI help you build a **character or product reference sheet** as one professional grid image.\n\n**Step 1:** Attach an image (📎 button below) + give it a name.\nExample: a laptop photo + "ASUS ZenBook 14 OLED" or a person + "Sarah, 28yo".';
   addMsg('sheet','ai',greet);
 }
 function resetSheet(){bootSheet();renderAttachChips('sheet');toast(LANG==='ms'?'Sheet dimulakan semula':'Sheet restarted')}
@@ -1622,8 +1676,8 @@ function bootBoard(){
   S.board={step:0,qi:0,answers:{},history:[],image:null,busy:false,productKnown:false,product:null};
   clearSummary();
   const greet = LANG==='ms'
-    ? 'Hai! 👋 Saya **Creative Director AI**. Kita akan bina **poster storyboard** iklan anda.\n\n**Langkah 1:** Lampir gambar produk dahulu (📎 di bawah), kemudian hantar. Selepas itu, 6 soalan akan bermula.'
-    : 'Hi! 👋 I\'m your **Creative Director AI**. We\'ll build your ad **storyboard poster**.\n\n**Step 1:** Attach a product image first (📎 below), then send. After that, the 6 questions begin.';
+    ? 'Hai! 👋 Saya **6-role Creative Director AI**: 🎯 Affiliate Strategist • 🎬 UGC Director • 📖 Storyteller • 🎧 ASMR Director • ⚙️ Video Engineer • 🎨 Image Engineer.\n\nKita akan bina **poster storyboard** iklan anda dengan semua rol ini.\n\n**Langkah 1:** Lampir gambar produk dahulu (📎 di bawah), kemudian hantar. Selepas itu, 6 soalan akan bermula.'
+    : 'Hi! 👋 I\'m a **6-role Creative Director AI**: 🎯 Affiliate Strategist • 🎬 UGC Director • 📖 Storyteller • 🎧 ASMR Director • ⚙️ Video Engineer • 🎨 Image Engineer.\n\nWe\'ll build your ad **storyboard poster** with all these roles applied.\n\n**Step 1:** Attach a product image first (📎 below), then send. After that, the 6 questions begin.';
   addMsg('board','ai',greet);
   // NOTE: questions start only AFTER an image is uploaded (Step 0).
 }
@@ -1904,7 +1958,16 @@ async function generateVideoJson(){
   const haveImg = !!S.board.image;
   const th=addThinking('board');
   try{
-    const instruction = `Output ONLY valid JSON (no markdown, no backticks, no commentary).${haveImg?' An image of the FINISHED storyboard poster is attached. Read each numbered panel in the image carefully and base every scene STRICTLY on what is actually drawn in that panel — the real visual, composition, action and on-screen text shown. Do NOT invent scenes that are not in the image. Match the JSON scenes 1:1 to the panels in the poster, in the same order.':''} Create a video generation prompt JSON for an AI video tool (Veo/Runway/Kling) based on this storyboard.
+    const instruction = `You are a combined AI VIDEO PROMPT ENGINEER + STORYTELLING DIRECTOR using 6 expert lenses:
+
+🎯 **Affiliate Strategist** — Ensure CTA clarity, conversion intent, benefit messaging in every scene.
+🎬 **UGC Director** — Authentic, relatable reactions and product interactions.
+📖 **Storyteller** — Narrative arc: Problem → Solution → Transformation → CTA in scene sequence.
+🎧 **ASMR/Audio Director** — Specify sensory audio cues per scene (soft clicks, ambient sounds, silence moments).
+⚙️ **AI Video Prompt Engineer** — Structure each scene: camera movement, lighting mood, motion type, timing.
+🎨 **AI Image Engineer** — Precise visual language: composition, color palette, lighting setup, focal depth per scene.
+
+Output ONLY valid JSON (no markdown, no backticks, no commentary).${haveImg?' An image of the FINISHED storyboard poster is attached. Read each numbered panel in the image carefully and base every scene STRICTLY on what is actually drawn in that panel — the real visual, composition, action and on-screen text shown. Do NOT invent scenes that are not in the image. Match the JSON scenes 1:1 to the panels in the poster, in the same order.':''} Create a video generation prompt JSON for an AI video tool (Veo/Runway/Kling) based on this storyboard.
 
 Product: ${S.board.product||'product'}. Theme: ${a.tema.val}. Visual style: ${a.style.val}. Total duration: ${dur}s. Aspect ratio: ${a.ar.val}. Cast: ${a.cast.val}. On-screen dialogue language: Malay.
 
@@ -1912,21 +1975,34 @@ JSON shape:
 {
   "video_prompt": {
     "global": {
-      "instruction": "Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion",
+      "instruction": "Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion. [6-ROLE SYNTHESIS] Each scene drives conversion intent (Affiliate), uses authentic casting (UGC), follows narrative arc (Story), includes audio cues (ASMR), is technically precise (Video Eng), visually specific (Image Eng).",
       "product": "...",
       "style": "...",
       "aspect_ratio": "...",
       "total_duration_seconds": ${dur},
       "motion": "smooth motion",
-      "dialogue_language": "Malay"
+      "dialogue_language": "Malay",
+      "narrative_structure": "Problem intro → Product reveal → Benefit/transformation → Hero shot CTA",
+      "audio_strategy": "Mix ambient + product-specific sounds + silence moments (ASMR pacing)"
     },
     "scenes": [
-      { "scene": 1, "start": "0s", "end": "Xs", "visual": "...", "action": "...", "camera": "...", "dialogue_malay": "...", "on_screen_text": "...", "audio_sfx": "..." }
+      { "scene": 1, "start": "0s", "end": "Xs", "visual": "...", "action": "...", "camera": "...", "dialogue_malay": "...", "on_screen_text": "...", "audio_sfx": "...", "conversion_intent": "Hook/Problem", "sensory_cue": "[soft/sharp/warm/cool]" }
     ]
   }
 }
 
-${haveImg?`Generate one scene per panel visible in the attached poster (about ${panels}).`:`Generate exactly ${panels} scenes`} with realistic timestamps that sum to ${dur}s. The final scene is the HERO SHOT end card (logo + tagline + CTA). Keep each field concise. Dialogue must be in Malay. Every "visual" field must describe what is literally shown in that panel of the poster.`;
+${haveImg?`Generate one scene per panel visible in the attached poster (about ${panels}).`:`Generate exactly ${panels} scenes`} with realistic timestamps that sum to ${dur}s. The final scene is the HERO SHOT end card (logo + tagline + CTA). 
+
+For each scene include:
+- "visual": exact description of what is shown in the panel
+- "action": motion/behavior in the scene
+- "camera": shot type & movement (wide/close/pan/static)
+- "dialogue_malay": on-screen dialogue in Malay
+- "audio_sfx": sound design (clicks, ambient, silence cue)
+- "conversion_intent": scene's role in funnel (Hook/Feature/Benefit/CTA)
+- "sensory_cue": ASMR/tactile descriptor [soft], [metallic], [smooth]
+
+Every scene serves the 6-role framework. Dialogue must be in Malay. Keep each field concise.`;
 
     // build the user turn — include the finished storyboard image so the model SEES it
     const parts=[{text:instruction}];
@@ -1958,9 +2034,34 @@ async function exportShotList(silent){
   try{
     const panels = a.durasi.k==='1'?8 : a.durasi.k==='3'?9 : 12;
     const haveImg=!!S.board.image;
-    const instruction = `Produce ONLY a markdown scene table for this storyboard.${haveImg?' An image of the FINISHED storyboard poster is attached — read each numbered panel and base each row STRICTLY on what is actually drawn in that panel, in the same order. Do not invent scenes not in the image.':` ${panels} scenes.`} Columns: Scene | ${LANG==='ms'?'Masa':'Time'} | Visual | ${LANG==='ms'?'Dialog/VO':'Dialog/VO'} | ${LANG==='ms'?'Teks Overlay':'Overlay'} | Audio/SFX.
+    const instruction = `You are a combined SHOT LIST GENERATOR using 6 expert lenses:
+
+🎯 **Affiliate Strategist** — Highlight conversion intent, CTA clarity, benefit messaging per scene.
+🎬 **UGC Director** — Authentic casting, relatable interactions, genuine product use.
+📖 **Storyteller** — Narrative arc per scene: Problem → Solution → Transformation → Call-to-Action.
+🎧 **ASMR/Audio Director** — Include sensory/audio cues per scene (soft, crisp, ambient, silence).
+⚙️ **Video Prompt Engineer** — Camera type, movement, timing, motion type per scene.
+🎨 **Image Engineer** — Lighting mood, color palette, visual composition per scene.
+
+Produce ONLY a markdown scene table for this storyboard.${haveImg?' An image of the FINISHED storyboard poster is attached — read each numbered panel and base each row STRICTLY on what is actually drawn in that panel, in the same order. Do not invent scenes not in the image.':` ${panels} scenes.`} 
+
+Columns: Scene | ${LANG==='ms'?'Masa':'Time'} | Visual | ${LANG==='ms'?'Dialog/VO':'Dialog/VO'} | ${LANG==='ms'?'Teks Overlay':'Overlay'} | Audio/SFX | Conversion Intent | ASMR/Sensory Cue.
+
 Theme: ${a.tema.val}. Style: ${a.style.val}. Language of on-screen text: ${a.bahasa.val}. Duration: ${a.durasi.val}. Aspect: ${a.ar.val}. Cast: ${a.cast.val}.
-Realistic timestamps that add up to the duration. The FINAL scene MUST be labelled "HERO SHOT" in the Scene column. Add one line ABOVE the table: "**Music:** <genre>". Output the music line then the table, nothing else.`;
+
+Realistic timestamps that add up to the duration. The FINAL scene MUST be labelled "HERO SHOT" in the Scene column. 
+
+Each row must include:
+- Scene: clear number + name
+- Time: realistic timestamp
+- Visual: what is shown (lighting, composition, 6-role visual language)
+- Dialog/VO: on-screen dialogue or voice-over
+- Overlay: on-screen text or graphics
+- Audio/SFX: sound design (clicks, ambient, silence moments)
+- Conversion Intent: Hook / Feature / Benefit / CTA
+- ASMR/Sensory: tactile/audio descriptor [soft], [satisfying], [warm], [cool]
+
+Add one line ABOVE the table: "**Music:** <genre> (aligned with 6-role narrative)". Output the music line then the table, nothing else. Every scene serves all 6 roles.`;
     const parts=[{text:instruction}];
     if(haveImg) parts.push({inlineData:{mimeType:'image/png',data:S.board.image.split(',')[1]}});
     const reply=await geminiText(boardSystemPrompt(),[{role:'user',parts}]);
@@ -2038,614 +2139,6 @@ function init(){
   if(!API_KEY){ setTimeout(openKey,400); }
 }
 init();
-
-
-/* ===== AFFILIATE STORYBOARD FUNCTIONS ===== */
-function resetAffiliateForm(){
-  clearAffiliateImage();
-  document.getElementById('affiliateModelMode').value='auto';
-  document.getElementById('affiliateProductName').value='';
-  document.getElementById('affiliateDuration').value='15';
-  document.getElementById('affiliatePlatform').value='tiktok';
-  document.getElementById('affiliateLanguage').value='english';
-  document.getElementById('affiliateStyle').value='experience';
-  document.getElementById('affiliateAudience').value='';
-  document.getElementById('affiliateOutputSection').style.display='none';
-  document.getElementById('affiliateErrorState').style.display='none';
-}
-
-// Affiliate image storage
-let affiliateProductImage = null;
-
-function handleAffiliateImageUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  
-  if (!file.type.startsWith('image/')) {
-    alert('Please upload an image file');
-    return;
-  }
-  
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    affiliateProductImage = {
-      dataUrl: e.target.result,
-      mime: file.type,
-      name: file.name
-    };
-    renderAffiliateImagePreview();
-  };
-  reader.readAsDataURL(file);
-}
-
-function renderAffiliateImagePreview() {
-  const preview = document.getElementById('affiliateImagePreview');
-  if (!affiliateProductImage) {
-    preview.innerHTML = '';
-    return;
-  }
-  
-  preview.innerHTML = `
-    <div style="display:flex;gap:10px;align-items:center;background:var(--paper);padding:12px;border-radius:var(--radius-sm);border:1px solid var(--line);">
-      <img src="${affiliateProductImage.dataUrl}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;" />
-      <div style="flex:1;">
-        <p style="font-size:12px;font-weight:600;color:var(--ink);margin:0 0 4px 0;">${affiliateProductImage.name}</p>
-        <p style="font-size:11px;color:var(--muted);margin:0;">✓ Ready for analysis</p>
-      </div>
-    </div>
-  `;
-}
-
-function clearAffiliateImage() {
-  affiliateProductImage = null;
-  document.getElementById('affiliateImageInput').value = '';
-  document.getElementById('affiliateImagePreview').innerHTML = '';
-}
-
-
-async function generateAffiliateStoryboard(){
-  if(!API_KEY){
-    toast(t('needKey'));
-    openKey();
-    return;
-  }
-  
-  if(!affiliateProductImage){
-    alert('Please upload a product image first');
-    return;
-  }
-  
-  const productName=document.getElementById('affiliateProductName').value.trim();
-  if(!productName){alert('Please enter a product name');return;}
-  
-  const inputs={
-    modelMode:document.getElementById('affiliateModelMode').value,
-    productName:productName,
-    duration:document.getElementById('affiliateDuration').value,
-    platform:document.getElementById('affiliatePlatform').value,
-    language:document.getElementById('affiliateLanguage').value,
-    style:document.getElementById('affiliateStyle').value,
-    audience:document.getElementById('affiliateAudience').value
-  };
-
-  document.getElementById('affiliateLoadingState').style.display='block';
-  document.getElementById('affiliateOutputSection').style.display='none';
-  document.getElementById('affiliateErrorState').style.display='none';
-
-  try{
-    const prompt=buildAffiliatePrompt(inputs);
-    const candidates=['gemini-flash-latest','gemini-3.5-flash','gemini-3.1-flash-lite','gemini-2.5-flash'];
-    let lastErr='';
-    let success=false;
-    
-    for(const model of candidates){
-      try{
-        // Prepare request body with image
-        const imageData=affiliateProductImage.dataUrl.split(',')[1]; // Get base64 part
-        const requestBody={
-          contents:[{
-            parts:[
-              {text:prompt},
-              {inlineData:{mimeType:affiliateProductImage.mime,data:imageData}}
-            ]
-          }],
-          generationConfig:{temperature:0.7,maxOutputTokens:2048}
-        };
-        
-        const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(API_KEY)}`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(requestBody)
-        });
-        
-        if(!response.ok){
-          const errText=await response.text();
-          lastErr=errText.slice(0,200);
-          if(/404|not found|no longer available|not supported/i.test(lastErr)) continue;
-          throw new Error(lastErr);
-        }
-        
-        const data=await response.json();
-        if(!data.candidates?.[0]?.content?.parts?.[0]?.text){
-          throw new Error('No response from API');
-        }
-        
-        const text=data.candidates[0].content.parts[0].text;
-        const storyboard=parseAffiliateStoryboard(text,inputs);
-        displayAffiliateStoryboard(storyboard,inputs);
-        document.getElementById('affiliateLoadingState').style.display='none';
-        document.getElementById('affiliateOutputSection').style.display='block';
-        success=true;
-        break;
-      }catch(e){
-        lastErr=String(e.message).slice(0,200);
-      }
-    }
-    
-    if(!success){
-      throw new Error(lastErr||'All models failed');
-    }
-  }catch(err){
-    document.getElementById('affiliateLoadingState').style.display='none';
-    document.getElementById('affiliateErrorState').style.display='block';
-    document.getElementById('affiliateErrorMsg').textContent='⚠️ '+err.message;
-  }
-}
-
-function buildAffiliatePrompt(inputs){
-  const sceneCount={5:3,10:5,15:7,20:8,30:10,45:12,60:15};
-  const visualCount=inputs.duration<=20?3:(inputs.duration<=45?4:5);
-  return `You are an expert Affiliate Storyboard Director.
-
-PRODUCT IMAGE ANALYSIS:
-Study the attached product image carefully. Analyze:
-- Exact shape, color, texture, materials
-- Logo, text, buttons, ports, distinctive features
-- Size relationship to hands/objects
-- Lighting, reflections, surface details
-
-Use these exact visual characteristics in every scene.
-
-PRODUCT: ${inputs.productName}
-Duration: ${inputs.duration}s
-Scenes needed: ${sceneCount[inputs.duration]}
-Model: ${inputs.modelMode}
-Platform: ${inputs.platform}
-Style: ${inputs.style}
-Audience: ${inputs.audience||'general'}
-
-CRITICAL OUTPUT FORMAT:
-
-For each scene, use EXACTLY this format:
-
-SCENE 1 | TIME: 0-2s | PURPOSE: Arrival
-V1 | Top Down | Hands slide product onto desk | 2s
-V2 | Close Up | Fingers trace logo | 2s
-V3 | Macro | Edge detail | 1s
-IMAGE: Product on desk, top-down angle
-VIDEO: Smooth downward camera motion
-
-SCENE 2 | TIME: 2-4s | PURPOSE: Inspection
-[continue with same format]
-
-After all ${sceneCount[inputs.duration]} scenes, add:
-
-MASTER IMAGE PROMPT: [synthesized visual description]
-MASTER VIDEO PROMPT: [synthesized motion description]
-
-REMEMBER:
-✓ Generate exactly ${sceneCount[inputs.duration]} scenes
-✓ Each scene has ${visualCount} visual actions (V1, V2, V3...)
-✓ Use pipe separator | between fields
-✓ Keep product consistent with uploaded image
-✓ Follow journey: Arrival → Inspection → Unboxing → Reveal → Detail → Setup → Usage → Benefit → Satisfaction → Ending
-
-Generate in ${inputs.language==='indonesia'?'Bahasa Indonesia':'English'}.`;
-}
-
-function parseAffiliateStoryboard(text,inputs){
-  const scenes=[];
-  
-  // Try multiple scene patterns (more flexible)
-  const patterns = [
-    /SCENE\s*(\d+)\s*\|\s*TIME:\s*([\d\-s]+)\s*\|\s*PURPOSE:\s*([^\n]+)/gi,
-    /SCENE\s*(\d+)[\s\|]+TIME:\s*([\d\-\.s]+)\s*[\s\|]+PURPOSE:\s*([^\n]+)/gi,
-    /Scene\s*(\d+).*?TIME[:\s]+([\d\-\.s]+).*?PURPOSE[:\s]+([^\n]+)/gi
-  ];
-  
-  let sceneMatches = [];
-  
-  for(const pattern of patterns){
-    let match;
-    pattern.lastIndex = 0;
-    while((match = pattern.exec(text)) !== null){
-      sceneMatches.push({
-        index: match.index,
-        num: match[1],
-        time: match[2].trim(),
-        purpose: match[3].trim()
-      });
-    }
-    if(sceneMatches.length > 0) break;
-  }
-  
-  // If still no scenes found, try simpler pattern
-  if(sceneMatches.length === 0){
-    const lines = text.split('\n');
-    let sceneNum = 0;
-    lines.forEach((line, idx) => {
-      if(/^SCENE\s*\d+/i.test(line) || /^Scene\s*\d+/i.test(line)){
-        sceneNum++;
-        const timeMatch = line.match(/[\d\-\.]+\s*s/i);
-        const purposeMatch = lines.slice(idx).find(l => /PURPOSE|purpose/.test(l));
-        if(timeMatch || purposeMatch){
-          sceneMatches.push({
-            index: idx,
-            num: String(sceneNum),
-            time: timeMatch ? timeMatch[0] : '0s',
-            purpose: purposeMatch ? purposeMatch.replace(/PURPOSE[:\s]*/i, '').trim() : 'Scene '+sceneNum
-          });
-        }
-      }
-    });
-  }
-  
-  // Parse visual actions (more flexible)
-  sceneMatches.forEach((sceneMatch,i)=>{
-    const sceneStart = sceneMatch.index;
-    const sceneEnd = sceneMatches[i+1] ? sceneMatches[i+1].index : text.length;
-    const sceneText = text.substring(sceneStart, sceneEnd);
-    
-    const visuals = [];
-    const visualPatterns = [
-      /\[V(\d)\]\s*([^\|]+)\|([^\|]+)\|([^\|]+)/g,
-      /V(\d)\s*[\:\-]\s*([^\|]+)\|([^\|]+)\|([^\|]+)/g,
-      /\*\*V(\d)\*\*.*?([^\n]+)/g
-    ];
-    
-    for(const vPattern of visualPatterns){
-      let vMatch;
-      vPattern.lastIndex = 0;
-      while((vMatch = vPattern.exec(sceneText)) !== null){
-        if(vMatch[2] && vMatch[3]){
-          visuals.push({
-            num: vMatch[1],
-            angle: vMatch[2].trim(),
-            action: vMatch[3].trim(),
-            detail: vMatch[4] ? vMatch[4].trim() : ''
-          });
-        }
-      }
-      if(visuals.length > 0) break;
-    }
-    
-    // If no visuals found, create placeholder
-    if(visuals.length === 0){
-      visuals.push({
-        num: '1',
-        angle: 'Close Up',
-        action: 'Product interaction',
-        detail: 'Detail focus'
-      });
-    }
-    
-    const imgMatch = sceneText.match(/IMAGE[:\s]*([^\n]+)/i);
-    const vidMatch = sceneText.match(/VIDEO[:\s]*([^\n]+)/i);
-    
-    scenes.push({
-      num: sceneMatch.num,
-      time: sceneMatch.time,
-      purpose: sceneMatch.purpose,
-      visuals: visuals,
-      imagePrompt: imgMatch ? imgMatch[1].trim() : 'Professional product imagery',
-      videoPrompt: vidMatch ? vidMatch[1].trim() : 'Smooth camera motion'
-    });
-  });
-  
-  // Parse master prompts (more flexible)
-  let masterImage = 'Professional ASMR affiliate storyboard';
-  let masterVideo = 'Organic handheld camera motion';
-  
-  const masterImgPatterns = [
-    /MASTER\s+IMAGE\s+PROMPT[:\s]*([^\n]+)/is,
-    /Master.*?Image.*?Prompt[:\s]*([^\n]+)/is
-  ];
-  
-  for(const pattern of masterImgPatterns){
-    const match = text.match(pattern);
-    if(match && match[1]){
-      masterImage = match[1].trim();
-      break;
-    }
-  }
-  
-  const masterVidPatterns = [
-    /MASTER\s+VIDEO\s+PROMPT[:\s]*([^\n]+)/is,
-    /Master.*?Video.*?Prompt[:\s]*([^\n]+)/is
-  ];
-  
-  for(const pattern of masterVidPatterns){
-    const match = text.match(pattern);
-    if(match && match[1]){
-      masterVideo = match[1].trim();
-      break;
-    }
-  }
-  
-  return{
-    scenes: scenes,
-    masterImage: masterImage,
-    masterVideo: masterVideo
-  };
-}
-
-function displayAffiliateStoryboard(data,inputs){
-  const durationText={5:'5s',10:'10s',15:'15s',20:'20s',30:'30s',45:'45s',60:'60s'};
-  document.getElementById('affiliateMetadata').textContent=`${inputs.productName} • ${durationText[inputs.duration]} • ${inputs.platform.toUpperCase()} • ${data.scenes.length} scenes`;
-  
-  // Create A4 grid storyboard
-  const container=document.getElementById('affiliateSceneContainer');
-  container.innerHTML='';
-  
-  // Grid wrapper (A4 proportions: 210mm x 297mm = 3:4.2 aspect ratio)
-  const gridWrapper=document.createElement('div');
-  gridWrapper.style.cssText=`
-    max-width:900px;
-    aspect-ratio:1/1.4;
-    background:var(--paper);
-    border:2px solid var(--line);
-    border-radius:12px;
-    padding:20px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:16px;
-    margin-bottom:20px;
-  `;
-  
-  data.scenes.forEach((scene)=>{
-    const card=document.createElement('div');
-    card.style.cssText=`
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:8px;
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      min-height:180px;
-      position:relative;
-    `;
-    
-    // Scene number badge
-    const badge=document.createElement('div');
-    badge.style.cssText=`
-      display:inline-flex;
-      background:var(--gold);
-      color:#fff;
-      padding:4px 10px;
-      border-radius:12px;
-      font-size:11px;
-      font-weight:600;
-      width:fit-content;
-      position:absolute;
-      top:8px;
-      right:8px;
-    `;
-    badge.textContent=`Scene ${scene.num}`;
-    
-    // Time
-    const timeEl=document.createElement('div');
-    timeEl.style.cssText=`
-      font-size:11px;
-      color:var(--muted);
-      margin-top:20px;
-    `;
-    timeEl.textContent=`⏱ ${scene.time}`;
-    
-    // Purpose heading
-    const purposeHead=document.createElement('div');
-    purposeHead.style.cssText=`
-      font-size:10px;
-      font-weight:600;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:0.5px;
-      margin-top:8px;
-    `;
-    purposeHead.textContent='Purpose';
-    
-    // Purpose text
-    const purposeText=document.createElement('div');
-    purposeText.style.cssText=`
-      font-size:12px;
-      color:var(--gold);
-      font-weight:600;
-      line-height:1.4;
-    `;
-    purposeText.textContent=scene.purpose;
-    
-    // Visual actions
-    const actionsHead=document.createElement('div');
-    actionsHead.style.cssText=`
-      font-size:10px;
-      font-weight:600;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:0.5px;
-      margin-top:8px;
-    `;
-    actionsHead.textContent='Visual Actions';
-    
-    const actionsList=document.createElement('div');
-    actionsList.style.cssText=`
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    `;
-    
-    if(scene.visuals && scene.visuals.length>0){
-      scene.visuals.forEach((v)=>{
-        const action=document.createElement('div');
-        action.style.cssText=`
-          font-size:10px;
-          color:var(--muted);
-          line-height:1.3;
-        `;
-        action.innerHTML=`<strong>${v.angle}</strong> • ${v.action}`;
-        actionsList.appendChild(action);
-      });
-    }
-    
-    card.appendChild(badge);
-    card.appendChild(timeEl);
-    card.appendChild(purposeHead);
-    card.appendChild(purposeText);
-    card.appendChild(actionsHead);
-    card.appendChild(actionsList);
-    
-    gridWrapper.appendChild(card);
-  });
-  
-  container.appendChild(gridWrapper);
-  
-  // Master prompts section
-  const promptSection=document.createElement('div');
-  promptSection.style.cssText=`
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:20px;
-  `;
-  
-  promptSection.innerHTML=`
-    <h3 style="color:var(--gold);margin:0 0 14px 0;">Master Prompts</h3>
-    <div style="margin-bottom:14px;">
-      <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">🎨 Image Prompt</p>
-      <div style="background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;font-size:12px;color:var(--muted);max-height:150px;overflow-y:auto;line-height:1.5;" id="affiliateMasterImagePrompt"></div>
-    </div>
-    <div>
-      <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">🎬 Video Prompt</p>
-      <div style="background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;font-size:12px;color:var(--muted);max-height:150px;overflow-y:auto;line-height:1.5;" id="affiliateMasterVideoPrompt"></div>
-    </div>
-  `;
-  
-  container.appendChild(promptSection);
-  
-  // Populate prompts
-  document.getElementById('affiliateMasterImagePrompt').textContent=data.masterImage;
-  document.getElementById('affiliateMasterVideoPrompt').textContent=data.masterVideo;
-}
-
-// Init
-window.addEventListener('load',()=>{const savedKey=localStorage.getItem('affiliate_gemini_api_key');if(savedKey){document.getElementById('affiliateApiKey').parentElement.parentElement.style.display='none';}});
-
-
-// Export storyboard as image
-async function exportAffiliateStoryboardAsImage() {
-  const element = document.getElementById('affiliateSceneContainer');
-  if (!element) return;
-  
-  try {
-    // Disable overflow during capture
-    const originalStyle = element.style.cssText;
-    element.style.overflow = 'visible';
-    
-    const canvas = await html2canvas(element, {
-      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--paper').trim(),
-      scale: 2,
-      logging: false
-    });
-    
-    // Restore original style
-    element.style.cssText = originalStyle;
-    
-    // Download image
-    const link = document.createElement('a');
-    const metadata = document.getElementById('affiliateMetadata').textContent;
-    const filename = 'storyboard-' + new Date().toISOString().slice(0,10) + '.png';
-    link.href = canvas.toDataURL('image/png');
-    link.download = filename;
-    link.click();
-  } catch(err) {
-    console.error('Export failed:', err);
-    alert('Failed to export image. Try again or use Print instead.');
-  }
-}
-
-// Print storyboard
-function printAffiliateStoryboard() {
-  const element = document.getElementById('affiliateSceneContainer');
-  if (!element) return;
-  
-  const printWindow = window.open('', '_blank');
-  const html = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Affiliate Storyboard</title>
-      <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-          background: #f5f5f5;
-          padding: 20px;
-        }
-        .metadata {
-          text-align: center;
-          margin-bottom: 20px;
-          font-size: 14px;
-          color: #666;
-        }
-        .storyboard-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-          max-width: 1200px;
-          margin: 0 auto;
-          page-break-inside: avoid;
-        }
-        .scene-card {
-          background: #fff;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          padding: 12px;
-          page-break-inside: avoid;
-          break-inside: avoid;
-          min-height: 160px;
-        }
-        .scene-badge {
-          display: inline-block;
-          background: #2b9fd9;
-          color: #fff;
-          padding: 3px 8px;
-          border-radius: 10px;
-          font-size: 10px;
-          font-weight: 600;
-          margin-bottom: 8px;
-        }
-        .scene-time { font-size: 10px; color: #999; margin-bottom: 6px; }
-        .scene-purpose-label { font-size: 9px; font-weight: 600; color: #999; text-transform: uppercase; margin-bottom: 4px; }
-        .scene-purpose { font-size: 12px; font-weight: 600; color: #2b9fd9; line-height: 1.4; margin-bottom: 8px; }
-        .scene-actions-label { font-size: 9px; font-weight: 600; color: #999; text-transform: uppercase; margin-bottom: 4px; }
-        .scene-action { font-size: 9px; color: #666; line-height: 1.3; }
-        @media print {
-          body { padding: 0; }
-          .storyboard-grid { gap: 12px; }
-          .scene-card { break-inside: avoid; page-break-inside: avoid; }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="metadata">${document.getElementById('affiliateMetadata').textContent}</div>
-      <div class="storyboard-grid">${element.innerHTML}</div>
-    </body>
-    </html>
-  `;
-  
-  printWindow.document.write(html);
-  printWindow.document.close();
-  setTimeout(() => printWindow.print(), 500);
-}
 </script>
 </body>
 </html>
