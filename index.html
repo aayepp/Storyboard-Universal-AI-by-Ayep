@@ -270,7 +270,7 @@
     background:var(--glass-panel);
     -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
     border:1px solid var(--glass-border);border-radius:var(--radius);
-    box-shadow:var(--shadow), var(--glass-inset);overflow:hidden;position:relative;
+    box-shadow:var(--shadow), var(--glass-inset);position:relative;overflow:visible;
     animation:scale-pop .4s cubic-bezier(.2,.8,.2,1);
   }
   .panel:before{
@@ -402,12 +402,25 @@
   .step-list li.done{color:var(--ink-soft)}
   .step-list li.done .s-num{background:var(--good);color:#fff;border-color:transparent}
 
-  .summary-card{font-size:13px}
-  .summary-card .row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .summary-card{font-size:13px;position:relative}
+  .summary-card .row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:all 0.2s;position:relative}
+  .summary-card .row:hover{background:rgba(255,255,255,0.03);padding:9px 6px;margin:0 -6px}
+  .summary-card .row:hover .tooltip{display:block}
   .summary-card .row:last-child{border-bottom:0}
-  .summary-card .lbl{color:var(--muted);display:flex;align-items:center;gap:7px}
-  .summary-card .val{font-weight:600;text-align:right}
+  .summary-card .lbl{color:var(--muted);display:flex;align-items:center;gap:7px;flex:1}
+  .summary-card .val{font-weight:600;text-align:right;max-width:60%;white-space:normal;line-height:1.4}
   .summary-card .val.empty{color:var(--muted-2);font-weight:400;font-style:italic}
+  .summary-card .details{font-size:11px;color:var(--muted);margin-top:6px;padding:6px 0;line-height:1.5;display:none}
+  .summary-card .row.expanded .details{display:block;border-top:1px solid rgba(255,255,255,0.1);padding-top:8px}
+  
+  /* hover tooltip */
+  .summary-card .tooltip{
+    display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:var(--glass-panel);border:1px solid var(--glass-border);border-radius:9px;padding:10px 12px;
+    font-size:11px;color:var(--muted);line-height:1.5;width:300px;margin-top:8px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);backdrop-filter:var(--glass-blur);z-index:1000;
+    pointer-events:none;white-space:normal;min-height:auto;overflow:visible;text-overflow:clip;
+  }
+  .summary-card .tooltip:before{content:'';position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid var(--glass-panel)}
 
   .hint{font-size:12.5px;color:var(--muted);line-height:1.6}
   .howto-list{margin:0;padding:0;list-style:none;counter-reset:ht;display:flex;flex-direction:column;gap:9px}
@@ -682,12 +695,42 @@
           <div class="panel-head"><span class="eyebrow">Brief</span><h2 class="display" data-i="briefTitle" style="font-size:14px">Pilihan anda</h2></div>
           <div class="rail-body">
             <div class="summary-card" id="board-summary">
-              <div class="row"><span class="lbl">🎬 <span data-i="qTema">Tema</span></span><span class="val empty" data-slot="tema">—</span></div>
-              <div class="row"><span class="lbl">🎨 <span data-i="qStyle">Style</span></span><span class="val empty" data-slot="style">—</span></div>
-              <div class="row"><span class="lbl">📝 <span data-i="qBahasa">Bahasa</span></span><span class="val empty" data-slot="bahasa">—</span></div>
-              <div class="row"><span class="lbl">⏱️ <span data-i="qDurasi">Durasi</span></span><span class="val empty" data-slot="durasi">—</span></div>
-              <div class="row"><span class="lbl">📱 <span data-i="qAr">Aspect Ratio</span></span><span class="val empty" data-slot="ar">—</span></div>
-              <div class="row"><span class="lbl">👥 <span data-i="qCast">Cast</span></span><span class="val empty" data-slot="cast">—</span></div>
+              <div class="row" onclick="toggleSummaryDetail(this)" data-slot="tema">
+                <span class="lbl">🎬 <span data-i="qTema">Tema</span></span>
+                <span class="val empty">—</span>
+                <div class="tooltip"></div>
+                <div class="details"></div>
+              </div>
+              <div class="row" onclick="toggleSummaryDetail(this)" data-slot="style">
+                <span class="lbl">🎨 <span data-i="qStyle">Style</span></span>
+                <span class="val empty">—</span>
+                <div class="tooltip"></div>
+                <div class="details"></div>
+              </div>
+              <div class="row" onclick="toggleSummaryDetail(this)" data-slot="bahasa">
+                <span class="lbl">📝 <span data-i="qBahasa">Bahasa</span></span>
+                <span class="val empty">—</span>
+                <div class="tooltip"></div>
+                <div class="details"></div>
+              </div>
+              <div class="row" onclick="toggleSummaryDetail(this)" data-slot="durasi">
+                <span class="lbl">⏱️ <span data-i="qDurasi">Durasi</span></span>
+                <span class="val empty">—</span>
+                <div class="tooltip"></div>
+                <div class="details"></div>
+              </div>
+              <div class="row" onclick="toggleSummaryDetail(this)" data-slot="ar">
+                <span class="lbl">📱 <span data-i="qAr">Aspect Ratio</span></span>
+                <span class="val empty">—</span>
+                <div class="tooltip"></div>
+                <div class="details"></div>
+              </div>
+              <div class="row" onclick="toggleSummaryDetail(this)" data-slot="cast">
+                <span class="lbl">👥 <span data-i="qCast">Cast</span></span>
+                <span class="val empty">—</span>
+                <div class="tooltip"></div>
+                <div class="details"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1067,7 +1110,10 @@ function renderPicks(tab, picks){
   const wrap=document.createElement('div'); wrap.className='picks';
   picks.forEach(p=>{
     const btn=document.createElement('button'); btn.className='pick';
-    btn.innerHTML=`<span class="k">${p.k}</span>${p.label}`;
+    // Extract short name (before " — ") for button display
+    const shortLabel = p.label.includes(' — ') ? p.label.split(' — ')[0] : p.label;
+    btn.innerHTML=`<span class="k">${p.k}</span>${shortLabel}`;
+    btn.title=p.label; // full text in tooltip
     btn.onclick=()=>{ tab==='sheet'?submitSheet(p.k):submitBoard(p.k) };
     wrap.appendChild(btn);
   });
@@ -1223,7 +1269,18 @@ NARRATIVE STRUCTURE:
 - Climax (panels 9-11): Transformation moment, social proof, lifestyle elevation
 - Resolution (panel ${panels} = HERO SHOT): Product hero moment, CTA, brand tagline
 
-DIALOG & ON-SCREEN TEXT (critical for video generation):
+DIALOG & ON-SCREEN TEXT (CRITICAL — must match video timing):
+- Each panel MUST have a specific dialog/VO line or instruction, calculated for the scene duration
+- Total duration = ${dur}. Panel count = ${panels}. Average per-panel = ${Math.round(parseInt(dur.match(/\d+/)[0])/panels*10)/10}s
+- Scene-by-scene timing breakdown: Calculate timestamp for each panel based on narrative pacing
+  * Panels 1-2 (Setup): faster pacing, each ~${Math.round(parseInt(dur.match(/\d+/)[0])/panels*100)/100}s (introduce problem)
+  * Panels 3-${Math.max(panels-2, 5)} (Build): natural pacing, each ~${Math.round(parseInt(dur.match(/\d+/)[0])/panels*100)/100}s (show benefit progression)
+  * Panel ${panels-1} (Climax): ~${Math.round(parseInt(dur.match(/\d+/)[0])*0.15*100)/100}s (transformation/social proof)
+  * Panel ${panels} (HERO SHOT): minimum 2-3 seconds RESERVED STRICTLY (product showcase + CTA + brand tagline — DO NOT RUSH)
+- Each panel caption format: "[Scene X] [Timestamp] [Visual description]. Dialog/VO: '[exact line in ${lang}]'. Audio: [SFX/music cue]."
+- Dialog must be SHORT per panel but COMPLETE across all panels — no incomplete sentences in hero shot
+- Example for 20s/12 panels (~1.67s per panel): Scene 1 (0:00-0:02): Setup shot, VO: "Ever wished your laptop was..." Scene 12 (Hero, 0:17-0:20): Product centered, VO: "ASUS ZenBook 14. Shop now."
+- **HERO SHOT RULE (FINAL PANEL):** Reserve the last ${Math.max(2, Math.round(parseInt(dur.match(/\d+/)[0])*0.15))}+ seconds EXCLUSIVELY for the hero shot. Panel ${panels} must be simple, clear, prominent. Do NOT use it to finish a sentence from panel ${panels-1}. Complete all narrative by panel ${panels-1}.
 - Include natural dialog ${lang} where appropriate (spoken moments, testimonials, questions, CTAs)
 - Each panel caption must be DESCRIPTIVE + ACTIONABLE for video AI (describe camera movement, sound/ASMR cue, actor emotion, product highlight)
 - Example caption: "Wide shot of girl unboxing. ASMR: crisp paper sound. Says: 'Wow, this quality!' Camera pulls back to show product on desk."
@@ -1546,11 +1603,34 @@ const QUESTIONS = {
 const SLOT_DOM = {tema:'tema',style:'style',bahasa:'bahasa',durasi:'durasi',ar:'ar',cast:'cast'};
 
 function setSlotVal(slot,k,val){
-  const el=document.querySelector(`#board-summary [data-slot="${slot}"]`);
-  if(el){el.textContent=`${k}. ${val}`;el.classList.remove('empty')}
+  updateSummary(slot,k,val);
+}
+function toggleSummaryDetail(rowEl){
+  rowEl.classList.toggle('expanded');
 }
 function clearSummary(){
-  document.querySelectorAll('#board-summary .val').forEach(el=>{el.textContent='—';el.classList.add('empty')});
+  document.querySelectorAll('#board-summary .row').forEach(row=>{
+    row.classList.remove('expanded');
+    row.querySelector('.val').textContent='—';
+    row.querySelector('.val').classList.add('empty');
+    row.querySelector('.details').textContent='';
+  });
+}
+function updateSummary(slot, k, val){
+  const row = document.querySelector(`#board-summary .row[data-slot="${slot}"]`);
+  if(row){
+    const valEl = row.querySelector('.val');
+    const tooltipEl = row.querySelector('.tooltip');
+    // split by em-dash
+    const parts = val.split(' — ');
+    const shortName = parts[0] || val;
+    const fullDesc = parts[1] || parts[0] || val; // fallback to full val if no description
+    
+    valEl.textContent = k+'. '+shortName;
+    valEl.classList.remove('empty');
+    tooltipEl.textContent = fullDesc; // set tooltip text directly
+    console.log(`[${slot}] tooltip set to:`, fullDesc); // DEBUG
+  }
 }
 function bootBoard(){
   document.getElementById('board-msgs').innerHTML='';
@@ -1716,7 +1796,7 @@ async function handleBoardMenu(lc, raw){
       const qi=slotMap[key];
       const slot=QUESTIONS[LANG][qi].slot;
       delete S.board.answers[slot];
-      const el=document.querySelector(`#board-summary [data-slot="${slot}"]`); el.textContent='—'; el.classList.add('empty');
+      clearSummary(); // clear all and let updateSummary rebuild them
       S.board.qi=qi;
       askBoardQuestion(qi);
       // after re-answering, we need to jump back to summary — handle by checking completeness in submit
