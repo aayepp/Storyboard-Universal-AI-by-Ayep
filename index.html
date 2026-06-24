@@ -573,8 +573,54 @@
     .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px}
   }
 
+
+  /* Affiliate glass morphism */
+  #view-affiliate .affiliate-glass {
+    background: var(--glass-panel);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow), var(--glass-inset);
+  }
+  #view-affiliate .affiliate-input {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    color: var(--ink);
+  }
+  #view-affiliate .affiliate-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(184,153,104,.1);
+  }
+  #view-affiliate .affiliate-btn {
+    background: var(--gold);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  #view-affiliate .affiliate-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+  #view-affiliate .affiliate-btn-secondary {
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  #view-affiliate .affiliate-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.2s;
+  }
+  #view-affiliate .affiliate-card:hover {
+    box-shadow: var(--shadow);
+  }
 </style>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <body>
 
 <header class="topbar">
@@ -609,6 +655,9 @@
     </button>
     <button class="tab" id="tab-board" onclick="switchTab('board')">
       <span class="num">2</span><span data-i="tab2">Universal Storyboard Gen</span>
+    </button>
+    <button class="tab" id="tab-affiliate" onclick="switchTab('affiliate')">
+      <span class="num">3</span><span>Affiliate Generator</span>
     </button>
   </div>
 </header>
@@ -724,6 +773,144 @@
       </aside>
     </div>
   </section>
+
+  <!-- ===================== TAB 3: AFFILIATE GENERATOR ===================== -->
+  <section class="view" id="view-affiliate">
+    <div style="max-width:1120px;margin:0 auto;padding:22px;">
+      <div style="text-align:center;margin-bottom:28px;">
+        <h2 style="font-size:20px;font-weight:600;color:var(--gold);margin:0 0 8px 0;">Affiliate Storyboard Generator</h2>
+        <p style="color:var(--muted);margin:0;font-size:13px;">Create professional ASMR affiliate storyboards with Google Gemini</p>
+      </div>
+
+      <div class="affiliate-glass" style="border-radius:var(--radius);padding:20px;margin-bottom:18px;">
+        <h3 style="font-size:16px;font-weight:600;color:var(--ink);margin:0 0 14px 0;">📸 Product Image (Required)</h3>
+        <p style="color:var(--muted);margin:0 0 12px 0;font-size:13px;">Upload a clear photo of your product for accurate storyboard generation</p>
+        
+        <div id="affiliateImagePreview" style="margin-bottom:14px;"></div>
+        
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button onclick="document.getElementById('affiliateImageInput').click()" class="chip" style="display:flex;align-items:center;gap:7px;">
+            <span>📎 Attach image</span>
+          </button>
+          <button onclick="clearAffiliateImage()" class="chip" style="display:flex;align-items:center;gap:7px;">
+            <span>✕ Clear</span>
+          </button>
+        </div>
+        <input type="file" id="affiliateImageInput" accept="image/*" style="display:none;" onchange="handleAffiliateImageUpload(event)" />
+      </div>
+
+      <div class="affiliate-glass" style="border-radius:var(--radius);padding:20px;margin-bottom:18px;">
+        <h3 style="font-size:16px;font-weight:600;color:var(--ink);margin:0 0 14px 0;">Configure Your Storyboard</h3>
+        
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:14px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Model Mode</label>
+            <select id="affiliateModelMode" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
+              <option value="auto">AUTO (recommended)</option>
+              <option value="show">SHOW MODEL</option>
+              <option value="faceless">FACELESS</option>
+              <option value="none">NO MODEL</option>
+            </select>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Product Name</label>
+            <input type="text" id="affiliateProductName" placeholder="e.g., Luxury Skincare Serum" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);" />
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Duration</label>
+            <select id="affiliateDuration" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
+              <option value="5">5 seconds</option>
+              <option value="10">10 seconds</option>
+              <option value="15" selected>15 seconds</option>
+              <option value="20">20 seconds</option>
+              <option value="30">30 seconds</option>
+              <option value="45">45 seconds</option>
+              <option value="60">60 seconds</option>
+            </select>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Platform</label>
+            <select id="affiliatePlatform" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
+              <option value="tiktok">TikTok</option>
+              <option value="shopee">Shopee</option>
+              <option value="tokopedia">Tokopedia</option>
+            </select>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Language</label>
+            <select id="affiliateLanguage" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
+              <option value="english" selected>English</option>
+              <option value="indonesia">Bahasa Indonesia</option>
+            </select>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Style</label>
+            <select id="affiliateStyle" class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);">
+              <option value="unboxing">ASMR UNBOXING</option>
+              <option value="experience" selected>PRODUCT EXPERIENCE</option>
+              <option value="satisfying">SATISFYING</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+          <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;">Target Audience</label>
+          <textarea id="affiliateAudience" placeholder="e.g., Gen Z females, beauty enthusiasts..." class="affiliate-input" style="padding:10px;border-radius:var(--radius-sm);min-height:80px;font-family:inherit;"></textarea>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button onclick="generateAffiliateStoryboard()" class="chip" style="display:flex;align-items:center;gap:7px;background:var(--gold);color:#fff;border-color:var(--gold);">
+            <span>✨ Generate Storyboard</span>
+          </button>
+          <button onclick="resetAffiliateForm()" class="chip" style="display:flex;align-items:center;gap:7px;">
+            <span>↻ Reset</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="affiliateLoadingState" style="display:none;text-align:center;padding:40px 20px;color:var(--muted);">
+        <div style="display:inline-block;width:24px;height:24px;border:2px solid var(--gold-soft);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px;"></div>
+        <p>Generating your storyboard...</p>
+      </div>
+
+      <div id="affiliateOutputSection" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <h3 style="color:var(--gold);margin:0 0 6px 0;">Your Professional Storyboard</h3>
+          <p style="color:var(--muted);margin:0 0 12px 0;font-size:12px;" id="affiliateMetadata"></p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <button onclick="exportAffiliateStoryboardAsImage()" class="chip" style="display:flex;align-items:center;gap:7px;background:var(--gold);color:#fff;border-color:var(--gold);">
+              <span>⬇️ Download Image</span>
+            </button>
+            <button onclick="printAffiliateStoryboard()" class="chip" style="display:flex;align-items:center;gap:7px;">
+              <span>🖨️ Print</span>
+            </button>
+          </div>
+        </div>
+        <div id="affiliateSceneContainer" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px;"></div>
+        <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;">
+          <h3 style="color:var(--gold);margin:0 0 14px 0;">Master Prompts</h3>
+          <div style="margin-bottom:14px;">
+            <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Image Prompt</p>
+            <div id="affiliateMasterImagePrompt" style="background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;font-size:12px;color:var(--muted);max-height:150px;overflow-y:auto;"></div>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Video Prompt</p>
+            <div id="affiliateMasterVideoPrompt" style="background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;font-size:12px;color:var(--muted);max-height:150px;overflow-y:auto;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="affiliateErrorState" style="display:none;margin-top:20px;">
+        <div style="background:rgba(168,83,63,.1);border:1px solid var(--danger);color:var(--danger);padding:12px;border-radius:var(--radius-sm);margin-bottom:12px;" id="affiliateErrorMsg"></div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -898,8 +1085,10 @@ function toast(msg){
 function switchTab(tab){
   document.getElementById('tab-sheet').classList.toggle('on',tab==='sheet');
   document.getElementById('tab-board').classList.toggle('on',tab==='board');
+  document.getElementById('tab-affiliate').classList.toggle('on',tab==='affiliate');
   document.getElementById('view-sheet').classList.toggle('on',tab==='sheet');
   document.getElementById('view-board').classList.toggle('on',tab==='board');
+  document.getElementById('view-affiliate').classList.toggle('on',tab==='affiliate');
 }
 function refreshKeyBtn(){
   const b=document.getElementById('keyBtn');
@@ -1849,6 +2038,511 @@ function init(){
   if(!API_KEY){ setTimeout(openKey,400); }
 }
 init();
+
+
+/* ===== AFFILIATE STORYBOARD FUNCTIONS ===== */
+function resetAffiliateForm(){
+  clearAffiliateImage();
+  document.getElementById('affiliateModelMode').value='auto';
+  document.getElementById('affiliateProductName').value='';
+  document.getElementById('affiliateDuration').value='15';
+  document.getElementById('affiliatePlatform').value='tiktok';
+  document.getElementById('affiliateLanguage').value='english';
+  document.getElementById('affiliateStyle').value='experience';
+  document.getElementById('affiliateAudience').value='';
+  document.getElementById('affiliateOutputSection').style.display='none';
+  document.getElementById('affiliateErrorState').style.display='none';
+}
+
+// Affiliate image storage
+let affiliateProductImage = null;
+
+function handleAffiliateImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  if (!file.type.startsWith('image/')) {
+    alert('Please upload an image file');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    affiliateProductImage = {
+      dataUrl: e.target.result,
+      mime: file.type,
+      name: file.name
+    };
+    renderAffiliateImagePreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderAffiliateImagePreview() {
+  const preview = document.getElementById('affiliateImagePreview');
+  if (!affiliateProductImage) {
+    preview.innerHTML = '';
+    return;
+  }
+  
+  preview.innerHTML = `
+    <div style="display:flex;gap:10px;align-items:center;background:var(--paper);padding:12px;border-radius:var(--radius-sm);border:1px solid var(--line);">
+      <img src="${affiliateProductImage.dataUrl}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;" />
+      <div style="flex:1;">
+        <p style="font-size:12px;font-weight:600;color:var(--ink);margin:0 0 4px 0;">${affiliateProductImage.name}</p>
+        <p style="font-size:11px;color:var(--muted);margin:0;">✓ Ready for analysis</p>
+      </div>
+    </div>
+  `;
+}
+
+function clearAffiliateImage() {
+  affiliateProductImage = null;
+  document.getElementById('affiliateImageInput').value = '';
+  document.getElementById('affiliateImagePreview').innerHTML = '';
+}
+
+
+async function generateAffiliateStoryboard(){
+  if(!API_KEY){
+    toast(t('needKey'));
+    openKey();
+    return;
+  }
+  
+  if(!affiliateProductImage){
+    alert('Please upload a product image first');
+    return;
+  }
+  
+  const productName=document.getElementById('affiliateProductName').value.trim();
+  if(!productName){alert('Please enter a product name');return;}
+  
+  const inputs={
+    modelMode:document.getElementById('affiliateModelMode').value,
+    productName:productName,
+    duration:document.getElementById('affiliateDuration').value,
+    platform:document.getElementById('affiliatePlatform').value,
+    language:document.getElementById('affiliateLanguage').value,
+    style:document.getElementById('affiliateStyle').value,
+    audience:document.getElementById('affiliateAudience').value
+  };
+
+  document.getElementById('affiliateLoadingState').style.display='block';
+  document.getElementById('affiliateOutputSection').style.display='none';
+  document.getElementById('affiliateErrorState').style.display='none';
+
+  try{
+    const prompt=buildAffiliatePrompt(inputs);
+    const candidates=['gemini-flash-latest','gemini-3.5-flash','gemini-3.1-flash-lite','gemini-2.5-flash'];
+    let lastErr='';
+    let success=false;
+    
+    for(const model of candidates){
+      try{
+        // Prepare request body with image
+        const imageData=affiliateProductImage.dataUrl.split(',')[1]; // Get base64 part
+        const requestBody={
+          contents:[{
+            parts:[
+              {text:prompt},
+              {inlineData:{mimeType:affiliateProductImage.mime,data:imageData}}
+            ]
+          }],
+          generationConfig:{temperature:0.7,maxOutputTokens:2048}
+        };
+        
+        const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(API_KEY)}`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(requestBody)
+        });
+        
+        if(!response.ok){
+          const errText=await response.text();
+          lastErr=errText.slice(0,200);
+          if(/404|not found|no longer available|not supported/i.test(lastErr)) continue;
+          throw new Error(lastErr);
+        }
+        
+        const data=await response.json();
+        if(!data.candidates?.[0]?.content?.parts?.[0]?.text){
+          throw new Error('No response from API');
+        }
+        
+        const text=data.candidates[0].content.parts[0].text;
+        const storyboard=parseAffiliateStoryboard(text,inputs);
+        displayAffiliateStoryboard(storyboard,inputs);
+        document.getElementById('affiliateLoadingState').style.display='none';
+        document.getElementById('affiliateOutputSection').style.display='block';
+        success=true;
+        break;
+      }catch(e){
+        lastErr=String(e.message).slice(0,200);
+      }
+    }
+    
+    if(!success){
+      throw new Error(lastErr||'All models failed');
+    }
+  }catch(err){
+    document.getElementById('affiliateLoadingState').style.display='none';
+    document.getElementById('affiliateErrorState').style.display='block';
+    document.getElementById('affiliateErrorMsg').textContent='⚠️ '+err.message;
+  }
+}
+
+function buildAffiliatePrompt(inputs){
+  const sceneCount={5:3,10:5,15:7,20:8,30:10,45:12,60:15};
+  const visualCount=inputs.duration<=20?3:(inputs.duration<=45?4:5);
+  return `You are an expert Affiliate Storyboard Director.
+
+PRODUCT IMAGE ANALYSIS:
+Study the attached product image carefully. Analyze:
+- Exact shape, color, texture, materials
+- Logo, text, buttons, ports, distinctive features
+- Size relationship to hands/objects
+- Lighting, reflections, surface details
+
+Use these exact visual characteristics in every scene.
+
+PRODUCT: ${inputs.productName}
+Duration: ${inputs.duration}s (${sceneCount[inputs.duration]} scenes)
+Model: ${inputs.modelMode}
+Platform: ${inputs.platform}
+Style: ${inputs.style}
+Audience: ${inputs.audience||'general'}
+
+REQUIREMENTS:
+✓ Generate exactly ${sceneCount[inputs.duration]} scenes with ${visualCount} visual actions each
+✓ Follow: Arrival → Inspection → Unboxing → Reveal → Detail → Setup → Usage → Benefit → Satisfaction → Ending
+✓ ASMR focus: hand interaction, realistic movement, texture, sound details
+✓ Keep product consistent with uploaded image in ALL scenes
+✓ Camera angles: Extreme Close Up, Close Up, Macro, Top Down, 45°, Handheld
+
+OUTPUT FORMAT:
+
+SCENE [num] | TIME: [start-end]s | PURPOSE: [objective]
+
+VISUAL ACTIONS:
+[V1] Angle | Action | Detail | Duration
+[V2] Angle | Action | Detail | Duration
+[V3] Angle | Action | Detail | Duration
+
+IMAGE: [visual description based on actual product]
+VIDEO: [motion description]
+
+After all scenes:
+
+MASTER IMAGE PROMPT: [synthesized visual language - reference actual product details]
+MASTER VIDEO PROMPT: [synthesized motion choreography]
+
+Generate in ${inputs.language==='indonesia'?'Bahasa Indonesia':'English'}.`;
+}
+
+function parseAffiliateStoryboard(text,inputs){
+  const scenes=[];
+  const sceneRegex=/SCENE\s+(\d+)\s*\|\s*TIME:\s*([\d\-s]+)\s*\|\s*PURPOSE:\s*([^\n]+)/g;
+  const visualRegex=/\[V(\d+)\]\s*([^\|]+)\|([^\|]+)\|([^\|]+)\|/g;
+  
+  let match;const sceneMatches=[];
+  while((match=sceneRegex.exec(text))!==null){
+    sceneMatches.push({index:match.index,num:match[1],time:match[2].trim(),purpose:match[3].trim()});
+  }
+  
+  sceneMatches.forEach((sceneMatch,i)=>{
+    const sceneStart=sceneMatch.index;const sceneEnd=sceneMatches[i+1]?sceneMatches[i+1].index:text.length;
+    const sceneText=text.substring(sceneStart,sceneEnd);
+    const visuals=[];visualRegex.lastIndex=0;
+    let vMatch;while((vMatch=visualRegex.exec(sceneText))!==null){
+      visuals.push({num:vMatch[1],angle:vMatch[2].trim(),action:vMatch[3].trim(),detail:vMatch[4].trim()});
+    }
+    const imgMatch=sceneText.match(/IMAGE:\s*([^\n]+)/);
+    const vidMatch=sceneText.match(/VIDEO:\s*([^\n]+)/);
+    scenes.push({
+      num:sceneMatch.num,time:sceneMatch.time,purpose:sceneMatch.purpose,
+      visuals:visuals.length>0?visuals:[{num:'1',angle:'Close Up',action:'Product',detail:'Texture'}],
+      imagePrompt:imgMatch?imgMatch[1].trim():'Professional imagery',
+      videoPrompt:vidMatch?vidMatch[1].trim():'Smooth motion'
+    });
+  });
+  
+  const masterImgMatch=text.match(/MASTER\s+IMAGE\s+PROMPT:\s*([^\n]+)/is);
+  const masterVidMatch=text.match(/MASTER\s+VIDEO\s+PROMPT:\s*([^\n]+)/is);
+  return{
+    scenes:scenes,
+    masterImage:masterImgMatch?masterImgMatch[1].trim():'Professional ASMR storyboard',
+    masterVideo:masterVidMatch?masterVidMatch[1].trim():'Organic handheld motion'
+  };
+}
+
+function displayAffiliateStoryboard(data,inputs){
+  const durationText={5:'5s',10:'10s',15:'15s',20:'20s',30:'30s',45:'45s',60:'60s'};
+  document.getElementById('affiliateMetadata').textContent=`${inputs.productName} • ${durationText[inputs.duration]} • ${inputs.platform.toUpperCase()} • ${data.scenes.length} scenes`;
+  
+  // Create A4 grid storyboard
+  const container=document.getElementById('affiliateSceneContainer');
+  container.innerHTML='';
+  
+  // Grid wrapper (A4 proportions: 210mm x 297mm = 3:4.2 aspect ratio)
+  const gridWrapper=document.createElement('div');
+  gridWrapper.style.cssText=`
+    max-width:900px;
+    aspect-ratio:1/1.4;
+    background:var(--paper);
+    border:2px solid var(--line);
+    border-radius:12px;
+    padding:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+    margin-bottom:20px;
+  `;
+  
+  data.scenes.forEach((scene)=>{
+    const card=document.createElement('div');
+    card.style.cssText=`
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:180px;
+      position:relative;
+    `;
+    
+    // Scene number badge
+    const badge=document.createElement('div');
+    badge.style.cssText=`
+      display:inline-flex;
+      background:var(--gold);
+      color:#fff;
+      padding:4px 10px;
+      border-radius:12px;
+      font-size:11px;
+      font-weight:600;
+      width:fit-content;
+      position:absolute;
+      top:8px;
+      right:8px;
+    `;
+    badge.textContent=`Scene ${scene.num}`;
+    
+    // Time
+    const timeEl=document.createElement('div');
+    timeEl.style.cssText=`
+      font-size:11px;
+      color:var(--muted);
+      margin-top:20px;
+    `;
+    timeEl.textContent=`⏱ ${scene.time}`;
+    
+    // Purpose heading
+    const purposeHead=document.createElement('div');
+    purposeHead.style.cssText=`
+      font-size:10px;
+      font-weight:600;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-top:8px;
+    `;
+    purposeHead.textContent='Purpose';
+    
+    // Purpose text
+    const purposeText=document.createElement('div');
+    purposeText.style.cssText=`
+      font-size:12px;
+      color:var(--gold);
+      font-weight:600;
+      line-height:1.4;
+    `;
+    purposeText.textContent=scene.purpose;
+    
+    // Visual actions
+    const actionsHead=document.createElement('div');
+    actionsHead.style.cssText=`
+      font-size:10px;
+      font-weight:600;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-top:8px;
+    `;
+    actionsHead.textContent='Visual Actions';
+    
+    const actionsList=document.createElement('div');
+    actionsList.style.cssText=`
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    `;
+    
+    if(scene.visuals && scene.visuals.length>0){
+      scene.visuals.forEach((v)=>{
+        const action=document.createElement('div');
+        action.style.cssText=`
+          font-size:10px;
+          color:var(--muted);
+          line-height:1.3;
+        `;
+        action.innerHTML=`<strong>${v.angle}</strong> • ${v.action}`;
+        actionsList.appendChild(action);
+      });
+    }
+    
+    card.appendChild(badge);
+    card.appendChild(timeEl);
+    card.appendChild(purposeHead);
+    card.appendChild(purposeText);
+    card.appendChild(actionsHead);
+    card.appendChild(actionsList);
+    
+    gridWrapper.appendChild(card);
+  });
+  
+  container.appendChild(gridWrapper);
+  
+  // Master prompts section
+  const promptSection=document.createElement('div');
+  promptSection.style.cssText=`
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px;
+  `;
+  
+  promptSection.innerHTML=`
+    <h3 style="color:var(--gold);margin:0 0 14px 0;">Master Prompts</h3>
+    <div style="margin-bottom:14px;">
+      <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">🎨 Image Prompt</p>
+      <div style="background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;font-size:12px;color:var(--muted);max-height:150px;overflow-y:auto;line-height:1.5;" id="affiliateMasterImagePrompt"></div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">🎬 Video Prompt</p>
+      <div style="background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;font-size:12px;color:var(--muted);max-height:150px;overflow-y:auto;line-height:1.5;" id="affiliateMasterVideoPrompt"></div>
+    </div>
+  `;
+  
+  container.appendChild(promptSection);
+  
+  // Populate prompts
+  document.getElementById('affiliateMasterImagePrompt').textContent=data.masterImage;
+  document.getElementById('affiliateMasterVideoPrompt').textContent=data.masterVideo;
+}
+
+// Init
+window.addEventListener('load',()=>{const savedKey=localStorage.getItem('affiliate_gemini_api_key');if(savedKey){document.getElementById('affiliateApiKey').parentElement.parentElement.style.display='none';}});
+
+
+// Export storyboard as image
+async function exportAffiliateStoryboardAsImage() {
+  const element = document.getElementById('affiliateSceneContainer');
+  if (!element) return;
+  
+  try {
+    // Disable overflow during capture
+    const originalStyle = element.style.cssText;
+    element.style.overflow = 'visible';
+    
+    const canvas = await html2canvas(element, {
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--paper').trim(),
+      scale: 2,
+      logging: false
+    });
+    
+    // Restore original style
+    element.style.cssText = originalStyle;
+    
+    // Download image
+    const link = document.createElement('a');
+    const metadata = document.getElementById('affiliateMetadata').textContent;
+    const filename = 'storyboard-' + new Date().toISOString().slice(0,10) + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.download = filename;
+    link.click();
+  } catch(err) {
+    console.error('Export failed:', err);
+    alert('Failed to export image. Try again or use Print instead.');
+  }
+}
+
+// Print storyboard
+function printAffiliateStoryboard() {
+  const element = document.getElementById('affiliateSceneContainer');
+  if (!element) return;
+  
+  const printWindow = window.open('', '_blank');
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Affiliate Storyboard</title>
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+          background: #f5f5f5;
+          padding: 20px;
+        }
+        .metadata {
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 14px;
+          color: #666;
+        }
+        .storyboard-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+          max-width: 1200px;
+          margin: 0 auto;
+          page-break-inside: avoid;
+        }
+        .scene-card {
+          background: #fff;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          padding: 12px;
+          page-break-inside: avoid;
+          break-inside: avoid;
+          min-height: 160px;
+        }
+        .scene-badge {
+          display: inline-block;
+          background: #2b9fd9;
+          color: #fff;
+          padding: 3px 8px;
+          border-radius: 10px;
+          font-size: 10px;
+          font-weight: 600;
+          margin-bottom: 8px;
+        }
+        .scene-time { font-size: 10px; color: #999; margin-bottom: 6px; }
+        .scene-purpose-label { font-size: 9px; font-weight: 600; color: #999; text-transform: uppercase; margin-bottom: 4px; }
+        .scene-purpose { font-size: 12px; font-weight: 600; color: #2b9fd9; line-height: 1.4; margin-bottom: 8px; }
+        .scene-actions-label { font-size: 9px; font-weight: 600; color: #999; text-transform: uppercase; margin-bottom: 4px; }
+        .scene-action { font-size: 9px; color: #666; line-height: 1.3; }
+        @media print {
+          body { padding: 0; }
+          .storyboard-grid { gap: 12px; }
+          .scene-card { break-inside: avoid; page-break-inside: avoid; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="metadata">${document.getElementById('affiliateMetadata').textContent}</div>
+      <div class="storyboard-grid">${element.innerHTML}</div>
+    </body>
+    </html>
+  `;
+  
+  printWindow.document.write(html);
+  printWindow.document.close();
+  setTimeout(() => printWindow.print(), 500);
+}
 </script>
 </body>
 </html>
