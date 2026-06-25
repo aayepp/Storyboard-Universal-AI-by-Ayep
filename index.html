@@ -1711,6 +1711,11 @@ async function submitSheet(text){
     // Confirm the name and proceed to next step
     addMsg('sheet','user', text);
     S.sheet.object = text;
+    
+    // IMPORTANT: Clear flags to prevent re-triggering
+    S.sheet._suggestedName = null;
+    S.sheet._awaitingNameConfirm = false;
+    
     captureSheetMeta(text, text);
     
     // Add to history for proper flow
@@ -1780,8 +1785,8 @@ async function submitSheet(text){
   S.sheet.busy=true; document.getElementById('sheet-send').disabled=true;
   const th=addThinking('sheet');
   try{
-    // STEP 1: Auto-detect image content if no user text
-    if(!text && imgs.length){
+    // STEP 1: Auto-detect image content if no user text AND not already waiting for confirmation
+    if(!text && imgs.length && !S.sheet._awaitingNameConfirm){
       addMsg('sheet','ai', LANG==='ms'?'🔍 Mengenali gambar...':'🔍 Analyzing image...');
       try{
         const detectPrompt = LANG==='ms'
@@ -1791,8 +1796,9 @@ async function submitSheet(text){
         const detectionResult = await geminiText(detectPrompt, [{role:'user',parts:[...parts]}]);
         const suggestedName = detectionResult.replace(/^(Ini adalah|This is)\s+/i, '').trim();
         
-        // Store suggested name for button click handler
+        // Store suggested name for button click handler + set flag
         S.sheet._suggestedName = suggestedName;
+        S.sheet._awaitingNameConfirm = true;
         
         // Highlight the suggestion
         addMsg('sheet','ai', LANG==='ms'
