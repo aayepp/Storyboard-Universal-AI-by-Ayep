@@ -1119,6 +1119,27 @@ function copyHowtoVideo(btn){
     setTimeout(()=>{span.textContent=old},1800);
   });
 }
+let forceModelOverride = null; // Force specific model if user selects one
+
+function showModelPicker(tab){
+  const tab_id = tab==='sheet' ? 'sheet' : 'board';
+  const models = ['gemini-3-pro-image', 'gemini-3.1-flash-image', 'gemini-2.5-flash-image'];
+  const modelLabels = {
+    'gemini-3-pro-image': 'Gemini Pro (Best Quality)',
+    'gemini-3.1-flash-image': 'Flash (Balanced)',
+    'gemini-2.5-flash-image': 'Flash Lite (Fastest)'
+  };
+  
+  addMsg(tab_id, 'ai', LANG==='ms'
+    ? '🤖 Model overloaded. Pilih model lain untuk try generate dengan model itu:'
+    : '🤖 Model overloaded. Pick a different model to force-generate with:');
+  
+  renderPicks(tab_id, models.map(m => ({
+    k: m,
+    label: modelLabels[m]
+  })));
+}
+
 function closeKey(){document.getElementById('keyModal').classList.remove('show')}
 function saveKey(){
   const v=document.getElementById('keyInput').value.trim();
@@ -1665,6 +1686,18 @@ async function submitSheet(text){
     generateSheetImage();
     return;
   }
+  // switch model on overload
+  if(text.includes('switch-model') || text.toLowerCase().includes('tukar model')){
+    showModelPicker('sheet');
+    return;
+  }
+  // model force selection (from model picker)
+  if(text.includes('gemini-') && text.includes('image')){
+    forceModelOverride = text;
+    addMsg('sheet','ai', LANG==='ms'?'🔄 Menggunakan model yang dipilih...':'🔄 Using selected model...');
+    generateSheetImage();
+    return;
+  }
   // special case: use sheet image for storyboard
   if(text.toLowerCase().includes('guna storyboard') || text.toLowerCase().includes('storyboard gen')){
     if(!S.sheet.image){
@@ -1796,8 +1829,22 @@ async function generateSheetImage(){
     addMsg('sheet','ai', isServerError
       ? (LANG==='ms'?'⚠️ **Server sedang sibuk.** API Gemini mengalami beban tinggi. Sila tunggu beberapa saat dan coba lagi.':'⚠️ **Server busy.** Gemini API is temporarily overloaded. Please wait a moment and try again.')
       : '⚠️ '+t('errGen')+'\n\n`'+errMsg+'`');
-    const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
-    renderPicks('sheet',[{k:'retry-gen',label:retryLabel}]);
+    
+    // If server error, show both retry and model picker options
+    if(isServerError){
+      addMsg('sheet','ai', LANG==='ms'
+        ? '**Pilihan:**\n1. Tunggu & coba lagi (auto-retry dengan backoff)\n2. Tukar ke model lain (tekan butang dibawah)'
+        : '**Options:**\n1. Wait & try again (auto-retry with backoff)\n2. Switch model (press button below)');
+      const retryLabel = LANG==='ms'?'🔄 Coba Lagi':'🔄 Try Again';
+      const switchLabel = LANG==='ms'?'🤖 Tukar Model':'🤖 Switch Model';
+      renderPicks('sheet',[
+        {k:'retry-gen',label:retryLabel},
+        {k:'switch-model',label:switchLabel}
+      ]);
+    } else {
+      const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
+      renderPicks('sheet',[{k:'retry-gen',label:retryLabel}]);
+    }
   }
 }
 
@@ -1976,6 +2023,18 @@ function sendBoard(){
 async function submitBoard(text){
   // retry generation
   if(text.toLowerCase().includes('retry') || text.toLowerCase().includes('coba') || text.includes('retry-gen')){
+    generateBoardImage();
+    return;
+  }
+  // switch model on overload
+  if(text.includes('switch-model') || text.toLowerCase().includes('tukar model')){
+    showModelPicker('board');
+    return;
+  }
+  // model force selection (from model picker)
+  if(text.includes('gemini-') && text.includes('image')){
+    forceModelOverride = text;
+    addMsg('board','ai', LANG==='ms'?'🔄 Menggunakan model yang dipilih...':'🔄 Using selected model...');
     generateBoardImage();
     return;
   }
@@ -2180,8 +2239,22 @@ async function generateBoardImage(isFix){
     addMsg('board','ai', isServerError
       ? (LANG==='ms'?'⚠️ **Server sedang sibuk.** API Gemini mengalami beban tinggi. Sila tunggu beberapa saat dan coba lagi.':'⚠️ **Server busy.** Gemini API is temporarily overloaded. Please wait a moment and try again.')
       : '⚠️ '+t('errGen')+'\n\n`'+errMsg+'`');
-    const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
-    renderPicks('board',[{k:'retry-gen',label:retryLabel}]);
+    
+    // If server error, show both retry and model picker options
+    if(isServerError){
+      addMsg('board','ai', LANG==='ms'
+        ? '**Pilihan:**\n1. Tunggu & coba lagi (auto-retry dengan backoff)\n2. Tukar ke model lain (tekan butang dibawah)'
+        : '**Options:**\n1. Wait & try again (auto-retry with backoff)\n2. Switch model (press button below)');
+      const retryLabel = LANG==='ms'?'🔄 Coba Lagi':'🔄 Try Again';
+      const switchLabel = LANG==='ms'?'🤖 Tukar Model':'🤖 Switch Model';
+      renderPicks('board',[
+        {k:'retry-gen',label:retryLabel},
+        {k:'switch-model',label:switchLabel}
+      ]);
+    } else {
+      const retryLabel = LANG==='ms'?'🔄 Coba Jana Semula':'🔄 Try Again';
+      renderPicks('board',[{k:'retry-gen',label:retryLabel}]);
+    }
   }finally{
     S.board.busy=false; document.getElementById('board-send').disabled=false;
   }
