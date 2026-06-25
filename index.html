@@ -593,7 +593,7 @@
   .copybox-text{
     padding:13px 15px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.65;
     color:var(--ink-soft);white-space:pre-wrap;word-break:break-word;border-bottom:1px solid var(--glass-border);
-    background:var(--glass-panel);max-height:340px;overflow:auto;
+    background:var(--glass-panel);max-height:none;overflow:visible;
     -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
   }
   .copybox-btn{
@@ -2366,7 +2366,7 @@ function showPostImageMenu(){
 }
 
 function showVideoInstruction(){
-  const VIDEO_TEXT = 'Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion';
+  const VIDEO_TEXT = 'Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in Malay, Characters and Colors in Smooth Motion, don\'t animate storyboard images.';
   const intro = LANG==='ms'
     ? '🎬 **Teks arahan video** — salin teks di bawah dan tampal ke tool video anda (cth Veo, Runway, Kling), bersama imej storyboard sebagai rujukan:'
     : '🎬 **Video instruction text** — copy the text below and paste it into your video tool (e.g. Veo, Runway, Kling), along with the storyboard image as reference:';
@@ -2432,7 +2432,7 @@ JSON shape:
 {
   "video_prompt": {
     "global": {
-      "instruction": "Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in ${a.bahasa?.val||'Malay'}, Characters and Colors in Smooth Motion",
+      "instruction": "Create video follow storyboard attach as reference only. Maintain the exact Scene, Visual, Action, Dialogue in ${a.bahasa?.val||'Malay'}, Characters and Colors in Smooth Motion, don't animate storyboard images",
       "product": "...",
       "style": "...",
       "aspect_ratio": "...",
