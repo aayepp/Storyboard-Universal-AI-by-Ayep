@@ -1399,6 +1399,7 @@ async function geminiImage(promptText, refImages, preferPro, retryCount=0, maxRe
 ===================================================================== */
 function sheetSystemPrompt(){
   const lang = LANG==='ms'?'Bahasa Melayu (boleh campur English untuk istilah industri)':'English (you may mix Malay terms if user does)';
+  const skipStep2 = S.sheet._autoConfirmedName ? '\n\nIMPORTANT: The user already auto-confirmed the product name via AI image detection. SKIP STEP 2 verification entirely. Go directly to STEP 3.' : '';
   return `You are a Smart Reference Sheet Creator for advertising production. You help users create CHARACTER or PRODUCT reference sheets as professional visual grid images.
 
 REPLY LANGUAGE: ${lang}. Keep replies concise and friendly. Use numbered menus.
@@ -1422,7 +1423,7 @@ IMAGE GENERATION RULE: You DO NOT generate images yourself in text. When the use
 
 NEVER write "[[GENERATE_SHEET]]" until the object name is verified and settings are chosen. If no image was uploaded yet, ask for one first — do NOT emit the token.
 
-Keep menus as numbered lists so the app can show quick-pick buttons. Always be warm and direct.`;
+Keep menus as numbered lists so the app can show quick-pick buttons. Always be warm and direct.${skipStep2}`;
 }
 
 function sheetImagePrompt(){
@@ -1712,9 +1713,10 @@ async function submitSheet(text){
     addMsg('sheet','user', text);
     S.sheet.object = text;
     
-    // IMPORTANT: Clear flags to prevent re-triggering
+    // IMPORTANT: Clear flags to prevent re-triggering + mark as auto-confirmed
     S.sheet._suggestedName = null;
     S.sheet._awaitingNameConfirm = false;
+    S.sheet._autoConfirmedName = true;  // Skip STEP 2 verification
     
     captureSheetMeta(text, text);
     
