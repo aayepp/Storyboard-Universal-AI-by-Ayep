@@ -1290,6 +1290,7 @@ async function geminiText(systemPrompt, history){
   throw new Error('Text API: '+lastErr);
 }
 
+
 async function geminiImage(promptText, refImages, preferPro, retryCount=0, maxRetries=7){
   // refImages: [{dataUrl, mime}]
   const parts=[{text:promptText}];
