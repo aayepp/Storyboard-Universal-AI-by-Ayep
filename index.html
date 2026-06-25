@@ -1291,23 +1291,28 @@ async function geminiText(systemPrompt, history){
 }
 
 
-async function geminiImage(promptText, refImages, preferPro, retryCount=0, maxRetries=7){
+async function geminiImage(promptText, refImages, preferPro, retryCount=0, maxRetries=7, modelFailCount=0){
   // refImages: [{dataUrl, mime}]
   const parts=[{text:promptText}];
   (refImages||[]).forEach(im=>{
     parts.push({inlineData:{mimeType:im.mime||'image/png',data:im.dataUrl.split(',')[1]}});
   });
   const body={ contents:[{role:'user',parts}] };
-  // When reference images are supplied, prefer Nano Banana Pro for better fidelity.
+  
+  // Model switching strategy: Start with larger, fall back to smaller/faster models on overload
+  // preferPro=true: Pro first, then Flash (for reference sheets with images)
+  // preferPro=false: Flash first, then lighter models (standard storyboards)
   const candidates = preferPro
-    ? ['gemini-3-pro-image', IMAGE_MODEL, 'gemini-3.1-flash-image', 'gemini-2.5-flash-image']
-    : [IMAGE_MODEL, 'gemini-3-pro-image', 'gemini-3.1-flash-image', 'gemini-2.5-flash-image'];
+    ? ['gemini-3-pro-image', 'gemini-3.1-flash-image', 'gemini-2.5-flash-image']
+    : ['gemini-3.1-flash-image', 'gemini-2.5-flash-image', 'gemini-3-pro-image'];
+  
   let lastErr='';
   for(const model of [...new Set(candidates)]){
     try{
       const controller = new AbortController();
       const timeoutId = setTimeout(()=>controller.abort(), 60000); // 60 second timeout
       
+      console.log(`[MODEL] Trying ${model}...`);
       const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -1318,12 +1323,18 @@ async function geminiImage(promptText, refImages, preferPro, retryCount=0, maxRe
       
       if(!r.ok){ 
         lastErr=(await r.text()).slice(0,200);
-        // 503 Server Error - try again with exponential backoff
-        if(r.status===503 && retryCount<maxRetries){
-          const waitTime = Math.pow(2, retryCount) * 1000 + Math.random()*1000; // exponential backoff + jitter
-          console.log(`[503] Gemini overloaded. Retry ${retryCount+1}/${maxRetries} in ${Math.round(waitTime/1000)}s...`);
-          await new Promise(resolve=>setTimeout(resolve, waitTime));
-          return geminiImage(promptText, refImages, preferPro, retryCount+1, maxRetries);
+        // 503 Server Error - this model is overloaded, try next (smaller/faster) model
+        if(r.status===503){
+          console.log(`[503] ${model} overloaded. Switching to next model...`);
+          modelFailCount++;
+          // If we've exhausted all models in this attempt, retry with backoff
+          if(modelFailCount >= candidates.length && retryCount<maxRetries){
+            const waitTime = Math.pow(2, retryCount) * 1000 + Math.random()*1000;
+            console.log(`[RETRY] All models overloaded. Retry ${retryCount+1}/${maxRetries} in ${Math.round(waitTime/1000)}s...`);
+            await new Promise(resolve=>setTimeout(resolve, waitTime));
+            return geminiImage(promptText, refImages, preferPro, retryCount+1, maxRetries, 0);
+          }
+          continue; // Try next model immediately
         }
         // 404 => model name gone, try next; other errors => stop and report
         if(r.status===404 || /not found|no longer available|not supported/i.test(lastErr)) continue;
@@ -1336,17 +1347,26 @@ async function geminiImage(promptText, refImages, preferPro, retryCount=0, maxRe
         if(p.inlineData) imgUrl='data:'+(p.inlineData.mimeType||'image/png')+';base64,'+p.inlineData.data;
         if(p.text) caption+=p.text;
       });
-      if(imgUrl) return {imgUrl, caption, model};
+      if(imgUrl){ 
+        console.log(`[SUCCESS] Generated using ${model}`);
+        return {imgUrl, caption, model};
+      }
       // no image returned but call ok — try next model
       lastErr='No image in response from '+model;
+      console.log(`[EMPTY] ${model} returned no image, trying next...`);
     }catch(e){ 
       lastErr=String(e.message).slice(0,200);
-      // Timeout or abort error - retry
-      if((e.name==='AbortError' || lastErr.includes('timeout')) && retryCount<maxRetries){
-        const waitTime = Math.pow(2, retryCount) * 1000 + Math.random()*1000;
-        console.log(`[TIMEOUT] Request timed out. Retry ${retryCount+1}/${maxRetries} in ${Math.round(waitTime/1000)}s...`);
-        await new Promise(resolve=>setTimeout(resolve, waitTime));
-        return geminiImage(promptText, refImages, preferPro, retryCount+1, maxRetries);
+      // Timeout or abort error - try next model, then retry entire flow if needed
+      if(e.name==='AbortError' || lastErr.includes('timeout')){
+        console.log(`[TIMEOUT] ${model} timed out, trying next model...`);
+        modelFailCount++;
+        if(modelFailCount >= candidates.length && retryCount<maxRetries){
+          const waitTime = Math.pow(2, retryCount) * 1000 + Math.random()*1000;
+          console.log(`[TIMEOUT-RETRY] All models timed out. Retry ${retryCount+1}/${maxRetries} in ${Math.round(waitTime/1000)}s...`);
+          await new Promise(resolve=>setTimeout(resolve, waitTime));
+          return geminiImage(promptText, refImages, preferPro, retryCount+1, maxRetries, 0);
+        }
+        continue; // Try next model
       }
     }
   }
