@@ -1713,15 +1713,39 @@ async function submitSheet(text){
     S.sheet.object = text;
     captureSheetMeta(text, text);
     
-    addMsg('sheet','ai', LANG==='ms'
-      ? `✅ **Nama Disimpan: "${text}"**\n\nSekarang saya akan jana reference sheet profesional untuk produk ini. Tunggu sebentar...`
-      : `✅ **Name Saved: "${text}"**\n\nNow I'll generate a professional reference sheet for this product. Please wait...`);
+    // Add to history for proper flow
+    S.sheet.history.push({role:'user',parts:[{text}]});
     
-    // Auto-advance to step 2 and generate
-    setSheetStep(2);
-    setTimeout(() => {
-      generateSheetImage();
-    }, 500);
+    // Show confirmation
+    addMsg('sheet','ai', LANG==='ms'
+      ? `✅ **Nama Disimpan: "${text}"**\n\nTunggu, saya mengesahkan nama dan tetapan untuk sheet anda...`
+      : `✅ **Name Saved: "${text}"**\n\nWait, I'm verifying the name and settings for your sheet...`);
+    
+    // Now continue normal flow - call AI to show STEP 3 settings
+    S.sheet.busy=true; document.getElementById('sheet-send').disabled=true;
+    const th=addThinking('sheet');
+    try{
+      let reply=await geminiText(sheetSystemPrompt(),S.sheet.history);
+      removeThinking('sheet');
+      
+      // detect generate token
+      const wantGen=/\[\[GENERATE_SHEET\]\]/.test(reply);
+      reply=reply.replace(/\[\[GENERATE_SHEET\]\]/g,'').trim();
+
+      if(reply) addMsg('sheet','ai',reply);
+      S.sheet.history.push({role:'ai',parts:[{text:reply}]});
+      
+      // advance steps
+      if(S.sheet._lastImgs && S.sheet.step<2) setSheetStep(2);
+
+      if(wantGen){ setSheetStep(4); await generateSheetImage(); }
+      else { offerSheetPicks(reply); }
+    }catch(err){
+      removeThinking('sheet');
+      addMsg('sheet','ai','⚠️ '+t('errGen')+'\n\n`'+String(err.message).slice(0,180)+'`');
+    }finally{
+      S.sheet.busy=false; document.getElementById('sheet-send').disabled=false;
+    }
     return;
   }
   // special case: use sheet image for storyboard
