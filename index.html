@@ -1655,8 +1655,8 @@ function bootSheet(){
   S.sheet={step:1,history:[],image:null,busy:false,object:null,type:null,angles:null};
   setSheetStep(1);
   const greet = LANG==='ms'
-    ? 'Hai! 👋 Saya **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, dan AI Image Prompt Engineer.\n\nTugas: Transform your product photo jadi **professional reference sheet** — authentic, natural, conversion-focused, siap untuk AI generation.\n\n**Langkah 1:** Lampir gambar produk (📎 di bawah) + beri nama (contoh: "iPhone 16 Pro" atau "Luxury Watch Gold").'
-    : 'Hi! 👋 I\'m your **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.\n\nMy role: Transform your product photo into a **professional reference sheet** — authentic, natural, conversion-focused, ready for AI generation.\n\n**Step 1:** Attach your product image (📎 below) + give it a name (example: "iPhone 16 Pro" or "Luxury Watch Gold").';
+    ? 'Hai! 👋 Saya **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, dan AI Image Prompt Engineer.\n\nTugas: Transform your product photo jadi **professional reference sheet** — authentic, natural, conversion-focused, siap untuk AI generation.\n\n**Langkah 1:** Lampir gambar produk (📎 di bawah). Saya akan **auto-detect** apa gambar itu, terus kau confirm nama atau taip nama sendiri.'
+    : 'Hi! 👋 I\'m your **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.\n\nMy role: Transform your product photo into a **professional reference sheet** — authentic, natural, conversion-focused, ready for AI generation.\n\n**Step 1:** Attach your product image (📎 below). I\'ll **auto-detect** what it is, then you confirm the name or type your own.';
   addMsg('sheet','ai',greet);
 }
 function resetSheet(){
@@ -1698,6 +1698,13 @@ async function submitSheet(text){
     generateSheetImage();
     return;
   }
+  // Handle "type my own name" request
+  if(text === 'type-own' || text.toLowerCase().includes('taip nama')){
+    addMsg('sheet','ai', LANG==='ms'
+      ? 'Taip nama produk/watak anda (cth: "iPhone 16 Pro", "Bunga Mawar Merah", "Wanita Berambut Panjang"):'
+      : 'Type the product/character name (e.g., "iPhone 16 Pro", "Red Rose Bouquet", "Long-haired Woman"):');
+    return;
+  }
   // special case: use sheet image for storyboard
   if(text.toLowerCase().includes('guna storyboard') || text.toLowerCase().includes('storyboard gen')){
     if(!S.sheet.image){
@@ -1730,6 +1737,36 @@ async function submitSheet(text){
   S.sheet.busy=true; document.getElementById('sheet-send').disabled=true;
   const th=addThinking('sheet');
   try{
+    // STEP 1: Auto-detect image content if no user text
+    if(!text && imgs.length){
+      addMsg('sheet','ai', LANG==='ms'?'🔍 Mengenali gambar...':'🔍 Analyzing image...');
+      try{
+        const detectPrompt = LANG==='ms'
+          ? 'Lihat gambar ini. Dalam SATU baris, nyatakan HANYA apa yang kau lihat tanpa penjelasan tambahan. Format: "Ini adalah [singkat nama/deskripsi produk/watak]". Contoh: "Ini adalah Bunga Mawar Merah", "Ini adalah Jam Tangan Emas", "Ini adalah Perempuan Berambut Panjang"'
+          : 'Look at this image. In ONE sentence, state ONLY what you see without extra explanation. Format: "This is a [brief product/character name/description]". Examples: "This is a red rose bouquet", "This is a gold watch", "This is a long-haired woman"';
+        
+        const detectionResult = await geminiText(detectPrompt, [{role:'user',parts:[...parts]}]);
+        const suggestedName = detectionResult.replace(/^(Ini adalah|This is)\s+/i, '').trim();
+        
+        // Highlight the suggestion
+        addMsg('sheet','ai', LANG==='ms'
+          ? `✅ **Nama Dicadangkan: "${suggestedName}"**\n\nSetuju dengan nama ini, atau taip nama sendiri?`
+          : `✅ **Suggested Name: "${suggestedName}"**\n\nAgree with this name, or type your own?`);
+        
+        // Show Yes/No buttons
+        renderPicks('sheet',[
+          {k:suggestedName, label: LANG==='ms'?'✓ Ya, Gunakan Ini':'✓ Yes, Use This'},
+          {k:'type-own', label: LANG==='ms'?'✎ Taip Nama Sendiri':'✎ Type My Own'}
+        ]);
+        
+        S.sheet.busy=false; document.getElementById('sheet-send').disabled=false;
+        return;
+      }catch(e){
+        console.log('Detection failed, continue normal flow:', e.message);
+        // Fall through to normal flow if detection fails
+      }
+    }
+    
     let reply=await geminiText(sheetSystemPrompt(),S.sheet.history);
     removeThinking('sheet');
     // detect generate token
