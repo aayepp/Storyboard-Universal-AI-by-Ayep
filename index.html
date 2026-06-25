@@ -1899,7 +1899,7 @@ function renderPicks(tab, picks){
 /* =====================================================================
    GEMINI API
 ===================================================================== */
-async function geminiText(systemPrompt, history){
+async function geminiText(systemPrompt, history, retryCount=0, maxRetries=5){
   const contents = history.map(h=>({
     role: h.role==='ai'?'model':'user',
     parts: h.parts
@@ -1916,7 +1916,15 @@ async function geminiText(systemPrompt, history){
       const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`,{
         method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
       });
-      if(!r.ok){ lastErr=(await r.text()).slice(0,200);
+      if(!r.ok){ 
+        lastErr=(await r.text()).slice(0,200);
+        // 429 Rate Limit - retry with backoff
+        if(r.status===429 && retryCount<maxRetries){
+          const waitTime = Math.pow(2, retryCount) * 2000 + Math.random()*1000;
+          console.log(`[429 Text API] Rate limited. Retry ${retryCount+1}/${maxRetries} in ${Math.round(waitTime/1000)}s...`);
+          await new Promise(resolve=>setTimeout(resolve, waitTime));
+          return geminiText(systemPrompt, history, retryCount+1, maxRetries);
+        }
         if(/"code":\s*404/.test(lastErr) || /not found|no longer available|not supported/i.test(lastErr)) continue;
         throw new Error('Text API: '+lastErr);
       }
@@ -1955,6 +1963,13 @@ async function geminiImage(promptText, refImages, preferPro, retryCount=0, maxRe
       
       if(!r.ok){ 
         lastErr=(await r.text()).slice(0,200);
+        // 429 Rate Limit - wait and retry with longer backoff
+        if(r.status===429 && retryCount<maxRetries){
+          const waitTime = Math.pow(2, retryCount) * 2000 + Math.random()*2000; // longer backoff for rate limit
+          console.log(`[429] Rate limited. Retry ${retryCount+1}/${maxRetries} in ${Math.round(waitTime/1000)}s...`);
+          await new Promise(resolve=>setTimeout(resolve, waitTime));
+          return geminiImage(promptText, refImages, preferPro, retryCount+1, maxRetries);
+        }
         // 503 Server Error - try again with exponential backoff
         if(r.status===503 && retryCount<maxRetries){
           const waitTime = Math.pow(2, retryCount) * 1000 + Math.random()*1000; // exponential backoff + jitter
