@@ -6,7 +6,7 @@
 <title>Smart Universal Gen by Ayep</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#e8e6e0;
@@ -145,7 +145,7 @@
   body{
     background:#0a0e27;
     color:var(--ink);
-    font-family:-apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family:'Inter',system-ui,sans-serif;
     font-size:15px;line-height:1.6;
     -webkit-font-smoothing:antialiased;
     position:relative;
@@ -294,397 +294,7 @@
     50%{ transform:translate(-50%, -50%) scale(1.2); }
   }
   .mono{font-family:'JetBrains Mono',monospace}
-  .display{font-family:'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI','Poppins',sans-serif}
-
-  /* ===== NEW DROPDOWN UI ===== */
-  .image-upload-box{
-    grid-column:1/-1;
-    background:var(--paper-2);
-    border:2px dashed var(--gold-soft);
-    border-radius:var(--radius);
-    padding:60px 40px;
-    text-align:center;
-    cursor:pointer;
-    transition:all 0.3s ease;
-    position:relative;
-    min-height:200px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    margin-bottom:30px;
-    width:100%;
-  }
-  .image-upload-box:hover{
-    border-color:var(--gold);
-    background:var(--panel);
-  }
-  .image-upload-box.has-image{
-    border-style:solid;
-  }
-  .image-upload-box input[type="file"]{
-    display:none;
-  }
-  .image-upload-icon{
-    font-size:48px;
-    margin-bottom:15px;
-    opacity:0.7;
-  }
-  .image-box-text{
-    color:var(--ink);
-    margin-bottom:5px;
-    font-size:16px;
-    font-weight:500;
-  }
-  .image-box-subtext{
-    color:var(--ink-soft);
-    font-size:13px;
-  }
-  .image-preview{
-    margin-top:20px;
-    max-width:100%;
-    max-height:150px;
-    border-radius:var(--radius-sm);
-    display:none;
-  }
-  .image-preview.show{
-    display:block;
-  }
-  .image-remove-btn{
-    margin-top:15px;
-    padding:8px 16px;
-    background:var(--danger);
-    color:white;
-    border:none;
-    border-radius:var(--radius-sm);
-    cursor:pointer;
-    font-size:13px;
-    display:none;
-  }
-  .image-remove-btn.show{
-    display:inline-block;
-  }
-
-  .selections-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-    gap:15px;
-    margin-bottom:20px;
-    max-width:1000px;
-    margin-left:auto;
-    margin-right:auto;
-  }
-  .select-item{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:var(--radius-sm);
-    padding:20px;
-    transition:all 0.3s ease;
-  }
-  .select-item:hover{
-    border-color:var(--gold);
-    box-shadow:0 0 15px rgba(96,184,255,0.15);
-    background:var(--paper-2);
-  }
-  .select-label{
-    display:block;
-    color:var(--gold);
-    font-size:12px;
-    font-weight:600;
-    margin-bottom:12px;
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    line-height:1.4;
-  }
-  .select-item select{
-    width:100%;
-    padding:10px 12px;
-    background:var(--paper-2);
-    border:1px solid var(--line);
-    border-radius:var(--radius-sm);
-    color:var(--ink);
-    font-family:inherit;
-    font-size:13px;
-    cursor:pointer;
-    transition:all 0.3s ease;
-  }
-  .select-item select:hover{
-    border-color:var(--gold);
-  }
-  .select-item select:focus{
-    outline:none;
-    border-color:var(--gold);
-    box-shadow:0 0 10px rgba(96,184,255,0.2);
-  }
-
-  .form-actions{
-    display:flex;
-    gap:15px;
-    justify-content:center;
-    width:100%;
-    max-width:900px;
-    margin-top:20px;
-  }
-  .form-actions button{
-    padding:12px 40px;
-    background:var(--gold);
-    color:#0a0e27;
-    border:none;
-    border-radius:var(--radius-sm);
-    cursor:pointer;
-    font-weight:600;
-    font-size:14px;
-    transition:all 0.3s ease;
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    position:relative;
-    z-index:20;
-    pointer-events:auto;
-  }
-  .form-actions button:hover{
-    background:var(--gold-deep);
-    transform:translateY(-2px);
-    box-shadow:var(--shadow);
-  }
-
-  /* Hide old composer for new dropdown UI */
-  .composer{
-    display:none !important;
-  }
-
-  /* Hide messages initially, show only on demand */
-  .msgs{
-    min-height:0;
-    display:none;
-  }
-  .msgs.show{
-    display:block;
-  }
-
-  /* Center all form content */
-  .form-wrapper{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    width:100%;
-    margin:0 auto;
-    padding:0 20px;
-    gap:30px;
-    position:relative;
-    z-index:10;
-  }
-
-  /* Ensure proper stage layout without rail */
-  .panel.flow .form-wrapper{
-    max-width:100%;
-  }
-
-  /* Form sections with clear organization */
-  .form-section{
-    width:100%;
-    max-width:900px;
-    margin:0 auto;
-  }
-
-  .section-header{
-    font-size:14px;
-    font-weight:600;
-    color:var(--gold);
-    margin-bottom:20px;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    padding-bottom:10px;
-    border-bottom:1px solid var(--line);
-  }
-
-  /* Row-based layout for dropdowns (2 per row) */
-  .selections-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-    margin-bottom:20px;
-    width:100%;
-  }
-
-  @media(max-width:768px){
-    .selections-row{
-      grid-template-columns:1fr;
-    }
-  }
-
-  /* ===== MOBILE RESPONSIVENESS ===== */
-  @media(max-width:768px){
-    body{font-size:14px}
-    h1, .display{font-size:20px !important}
-    h2{font-size:16px !important}
-    
-    /* Reduce padding on mobile */
-    .form-wrapper{padding:0 15px;gap:20px}
-    .form-section{max-width:100%}
-    .form-actions{padding:0 15px;gap:10px}
-    
-    /* Compact greeting box */
-    .greeting-box .bubble{padding:10px 12px;font-size:11.5px}
-    .greeting-box .avatar{width:28px;height:28px;font-size:14px}
-    
-    /* Compact dropdowns */
-    select{font-size:13px;padding:10px 12px}
-    .select-label{font-size:11px}
-    
-    /* Smaller buttons */
-    button{font-size:13px;padding:10px 16px}
-    
-    /* Smaller images */
-    .image-upload-box{min-height:200px}
-    .results-box{min-height:200px;padding:20px}
-    .results-box img{max-height:400px}
-    
-    /* Compact topbar */
-    .topbar-inner{gap:10px}
-    .brand h1{font-size:16px}
-    .brand span{font-size:10px}
-    
-    /* Compact tabs */
-    .tabs button{font-size:12px;padding:10px 12px}
-    
-    /* Info/greeting box compact */
-    .info-box{gap:10px;padding:12px}
-    .info-icon{font-size:20px}
-  }
-
-  @media(max-width:480px){
-    body{font-size:13px}
-    h1, .display{font-size:18px !important}
-    h2{font-size:14px !important}
-    
-    /* Extra compact for small phones */
-    .form-wrapper{padding:0 12px;gap:15px}
-    .form-section{margin:0}
-    
-    /* Stack everything */
-    .selections-row{gap:12px}
-    .form-actions{flex-direction:column;gap:8px}
-    
-    /* Smaller font sizes */
-    select, input, button{font-size:12px;padding:8px 10px}
-    
-    /* Minimal upload box */
-    .image-upload-box{min-height:150px;padding:20px}
-    .image-upload-icon{font-size:32px}
-    
-    /* Minimal results */
-    .results-box{min-height:150px;padding:15px}
-    
-    /* Hide some labels on tiny screens */
-    .select-label{font-size:10px}
-    
-    /* Compact greeting */
-    .greeting-box .msg{gap:8px}
-    .greeting-box .bubble{padding:8px 10px;font-size:11px;line-height:1.3}
-    .greeting-box .avatar{width:24px;height:24px;font-size:12px}
-    
-    /* Very compact topbar */
-    .brand{flex-direction:column;gap:4px}
-    .brand h1{font-size:14px}
-    .brand span{font-size:9px}
-    
-    /* Minimal spacing */
-    .section-header{font-size:12px;margin-bottom:12px;padding-bottom:8px}
-  }
-
-  /* Touch-friendly minimum sizes */
-  button, select, input[type="file"], .select-item{
-    min-height:44px;
-  }
-
-  /* Better tap targets on mobile */
-  @media(max-width:768px){
-    button, select, input[type="file"]{
-      min-height:48px;
-      min-width:48px;
-    }
-  }
-
-  /* Results Box Styling */
-  .results-box{
-    width:100%;
-    background:var(--paper-2);
-    border:1px solid var(--line);
-    border-radius:var(--radius-sm);
-    padding:40px;
-    text-align:center;
-    min-height:300px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-  }
-
-  .results-placeholder{
-    color:var(--ink-soft);
-    font-size:14px;
-    line-height:1.6;
-  }
-
-  .results-box img{
-    max-width:100%;
-    max-height:600px;
-    width:auto;
-    height:auto;
-    border-radius:var(--radius-sm);
-  }
-
-  /* Greeting Box / Message Styling */
-  .greeting-box{
-    width:100%;
-    margin-bottom:15px;
-  }
-
-  .greeting-box .msg{
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-    animation:none;
-  }
-
-  .greeting-box .avatar{
-    width:32px;
-    height:32px;
-    border-radius:50%;
-    background:var(--panel);
-    border:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:16px;
-    flex-shrink:0;
-    margin-top:2px;
-  }
-
-  .greeting-box .bubble{
-    flex:1;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:var(--radius-sm);
-    padding:12px 14px;
-    font-size:12px;
-    line-height:1.4;
-    color:var(--ink);
-  }
-
-  .greeting-box .bubble p{
-    margin:0 0 6px 0;
-  }
-
-  .greeting-box .bubble p:last-child{
-    margin-bottom:0;
-  }
-
-  .greeting-box .bubble strong{
-    color:var(--gold);
-    font-weight:600;
-  }
+  .display{font-family:'Fraunces',serif}
 
   /* ===== Top bar ===== */
   header.topbar{
@@ -714,7 +324,7 @@
     background:linear-gradient(135deg,rgba(184,153,104,.22),transparent);
   }
   .brand h1{
-    font-family:'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI';font-size:21px;font-weight:600;margin:0;
+    font-family:'Fraunces';font-size:21px;font-weight:600;margin:0;
     letter-spacing:-.015em;white-space:nowrap;line-height:1.1;
     background:linear-gradient(100deg, var(--ink) 0%, var(--ink) 38%, var(--gold-deep) 78%, var(--gold) 100%);
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
@@ -738,7 +348,7 @@
   }
   .lang-toggle button{
     border:0;background:transparent;padding:7px 15px;cursor:pointer;color:var(--muted);
-    font-family:-apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI';font-weight:600;transition:.18s;letter-spacing:.02em;
+    font-family:'Inter';font-weight:600;transition:.18s;letter-spacing:.02em;
   }
   .lang-toggle button.on{background:var(--ink);color:var(--gold-soft)}
   .key-btn{
@@ -778,7 +388,7 @@
   .tabs{max-width:1120px;margin:0 auto;padding:0 22px;display:flex;gap:6px}
   .tab{
     border:0;background:transparent;cursor:pointer;
-    padding:16px 22px 14px;font-family:'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI';font-weight:600;font-size:15.5px;
+    padding:16px 22px 14px;font-family:'Fraunces';font-weight:600;font-size:15.5px;
     color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;
     display:flex;align-items:center;gap:11px;letter-spacing:-.01em;transition:.18s;
   }
@@ -793,16 +403,8 @@
 
   /* ===== Layout ===== */
   main{max-width:1120px;margin:0 auto;padding:28px 22px 90px}
-  
-  @media(max-width:768px){
-    main{padding:20px 16px 90px}
-  }
-  
-  @media(max-width:480px){
-    main{padding:16px 12px 80px}
-  }
   .stage{display:grid;grid-template-columns:1fr;gap:16px}
-  @media(min-width:900px){.stage{grid-template-columns:1fr}}
+  @media(min-width:900px){.stage{grid-template-columns:minmax(0,1fr) 320px}}
 
   .panel{
     background:var(--glass-panel);
@@ -823,10 +425,10 @@
     font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
     color:var(--gold-deep);font-weight:500;
   }
-  .panel-head h2{font-family:'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI';font-size:17px;margin:0;font-weight:600;letter-spacing:-.01em}
+  .panel-head h2{font-family:'Fraunces';font-size:17px;margin:0;font-weight:600;letter-spacing:-.01em}
 
   /* ===== Chat / flow area ===== */
-  .flow{padding:20px;display:flex;flex-direction:column;min-height:440px;align-items:center;justify-content:flex-start}
+  .flow{padding:0;display:flex;flex-direction:column;min-height:440px}
   .msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;max-height:64vh}
   .msg{display:flex;gap:12px;align-items:flex-start;animation:rise .4s cubic-bezier(.15,.8,.2,1)}
   @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -889,7 +491,7 @@
   .composer-input{display:flex;gap:10px;align-items:flex-end}
   .composer textarea{
     flex:1;border:1px solid var(--glass-border);border-radius:12px;padding:12px 14px;
-    font-family:-apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI';font-size:14px;resize:none;outline:none;background:var(--glass-panel);color:var(--ink);
+    font-family:'Inter';font-size:14px;resize:none;outline:none;background:var(--glass-panel);color:var(--ink);
     -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
     max-height:130px;line-height:1.5;transition:.16s;box-shadow:var(--shadow-sm),var(--glass-inset);
   }
@@ -908,7 +510,7 @@
   .pick{
     border:1px solid var(--glass-border);background:var(--glass-panel);border-radius:10px;
     padding:8px 13px;font-size:13px;cursor:pointer;font-weight:500;color:var(--ink);
-    transition:.16s;font-family:-apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI';box-shadow:var(--shadow-sm),var(--glass-inset);
+    transition:.16s;font-family:'Inter';box-shadow:var(--shadow-sm),var(--glass-inset);
     animation:slide-up .3s ease-out backwards;
     -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
   }
@@ -967,7 +569,7 @@
 
   .reset-link{
     background:transparent;border:0;color:var(--muted);font-size:12.5px;cursor:pointer;
-    text-decoration:underline;text-underline-offset:3px;font-family:-apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI';padding:0;transition:.16s;
+    text-decoration:underline;text-underline-offset:3px;font-family:'Inter';padding:0;transition:.16s;
   }
   .reset-link:hover{color:var(--accent-ink)}
 
@@ -976,7 +578,7 @@
   .img-btn{
     display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);
     background:#fff;border-radius:9px;padding:8px 14px;font-size:12.5px;font-weight:600;
-    cursor:pointer;color:var(--ink);font-family:-apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI';transition:.16s;box-shadow:var(--shadow-sm);
+    cursor:pointer;color:var(--ink);font-family:'Inter';transition:.16s;box-shadow:var(--shadow-sm);
   }
   .img-btn:hover{border-color:var(--gold);color:var(--accent-ink);transform:translateY(-2px);box-shadow:var(--shadow)}
   .img-btn.primary{background:linear-gradient(160deg,#26221a,#100e0a);color:var(--gold);border-color:transparent}
@@ -996,7 +598,7 @@
   }
   .copybox-btn{
     width:100%;border:0;background:linear-gradient(160deg,#26221a,#100e0a);color:var(--gold);padding:11px;cursor:pointer;
-    font-family:-apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI';font-weight:600;font-size:13px;display:flex;align-items:center;
+    font-family:'Inter';font-weight:600;font-size:13px;display:flex;align-items:center;
     justify-content:center;gap:8px;transition:.18s;
   }
   .copybox-btn:hover{color:var(--gold-soft)}
@@ -1021,7 +623,7 @@
   }
   .modal:before{content:"";position:absolute;inset:0 0 auto 0;height:90px;background:var(--sheen);pointer-events:none}
   .modal-head{padding:24px 24px 0;position:relative}
-  .modal-head h3{font-family:'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI';margin:0 0 6px;font-size:20px;font-weight:600}
+  .modal-head h3{font-family:'Fraunces';margin:0 0 6px;font-size:20px;font-weight:600}
   .modal-head p{margin:0;color:var(--muted);font-size:13.5px}
   .modal-body{padding:20px 24px 24px}
   .modal-body label{font-size:12px;font-weight:600;display:block;margin-bottom:8px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
@@ -1035,7 +637,7 @@
   .modal-actions{display:flex;gap:10px;margin-top:18px}
   .btn{
     border:0;border-radius:11px;padding:12px 17px;font-weight:600;font-size:13.5px;cursor:pointer;
-    font-family:-apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI';flex:1;transition:.18s;
+    font-family:'Inter';flex:1;transition:.18s;
   }
   .btn-primary{background:linear-gradient(160deg,#26221a,#100e0a);color:var(--gold)}
   .btn-primary:hover{box-shadow:var(--shadow);color:var(--gold-soft)}
@@ -1052,7 +654,7 @@
   .lightbox-bar{display:flex;gap:11px}
   .lightbox-bar button{
     border:0;border-radius:11px;padding:12px 22px;font-weight:600;font-size:14px;cursor:pointer;
-    font-family:-apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI';display:inline-flex;align-items:center;gap:8px;transition:.18s;
+    font-family:'Inter';display:inline-flex;align-items:center;gap:8px;transition:.18s;
   }
   .lb-dl{background:linear-gradient(160deg,var(--gold-deep),var(--gold));color:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.2),var(--shadow-sm)}
   .lb-dl:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(0,0,0,.2),var(--shadow);animation:pulse-glow .6s infinite}
@@ -1092,12 +694,12 @@
     content:"";position:absolute;top:0;left:0;right:0;height:14px;
     background:repeating-linear-gradient(118deg,var(--gold) 0 7px,#100e0a 7px 14px);opacity:.92;
   }
-  .footer-title{font-family:'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI';font-size:18px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+  .footer-title{font-family:'Fraunces';font-size:18px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
   .footer-by{font-size:12.5px;color:var(--muted);margin-top:1px}
   .footer-by em{font-style:italic;color:var(--gold-deep);font-weight:500}
   .footer-stats{display:flex;align-items:center;gap:20px}
   .fstat{display:flex;flex-direction:column;align-items:center;gap:2px}
-  .fnum{font-family:'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI';font-size:24px;font-weight:600;color:var(--gold-deep);line-height:1}
+  .fnum{font-family:'Fraunces';font-size:24px;font-weight:600;color:var(--gold-deep);line-height:1}
   .flabel{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .fdiv{width:1px;height:30px;background:var(--glass-border)}
   .footer-note{
@@ -1171,85 +773,6 @@
           <span class="eyebrow">Tab 1</span>
           <h2 class="display" data-i="sheetTitle">Character / Product Reference Sheet</h2>
         </div>
-
-        <div class="form-wrapper">
-          <!-- Info Box / Greeting Message -->
-          <div class="form-section">
-            <div class="greeting-box">
-              <div class="msg ai">
-                <div class="avatar">💡</div>
-                <div class="bubble">
-                  <p>Hi! 👋 I'm your <strong>AI Creative Director</strong> — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.</p>
-                  <p>My role: Transform your product photo into a <strong>professional reference sheet</strong> — authentic, natural, conversion-focused, ready for AI generation.</p>
-                  <p><strong>Step 1:</strong> Attach your product image (📎 below) + give it a name. After that, select your style, angles, and generate!</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Upload Section -->
-          <div class="form-section">
-            <div class="section-header">📸 Upload Reference</div>
-            <div class="image-upload-box" id="sheet-image-box" onclick="document.getElementById('sheet-file-input').click()">
-              <div class="image-upload-icon">📸</div>
-              <div class="image-box-text">Upload Product/Character Image</div>
-              <div class="image-box-subtext">Click or drag & drop</div>
-              <img id="sheet-image-preview" class="image-preview" alt="Preview">
-              <button class="image-remove-btn" id="sheet-remove-btn" onclick="removeSheetImage(event)">Remove Image</button>
-              <input type="file" id="sheet-file-input" accept="image/*" onchange="handleSheetImageUpload(event)" style="display:none;">
-            </div>
-          </div>
-
-          <!-- Configuration Section -->
-          <div class="form-section">
-            <div class="section-header">⚙️ Configuration</div>
-            <div class="selections-row">
-              <div class="select-item">
-                <label class="select-label">Object Type</label>
-                <select id="sheet-type-select" onchange="updateSheetForm()">
-                  <option value="">Choose type...</option>
-                  <option value="character">Character</option>
-                  <option value="product">Product</option>
-                </select>
-              </div>
-              <div class="select-item">
-                <label class="select-label">Style</label>
-                <select id="sheet-style-select" onchange="updateSheetForm()">
-                  <option value="">Choose style...</option>
-                  <option value="realistic">Realistic</option>
-                  <option value="illustrated">Illustrated</option>
-                  <option value="minimalist">Minimalist</option>
-                </select>
-              </div>
-            </div>
-            <div class="selections-row">
-              <div class="select-item">
-                <label class="select-label">Angle Count</label>
-                <select id="sheet-angles-select" onchange="updateSheetForm()">
-                  <option value="">Choose count...</option>
-                  <option value="8">8 angles</option>
-                  <option value="10">10 angles</option>
-                  <option value="12">12 angles</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="form-actions">
-            <button onclick="generateSheet()">Generate Sheets</button>
-            <button onclick="resetSheet()" style="background:var(--panel);color:var(--gold);border:1px solid var(--gold);">Reset</button>
-          </div>
-
-          <!-- Results Box -->
-          <div class="form-section">
-            <div class="section-header">📊 Generated Result</div>
-            <div class="results-box" id="sheet-results-box">
-              <div class="results-placeholder">Generate your character/product sheet — the image will appear here</div>
-            </div>
-          </div>
-        </div>
-
         <div class="msgs" id="sheet-msgs"></div>
         <div class="composer">
           <div class="attach-row" id="sheet-attach"></div>
@@ -1293,144 +816,6 @@
           <span class="eyebrow">Tab 2</span>
           <h2 class="display" data-i="boardTitle">Storyboard Poster Generator</h2>
         </div>
-
-        <div class="form-wrapper">
-          <!-- Info Box / Greeting Message -->
-          <div class="form-section">
-            <div class="greeting-box">
-              <div class="msg ai">
-                <div class="avatar">💡</div>
-                <div class="bubble">
-                  <p>Hi! 👋 I'm your <strong>AI Creative Director</strong> — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.</p>
-                  <p>My role: Build a <strong>professional affiliate storyboard</strong> — authentic, natural, conversion-focused, sensory-rich, ready for AI Video generation (Veo, Kling, Runway).</p>
-                  <p><strong>Step 1:</strong> Attach your product image (📎 below), then send. After that, 6 questions to craft a narrative that converts.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Upload Section -->
-          <div class="form-section">
-            <div class="section-header">📸 Upload Reference</div>
-            <div class="image-upload-box" id="board-image-box" onclick="document.getElementById('board-file-input').click()">
-              <div class="image-upload-icon">🎬</div>
-              <div class="image-box-text">Upload Reference/Product Image</div>
-              <div class="image-box-subtext">Click or drag & drop</div>
-              <img id="board-image-preview" class="image-preview" alt="Preview">
-              <button class="image-remove-btn" id="board-remove-btn" onclick="removeBoardImage(event)">Remove Image</button>
-              <input type="file" id="board-file-input" accept="image/*" onchange="handleBoardImageUpload(event)" style="display:none;">
-            </div>
-          </div>
-
-          <!-- Configuration Section -->
-          <div class="form-section">
-            <div class="section-header">⚙️ Configuration</div>
-            
-            <!-- Row 1: Q1 & Q2 -->
-            <div class="selections-row">
-              <div class="select-item">
-                <label class="select-label" id="q1-label">Question 1 of 6<br>Choose your affiliate video style:</label>
-                <select id="board-tema-select" onchange="updateBoardForm()">
-                  <option value="">Select one...</option>
-                  <option value="1">UGC Style (Raw & Authentic)</option>
-                  <option value="2">Unboxing & First Impression</option>
-                  <option value="3">Problem → Solution Journey</option>
-                  <option value="4">Day-in-the-Life Integration</option>
-                  <option value="5">Before-After Transformation</option>
-                  <option value="6">Comparison Demo</option>
-                  <option value="7">Tutorial / How-To Use</option>
-                  <option value="8">Testimonial / Real Reviews</option>
-                  <option value="9">Trending Sound / Trend-Jacking</option>
-                  <option value="10">ASMR (Sensory-Rich)</option>
-                  <option value="11">Behind-the-Scenes / Creator Story</option>
-                </select>
-              </div>
-
-              <div class="select-item">
-                <label class="select-label" id="q2-label">Question 2 of 6<br>Choose your visual style:</label>
-                <select id="board-style-select" onchange="updateBoardForm()">
-                  <option value="">Select one...</option>
-                  <option value="1">Cinematic Realistic</option>
-                  <option value="2">Mobile Phone Aesthetic</option>
-                  <option value="3">Lifestyle Photography</option>
-                  <option value="4">Studio Product Shot</option>
-                  <option value="5">Documentary / Vérité</option>
-                  <option value="6">Fast-Paced / Energy</option>
-                  <option value="7">Testimonial / Talking Head</option>
-                  <option value="8">Flat / Minimalist</option>
-                  <option value="9">Behind-the-Scenes / Raw</option>
-                  <option value="10">Stop Motion</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Row 2: Q3 & Q4 -->
-            <div class="selections-row">
-              <div class="select-item">
-                <label class="select-label" id="q3-label">Question 3 of 6<br>Language used:</label>
-                <select id="board-bahasa-select" onchange="updateBoardForm()">
-                  <option value="">Select one...</option>
-                  <option value="1">Bahasa Melayu</option>
-                  <option value="2">English</option>
-                  <option value="3">Mixed BM + English</option>
-                  <option value="4">No Sound / Silent (ASMR Ambient)</option>
-                </select>
-              </div>
-
-              <div class="select-item">
-                <label class="select-label" id="q4-label">Question 4 of 6<br>Video length:</label>
-                <select id="board-durasi-select" onchange="updateBoardForm()">
-                  <option value="">Select one...</option>
-                  <option value="1">10s — 6 panels</option>
-                  <option value="2">15s — 8 panels</option>
-                  <option value="3">20s — 12 panels</option>
-                  <option value="4">30s — 9 panels</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Row 3: Q5 & Q6 -->
-            <div class="selections-row">
-              <div class="select-item">
-                <label class="select-label" id="q5-label">Question 5 of 6<br>Screen format:</label>
-                <select id="board-ar-select" onchange="updateBoardForm()">
-                  <option value="">Select one...</option>
-                  <option value="1">16:9 Landscape — YouTube/TV</option>
-                  <option value="2">9:16 Portrait — TikTok/Reels</option>
-                  <option value="3">1:1 Square — IG/FB Feed</option>
-                </select>
-              </div>
-
-              <div class="select-item">
-                <label class="select-label" id="q6-label">Question 6 of 6<br>Who/what is in the video:</label>
-                <select id="board-cast-select" onchange="updateBoardForm()">
-                  <option value="">Select one...</option>
-                  <option value="1">Muslim woman (hijab)</option>
-                  <option value="2">Adult man</option>
-                  <option value="3">Woman (no hijab)</option>
-                  <option value="4">Family / Mixed cast</option>
-                  <option value="5">Use uploaded image</option>
-                  <option value="6">No people — product only</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="form-actions">
-            <button onclick="generateBoard()">Generate Storyboard</button>
-            <button onclick="resetBoard()" style="background:var(--panel);color:var(--gold);border:1px solid var(--gold);">Reset</button>
-          </div>
-
-          <!-- Results Box -->
-          <div class="form-section">
-            <div class="section-header">📊 Generated Result</div>
-            <div class="results-box" id="board-results-box">
-              <div class="results-placeholder">Generate your storyboard — the image will appear here</div>
-            </div>
-          </div>
-        </div>
-
         <div class="msgs" id="board-msgs"></div>
         <div class="composer">
           <div class="attach-row" id="board-attach"></div>
@@ -1678,30 +1063,10 @@ function setLang(l){
   document.querySelectorAll('[data-i-ph]').forEach(el=>{
     const k=el.getAttribute('data-i-ph'); if(I18N[l][k]!==undefined) el.placeholder=I18N[l][k];
   });
-  // Update board form labels for language
-  updateBoardFormLabels();
   renderAttachChips('sheet'); renderAttachChips('board');
   // re-fire greeting if conversations empty
   if(S.sheet.history.length===0) bootSheet();
   if(S.board.history.length===0) bootBoard();
-}
-
-function updateBoardFormLabels(){
-  if(LANG==='ms'){
-    document.getElementById('q1-label').textContent='Soalan 1 dari 6 — Pilih style video affiliate anda:';
-    document.getElementById('q2-label').textContent='Soalan 2 dari 6 — Pilih visual style video anda:';
-    document.getElementById('q3-label').textContent='Soalan 3 dari 6 — Bahasa yang digunakan:';
-    document.getElementById('q4-label').textContent='Soalan 4 dari 6 — Berapa lama video?';
-    document.getElementById('q5-label').textContent='Soalan 5 dari 6 — Format skrin:';
-    document.getElementById('q6-label').textContent='Soalan 6 dari 6 — Siapa/apa dalam video?';
-  }else{
-    document.getElementById('q1-label').textContent='Question 1 of 6 — Choose your affiliate video style:';
-    document.getElementById('q2-label').textContent='Question 2 of 6 — Choose your visual style:';
-    document.getElementById('q3-label').textContent='Question 3 of 6 — Language used:';
-    document.getElementById('q4-label').textContent='Question 4 of 6 — Video length?';
-    document.getElementById('q5-label').textContent='Question 5 of 6 — Screen format:';
-    document.getElementById('q6-label').textContent='Question 6 of 6 — Who/what is in the video?';
-  }
 }
 
 /* =====================================================================
@@ -1843,7 +1208,6 @@ function mdLite(s){
 }
 function addMsg(tab, role, content, imgUrl){
   const box=document.getElementById(tab+'-msgs');
-  box.classList.add('show'); // Show the msgs area
   const m=document.createElement('div'); m.className='msg '+role;
   const av=document.createElement('div'); av.className='avatar'; av.textContent=role==='ai'?'◐':'You'.slice(0,1);
   if(role==='ai') av.textContent='◐'; else av.textContent='∎';
@@ -1880,17 +1244,15 @@ function removeThinking(tab){
 function renderPicks(tab, picks){
   // picks: [{k:'1', label:'...'}]
   const box=document.getElementById(tab+'-msgs');
-  box.classList.add('show'); // Show the msgs area
   const last=box.querySelector('.msg.ai:last-child .bubble') || addMsg(tab,'ai','');
   const wrap=document.createElement('div'); wrap.className='picks';
-  const currentTab = tab; // Capture tab properly
   picks.forEach(p=>{
     const btn=document.createElement('button'); btn.className='pick';
     // Show FULL label in button, short name extracted for display
     const shortLabel = p.label.includes(' — ') ? p.label.split(' — ')[0] : p.label;
     btn.innerHTML=`<span class="k">${p.k}</span>${p.label}`; // FULL label visible
     btn.title=p.label;
-    btn.onclick=()=>{ currentTab==='sheet'?submitSheet(p.k):submitBoard(p.k) };
+    btn.onclick=()=>{ tab==='sheet'?submitSheet(p.k):submitBoard(p.k) };
     wrap.appendChild(btn);
   });
   last.appendChild(wrap); box.scrollTop=box.scrollHeight;
@@ -1899,7 +1261,7 @@ function renderPicks(tab, picks){
 /* =====================================================================
    GEMINI API
 ===================================================================== */
-async function geminiText(systemPrompt, history, retryCount=0, maxRetries=5){
+async function geminiText(systemPrompt, history){
   const contents = history.map(h=>({
     role: h.role==='ai'?'model':'user',
     parts: h.parts
@@ -1916,15 +1278,7 @@ async function geminiText(systemPrompt, history, retryCount=0, maxRetries=5){
       const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`,{
         method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
       });
-      if(!r.ok){ 
-        lastErr=(await r.text()).slice(0,200);
-        // 429 Rate Limit - retry with backoff
-        if(r.status===429 && retryCount<maxRetries){
-          const waitTime = Math.pow(2, retryCount) * 2000 + Math.random()*1000;
-          console.log(`[429 Text API] Rate limited. Retry ${retryCount+1}/${maxRetries} in ${Math.round(waitTime/1000)}s...`);
-          await new Promise(resolve=>setTimeout(resolve, waitTime));
-          return geminiText(systemPrompt, history, retryCount+1, maxRetries);
-        }
+      if(!r.ok){ lastErr=(await r.text()).slice(0,200);
         if(/"code":\s*404/.test(lastErr) || /not found|no longer available|not supported/i.test(lastErr)) continue;
         throw new Error('Text API: '+lastErr);
       }
@@ -1963,13 +1317,6 @@ async function geminiImage(promptText, refImages, preferPro, retryCount=0, maxRe
       
       if(!r.ok){ 
         lastErr=(await r.text()).slice(0,200);
-        // 429 Rate Limit - wait and retry with longer backoff
-        if(r.status===429 && retryCount<maxRetries){
-          const waitTime = Math.pow(2, retryCount) * 2000 + Math.random()*2000; // longer backoff for rate limit
-          console.log(`[429] Rate limited. Retry ${retryCount+1}/${maxRetries} in ${Math.round(waitTime/1000)}s...`);
-          await new Promise(resolve=>setTimeout(resolve, waitTime));
-          return geminiImage(promptText, refImages, preferPro, retryCount+1, maxRetries);
-        }
         // 503 Server Error - try again with exponential backoff
         if(r.status===503 && retryCount<maxRetries){
           const waitTime = Math.pow(2, retryCount) * 1000 + Math.random()*1000; // exponential backoff + jitter
@@ -2265,6 +1612,10 @@ function bootSheet(){
   document.getElementById('sheet-msgs').innerHTML='';
   S.sheet={step:1,history:[],image:null,busy:false,object:null,type:null,angles:null};
   setSheetStep(1);
+  const greet = LANG==='ms'
+    ? 'Hai! 👋 Saya **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, dan AI Image Prompt Engineer.\n\nTugas: Transform your product photo jadi **professional reference sheet** — authentic, natural, conversion-focused, siap untuk AI generation.\n\n**Langkah 1:** Lampir gambar produk (📎 di bawah) + beri nama (contoh: "iPhone 16 Pro" atau "Luxury Watch Gold").'
+    : 'Hi! 👋 I\'m your **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.\n\nMy role: Transform your product photo into a **professional reference sheet** — authentic, natural, conversion-focused, ready for AI generation.\n\n**Step 1:** Attach your product image (📎 below) + give it a name (example: "iPhone 16 Pro" or "Luxury Watch Gold").';
+  addMsg('sheet','ai',greet);
 }
 function resetSheet(){
   // clear all sheet state completely
@@ -2402,8 +1753,7 @@ async function generateSheetImage(){
     note.remove();
     if(imgUrl){
       S.sheet.image=imgUrl;
-      displayResultImage('sheet', imgUrl);
-      addMsg('sheet','ai', LANG==='ms'?'✅ **Reference sheet siap!**':'✅ **Reference sheet ready!**');
+      addMsg('sheet','ai', LANG==='ms'?'✅ **Reference sheet siap!**':'✅ **Reference sheet ready!**', imgUrl);
       const menu = LANG==='ms'
         ? 'Apa seterusnya?\n1. Jana semula sheet\n2. Tukar tetapan\n3. Tukar angle (8/10/12)\n4. Guna untuk Universal Storyboard Gen'
         : 'What next?\n1. Regenerate sheet\n2. Change settings\n3. Change angles (8/10/12)\n4. Use for Universal Storyboard Gen';
@@ -2566,6 +1916,10 @@ function bootBoard(){
   document.getElementById('board-msgs').innerHTML='';
   S.board={step:0,qi:0,answers:{},history:[],image:null,busy:false,productKnown:false,product:null};
   clearSummary();
+  const greet = LANG==='ms'
+    ? 'Hai! 👋 Saya **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, dan AI Image Prompt Engineer.\n\nTugas: Bina **storyboard poster affiliate profesional** — authentic, natural, conversion-focused, sensory-rich, siap untuk AI Video generation (Veo, Kling, Runway).\n\n**Langkah 1:** Lampir gambar produk (📎 di bawah), kemudian hantar. Selepas itu, 6 soalan untuk build narrative yang convert.'
+    : 'Hi! 👋 I\'m your **AI Creative Director** — Affiliate Strategist, UGC Director, Product Storyteller, ASMR Content Director, AI Video Prompt Engineer, and AI Image Prompt Engineer.\n\nMy role: Build a **professional affiliate storyboard** — authentic, natural, conversion-focused, sensory-rich, ready for AI Video generation (Veo, Kling, Runway).\n\n**Step 1:** Attach your product image (📎 below), then send. After that, 6 questions to craft a narrative that converts.';
+  addMsg('board','ai',greet);
   // NOTE: questions start only AFTER an image is uploaded (Step 0).
 }
 function resetBoard(){
@@ -2789,8 +2143,7 @@ async function generateBoardImage(isFix){
     removeThinking('board'); note.remove();
     if(imgUrl){
       S.board.image=imgUrl;
-      displayResultImage('board', imgUrl);
-      addMsg('board','ai', LANG==='ms'?'✅ **Storyboard anda siap!**':'✅ **Your storyboard is ready!**');
+      addMsg('board','ai', LANG==='ms'?'✅ **Storyboard anda siap!**':'✅ **Your storyboard is ready!**', imgUrl);
       await exportShotList(true); // show table
       await generateVideoJson();  // auto video prompt JSON
       showPostImageMenu();
@@ -3003,250 +2356,6 @@ function toggleTheme(){
   try{localStorage.setItem(THEME_LS,next)}catch(e){}
   toast(next==='dark'?(LANG==='ms'?'Mod gelap':'Dark mode'):(LANG==='ms'?'Mod cerah':'Light mode'));
 }
-
-/* ===== NEW: DROPDOWN UI HANDLERS ===== */
-// Sheet Image Upload
-function handleSheetImageUpload(e){
-  const file=e.target.files[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=(ev)=>{
-    const preview=document.getElementById('sheet-image-preview');
-    const removeBtn=document.getElementById('sheet-remove-btn');
-    const box=document.getElementById('sheet-image-box');
-    preview.src=ev.target.result;
-    preview.classList.add('show');
-    removeBtn.classList.add('show');
-    box.classList.add('has-image');
-    S.sheet.image=ev.target.result;
-    S.sheet._lastImgs=[{dataUrl:ev.target.result, mime:'image/png'}];
-  };
-  reader.readAsDataURL(file);
-}
-
-function removeSheetImage(e){
-  e.preventDefault();
-  e.stopPropagation();
-  const preview=document.getElementById('sheet-image-preview');
-  const removeBtn=document.getElementById('sheet-remove-btn');
-  const box=document.getElementById('sheet-image-box');
-  const input=document.getElementById('sheet-file-input');
-  preview.classList.remove('show');
-  removeBtn.classList.remove('show');
-  box.classList.remove('has-image');
-  preview.src='';
-  input.value='';
-  S.sheet.image=null;
-  S.sheet._lastImgs=null;
-}
-
-function updateSheetForm(){
-  const objType=document.getElementById('sheet-type-select').value;
-  const style=document.getElementById('sheet-style-select').value;
-  const angles=document.getElementById('sheet-angles-select').value;
-  const image=document.getElementById('sheet-image-preview').src;
-  
-  if(!image){
-    const msg=document.getElementById('sheet-msgs');
-    msg.innerHTML='<div class="msg ai"><div class="avatar">💡</div><div class="bubble"><p>'+t('needKey')+'</p></div></div>';
-    return;
-  }
-}
-
-function generateSheet(){
-  if(!API_KEY){
-    toast(t('needKey'));
-    openKey();
-    return;
-  }
-  const image=document.getElementById('sheet-image-preview').src;
-  const objType=document.getElementById('sheet-type-select').value;
-  const style=document.getElementById('sheet-style-select').value;
-  const angles=document.getElementById('sheet-angles-select').value;
-  
-  if(!image || !objType || !style || !angles){
-    toast(LANG==='ms'?'Sila lengkapkan semua medan':'Please fill all fields');
-    return;
-  }
-  
-  S.sheet.type=objType;
-  S.sheet.angles=parseInt(angles);
-  S.sheet.busy=true;
-  
-  // Don't show message area - just generate
-  generateSheetImage();
-}
-
-// Board Image Upload
-function handleBoardImageUpload(e){
-  const file=e.target.files[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=(ev)=>{
-    const preview=document.getElementById('board-image-preview');
-    const removeBtn=document.getElementById('board-remove-btn');
-    const box=document.getElementById('board-image-box');
-    preview.src=ev.target.result;
-    preview.classList.add('show');
-    removeBtn.classList.add('show');
-    box.classList.add('has-image');
-    S.board.image=ev.target.result;
-    S.board._productImgs=[{dataUrl:ev.target.result, mime:'image/png'}];
-  };
-  reader.readAsDataURL(file);
-}
-
-function removeBoardImage(e){
-  e.preventDefault();
-  e.stopPropagation();
-  const preview=document.getElementById('board-image-preview');
-  const removeBtn=document.getElementById('board-remove-btn');
-  const box=document.getElementById('board-image-box');
-  const input=document.getElementById('board-file-input');
-  preview.classList.remove('show');
-  removeBtn.classList.remove('show');
-  box.classList.remove('has-image');
-  preview.src='';
-  input.value='';
-  S.board.image=null;
-  S.board._productImgs=null;
-}
-
-function updateBoardForm(){
-  const tema=document.getElementById('board-tema-select').value;
-  const style=document.getElementById('board-style-select').value;
-  const durasi=document.getElementById('board-durasi-select').value;
-  const bahasa=document.getElementById('board-bahasa-select').value;
-  const ar=document.getElementById('board-ar-select').value;
-  const cast=document.getElementById('board-cast-select').value;
-  
-  // Map dropdown values to state (k is the option number)
-  const TEMA_MAP={1:'UGC Style (Raw & Authentic)',2:'Unboxing & First Impression',3:'Problem → Solution Journey',4:'Day-in-the-Life Integration',5:'Before-After Transformation',6:'Comparison Demo',7:'Tutorial / How-To Use',8:'Testimonial / Real Reviews',9:'Trending Sound / Trend-Jacking',10:'ASMR (Sensory-Rich)',11:'Behind-the-Scenes / Creator Story'};
-  const STYLE_MAP={1:'Cinematic Realistic',2:'Mobile Phone Aesthetic',3:'Lifestyle Photography',4:'Studio Product Shot',5:'Documentary / Vérité',6:'Fast-Paced / Energy',7:'Testimonial / Talking Head',8:'Flat / Minimalist',9:'Behind-the-Scenes / Raw',10:'Stop Motion'};
-  const DURASI_MAP={1:'10s — 6 panels',2:'15s — 8 panels',3:'20s — 12 panels',4:'30s — 9 panels'};
-  const BAHASA_MAP={1:'Bahasa Melayu',2:'English',3:'Mixed BM + English',4:'No Sound / Silent (ASMR Ambient)'};
-  const AR_MAP={1:'16:9 Landscape',2:'9:16 Portrait',3:'1:1 Square'};
-  const CAST_MAP={1:'Muslim woman (hijab)',2:'Adult man',3:'Woman (no hijab)',4:'Family / Mixed cast',5:'Use uploaded image',6:'No people — product only'};
-  
-  if(tema) S.board.answers.tema={val:TEMA_MAP[tema]||tema, k:tema};
-  if(style) S.board.answers.style={val:STYLE_MAP[style]||style, k:style};
-  if(bahasa) S.board.answers.bahasa={val:BAHASA_MAP[bahasa]||bahasa, k:bahasa};
-  if(durasi) S.board.answers.durasi={val:DURASI_MAP[durasi]||durasi, k:durasi};
-  if(ar) S.board.answers.ar={val:AR_MAP[ar]||ar, k:ar};
-  if(cast) S.board.answers.cast={val:CAST_MAP[cast]||cast, k:cast};
-}
-
-function generateBoard(){
-  if(!API_KEY){
-    toast(t('needKey'));
-    openKey();
-    return;
-  }
-  
-  const tema=document.getElementById('board-tema-select').value;
-  const style=document.getElementById('board-style-select').value;
-  const durasi=document.getElementById('board-durasi-select').value;
-  const bahasa=document.getElementById('board-bahasa-select').value;
-  const ar=document.getElementById('board-ar-select').value;
-  const cast=document.getElementById('board-cast-select').value;
-  
-  if(!tema || !style || !durasi || !bahasa || !ar || !cast){
-    toast(LANG==='ms'?'Sila lengkapkan semua 6 soalan':'Please complete all 6 questions');
-    return;
-  }
-  
-  updateBoardForm();
-  S.board.busy=true;
-  
-  // Don't show message area - just generate
-  generateBoardImage();
-}
-
-function resetBoard(){
-  document.getElementById('board-tema-select').value='';
-  document.getElementById('board-style-select').value='';
-  document.getElementById('board-durasi-select').value='';
-  document.getElementById('board-bahasa-select').value='';
-  document.getElementById('board-ar-select').value='';
-  document.getElementById('board-cast-select').value='';
-  removeBoardImage({preventDefault:()=>{},stopPropagation:()=>{}});
-  S.board.answers={};
-  document.getElementById('board-msgs').innerHTML='';
-  document.getElementById('board-results-box').innerHTML='<div class="results-placeholder">Generate your storyboard — the image will appear here</div>';
-}
-
-function resetSheet(){
-  document.getElementById('sheet-type-select').value='';
-  document.getElementById('sheet-style-select').value='';
-  document.getElementById('sheet-angles-select').value='';
-  removeSheetImage({preventDefault:()=>{},stopPropagation:()=>{}});
-  S.sheet.object=null;
-  S.sheet.type=null;
-  S.sheet.angles=null;
-  document.getElementById('sheet-msgs').innerHTML='';
-  document.getElementById('sheet-results-box').innerHTML='<div class="results-placeholder">Generate your character/product sheet — the image will appear here</div>';
-}
-
-/* Display result image in results box with Preview and Download buttons */
-function displayResultImage(tabName, imgUrl){
-  const resultsBox = document.getElementById(tabName+'-results-box');
-  if(resultsBox && imgUrl){
-    const img = document.createElement('img');
-    img.src = imgUrl;
-    img.style.maxWidth = '100%';
-    img.style.maxHeight = '600px';
-    img.style.borderRadius = 'var(--radius-sm)';
-    img.style.cursor = 'pointer';
-    img.onclick = () => openLightbox(imgUrl);
-    
-    const container = document.createElement('div');
-    container.style.display = 'flex';
-    container.style.flexDirection = 'column';
-    container.style.gap = '15px';
-    container.style.width = '100%';
-    
-    container.appendChild(img);
-    
-    // Add Preview and Download buttons
-    const btnContainer = document.createElement('div');
-    btnContainer.style.display = 'flex';
-    btnContainer.style.gap = '10px';
-    btnContainer.style.justifyContent = 'center';
-    btnContainer.style.flexWrap = 'wrap';
-    
-    const previewBtn = document.createElement('button');
-    previewBtn.textContent = '🔍 Preview';
-    previewBtn.style.padding = '10px 20px';
-    previewBtn.style.background = 'var(--gold)';
-    previewBtn.style.color = '#0a0e27';
-    previewBtn.style.border = 'none';
-    previewBtn.style.borderRadius = 'var(--radius-sm)';
-    previewBtn.style.cursor = 'pointer';
-    previewBtn.style.fontWeight = '600';
-    previewBtn.style.fontSize = '13px';
-    previewBtn.onclick = () => openLightbox(imgUrl);
-    
-    const downloadBtn = document.createElement('button');
-    downloadBtn.textContent = '⬇️ Download';
-    downloadBtn.style.padding = '10px 20px';
-    downloadBtn.style.background = 'var(--gold-deep)';
-    downloadBtn.style.color = '#fff';
-    downloadBtn.style.border = 'none';
-    downloadBtn.style.borderRadius = 'var(--radius-sm)';
-    downloadBtn.style.cursor = 'pointer';
-    downloadBtn.style.fontWeight = '600';
-    downloadBtn.style.fontSize = '13px';
-    downloadBtn.onclick = () => downloadImage(imgUrl, tabName+'-result-'+Date.now()+'.png');
-    
-    btnContainer.appendChild(previewBtn);
-    btnContainer.appendChild(downloadBtn);
-    container.appendChild(btnContainer);
-    
-    resultsBox.innerHTML = '';
-    resultsBox.appendChild(container);
-  }
-}
-
 function init(){
   // color theme: saved pref, else default gold
   let savedColor=null; try{savedColor=localStorage.getItem(COLOR_THEME_LS)}catch(e){}
