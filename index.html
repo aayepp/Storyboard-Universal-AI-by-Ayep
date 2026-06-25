@@ -437,6 +437,9 @@
     transition:all 0.3s ease;
     text-transform:uppercase;
     letter-spacing:0.5px;
+    position:relative;
+    z-index:20;
+    pointer-events:auto;
   }
   .form-actions button:hover{
     background:var(--gold-deep);
@@ -468,6 +471,8 @@
     margin:0 auto;
     padding:0 20px;
     gap:30px;
+    position:relative;
+    z-index:10;
   }
 
   /* Ensure proper stage layout without rail */
@@ -2380,7 +2385,7 @@ async function generateSheetImage(){
     if(imgUrl){
       S.sheet.image=imgUrl;
       displayResultImage('sheet', imgUrl);
-      addMsg('sheet','ai', LANG==='ms'?'✅ **Reference sheet siap!**':'✅ **Reference sheet ready!**', imgUrl);
+      addMsg('sheet','ai', LANG==='ms'?'✅ **Reference sheet siap!**':'✅ **Reference sheet ready!**');
       const menu = LANG==='ms'
         ? 'Apa seterusnya?\n1. Jana semula sheet\n2. Tukar tetapan\n3. Tukar angle (8/10/12)\n4. Guna untuk Universal Storyboard Gen'
         : 'What next?\n1. Regenerate sheet\n2. Change settings\n3. Change angles (8/10/12)\n4. Use for Universal Storyboard Gen';
@@ -2767,7 +2772,7 @@ async function generateBoardImage(isFix){
     if(imgUrl){
       S.board.image=imgUrl;
       displayResultImage('board', imgUrl);
-      addMsg('board','ai', LANG==='ms'?'✅ **Storyboard anda siap!**':'✅ **Your storyboard is ready!**', imgUrl);
+      addMsg('board','ai', LANG==='ms'?'✅ **Storyboard anda siap!**':'✅ **Your storyboard is ready!**');
       await exportShotList(true); // show table
       await generateVideoJson();  // auto video prompt JSON
       showPostImageMenu();
