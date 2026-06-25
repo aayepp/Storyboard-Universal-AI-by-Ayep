@@ -1705,6 +1705,25 @@ async function submitSheet(text){
       : 'Type the product/character name (e.g., "iPhone 16 Pro", "Red Rose Bouquet", "Long-haired Woman"):');
     return;
   }
+  // Handle when user confirms suggested name (auto-detection confirmed)
+  // This is when user click "Yes, Use This" button - text is the suggested name
+  if(S.sheet._suggestedName && text === S.sheet._suggestedName){
+    // Confirm the name and proceed to next step
+    addMsg('sheet','user', text);
+    S.sheet.object = text;
+    captureSheetMeta(text, text);
+    
+    addMsg('sheet','ai', LANG==='ms'
+      ? `✅ **Nama Disimpan: "${text}"**\n\nSekarang saya akan jana reference sheet profesional untuk produk ini. Tunggu sebentar...`
+      : `✅ **Name Saved: "${text}"**\n\nNow I'll generate a professional reference sheet for this product. Please wait...`);
+    
+    // Auto-advance to step 2 and generate
+    setSheetStep(2);
+    setTimeout(() => {
+      generateSheetImage();
+    }, 500);
+    return;
+  }
   // special case: use sheet image for storyboard
   if(text.toLowerCase().includes('guna storyboard') || text.toLowerCase().includes('storyboard gen')){
     if(!S.sheet.image){
@@ -1747,6 +1766,9 @@ async function submitSheet(text){
         
         const detectionResult = await geminiText(detectPrompt, [{role:'user',parts:[...parts]}]);
         const suggestedName = detectionResult.replace(/^(Ini adalah|This is)\s+/i, '').trim();
+        
+        // Store suggested name for button click handler
+        S.sheet._suggestedName = suggestedName;
         
         // Highlight the suggestion
         addMsg('sheet','ai', LANG==='ms'
