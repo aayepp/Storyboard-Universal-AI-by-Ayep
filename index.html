@@ -1406,7 +1406,7 @@ REPLY LANGUAGE: ${lang}. Keep replies concise and friendly. Use numbered menus.
 
 STRICT FLOW (one step per reply, never skip):
 STEP 1 — Welcome: ask user to upload an image + give a name (e.g. "ASUS ZenBook 14 OLED" or "Sarah, 28yo").
-STEP 2 — Verify object: confirm the EXACT name & model. Only real colors, real materials, real features, exact logo. No hallucination.
+STEP 2 — Verify object: confirm the EXACT name & model. Only real colors, real materials, real features, exact logo. No hallucination. IMPORTANT: Verify all details against the uploaded reference image — ensure you will capture every color, texture, detail EXACTLY as shown in the reference.
 STEP 3 — Suggest settings then show this menu:
   For CHARACTER: STYLE, EXPRESSIONS, AGE, COLOR.
   For PRODUCT: VIEWS, POSITIONS, DETAIL, COLORS, STYLE.
@@ -1433,11 +1433,29 @@ function sheetImagePrompt(){
   const hasRef = (S.sheet._lastImgs && S.sheet._lastImgs.length>0);
   return `Create ONE complete professional REFERENCE SHEET as a single unified grid image.
 
-${hasRef?`REFERENCE PHOTO PROVIDED: The attached image shows the EXACT real subject to use. Study it closely — its precise shape, exact colors, logo, text, buttons, ports, materials and proportions. Reproduce THIS SAME subject in every panel. Do NOT invent, redesign, or substitute a different object. The reference photo is the single source of truth for what the subject looks like.
+CRITICAL ACCURACY RULE - 100% EXACT MATCH REQUIRED:
+${hasRef?`🔴 **REFERENCE PHOTO PROVIDED - THIS IS YOUR ONLY SOURCE OF TRUTH.**
+
+You MUST reproduce the reference photo EXACTLY in every single panel:
+- EVERY detail: shape, color, texture, pattern, logo, text, buttons, ports, accessories
+- EVERY feature: face expression, hair style, clothing, body pose, jewelry, tattoos, scars, marks
+- EVERY color: exact shades, tones, hues - match the reference photo precisely, not your imagination
+- EVERY proportions: dimensions, sizing, scale relationships - IDENTICAL to reference
+- EVERY logo/brand/text: exact positioning, exact sizing, exact styling - copy from reference, do NOT invent
+
+⚠️ STRICTLY FORBIDDEN:
+- Do NOT redesign or improve the subject
+- Do NOT change colors or shading to your preference
+- Do NOT add or remove details
+- Do NOT substitute with a "better" version
+- Do NOT use artistic interpretation
+- Do NOT make assumptions about unseen angles - only show what's in reference photo
+
+The reference photo is the SINGLE SOURCE OF TRUTH. If details are unclear in the reference, show them as best as possible from what you see. Never invent what you cannot see.
 `:''}Subject: ${o}
 Type: ${isChar?'CHARACTER':'PRODUCT'} reference sheet.
 Layout: a clean studio reference sheet with a header bar reading "${isChar?'CHARACTER SHEET':'PRODUCT SHEET'}" and the subject name "${o}", followed by an organized grid of ${ang} labelled angle/view panels (front, 3/4, side, back, top, detail/close-ups${isChar?', plus expression variations':''}).
-Style: professional, neutral studio background, soft even lighting, consistent identity across every panel — same ${isChar?'face, hair, outfit, body proportions':'shape, color, logo, materials, buttons/ports'} in every panel${hasRef?', matching the reference photo exactly':''}. ${isChar?'':'Keep the logo and brand details EXACT and authentic — do not invent features.'}
+Style: professional, neutral studio background, soft even lighting, consistent identity across every panel — same ${isChar?'face, hair, outfit, body proportions, ALL DETAILS FROM REFERENCE PHOTO':'shape, color, logo, materials, buttons/ports, EXACT MATCH TO REFERENCE PHOTO'} in every panel${hasRef?', matching the reference photo EXACTLY':''}. ${isChar?'Keep all facial features, expressions, clothing and accessories EXACTLY as shown in the reference photo — do not invent or alter.':'Keep the logo, brand, colors, and all visible details EXACT and authentic to the reference photo — do not invent features.'}
 Each panel clearly labelled with its angle/view name. Tidy aligned grid, white/light background, thin borders, modern sans-serif labels. ONE single image only.`;
 }
 
@@ -1473,7 +1491,7 @@ NARRATIVE STRUCTURE:
 - Setup (panels 1-2): Hook attention, establish problem/desire, introduce ${product}
 - Build (panels 3-8): Show benefit progression, emotional connection, product integration, real-world usage
 - Climax (panels 9-11): Transformation moment, social proof, lifestyle elevation
-- Resolution (panel ${panels} = HERO SHOT): Product hero moment, CTA, brand tagline
+- Resolution (panel ${panels} = HERO SHOT): **Product hero moment with prominent CTA.** Show product in best pose/angle. Include clear action text like "Shop Now", "Get Yours", "Dapatkan Sekarang", or "Beli Sekarang". Add brand name if applicable. This is the conversion moment — no extra dialog, just product + CTA.
 
 DIALOG & ON-SCREEN TEXT (CRITICAL — must match video timing AND feel NATURAL):
 ${lang==='No Sound / ASMR Ambient'?`
@@ -1526,7 +1544,11 @@ STORY STRUCTURE (applies to ALL durations):
    - Example: "Rasa dia macam premium" or "Better than expected la"
 4. **Satisfaction (Panels 8-9 or Climax):** Transformation moment. Clear benefit proven. Strong emotion. Dialog: Simple statement, 3-5 words.
    - Example: "This one is it" or "Definitely worth it"
-5. **Call-to-Action (Final Panel = Hero Shot):** Product hero. Brand + CTA. No extra message. Just "Shop Now" or "Get Yours"
+5. **Call-to-Action (Final Panel = Hero Shot):** Product hero moment. Must show:
+   - Product prominently centered/hero pose
+   - Clear CTA text: "Shop Now", "Get Yours", "Dapatkan Sekarang", or "Beli Sekarang"
+   - Brand name/logo if applicable
+   - No extra dialog, keep it simple and direct for conversion
 
 DIALOG TIMING BY DURATION:
 **10 seconds (6 panels):** ~1.67s per panel
@@ -1592,7 +1614,7 @@ DIALOG STRUCTURE:
   * Scene 1 (0:00-0:02): Setup shot, VO: "Eh, ada problem ke tu?" (casual question, hook)
   * Scene 5 (0:07-0:09): Product in hand, VO: "Wah, ni memang okaylah..." (natural reaction)
   * Scene 12 (Hero, 0:17-0:20): Product centered, VO: "This one. Get it." (simple, confident close)
-- **HERO SHOT RULE (FINAL PANEL):** Reserve the last ${Math.max(2, Math.round(parseInt(dur.match(/\d+/)[0])*0.15))}+ seconds EXCLUSIVELY for the hero shot. Panel ${panels} must be simple, clear, prominent. Do NOT use it to finish a sentence from panel ${panels-1}. Complete all narrative by panel ${panels-1}.
+- **HERO SHOT RULE (FINAL PANEL):** Reserve the last ${Math.max(2, Math.round(parseInt(dur.match(/\d+/)[0])*0.15))}+ seconds EXCLUSIVELY for the hero shot. Panel ${panels} must feature: Product prominently showcased + VISIBLE CTA text ("Shop Now", "Dapatkan Sekarang", "Beli Sekarang", etc) + brand/logo if applicable. Keep simple, clear, prominent. Do NOT use it to finish a sentence from panel ${panels-1}. Complete all narrative by panel ${panels-1}. Ensure CTA text is large and highly readable.
 - Include natural dialog ${lang} where appropriate (spoken moments, testimonials, questions, CTAs)
 - Each panel caption must be DESCRIPTIVE + ACTIONABLE for video AI (describe camera movement, sound/ASMR cue, actor emotion, product highlight)
 - Example caption: "Wide shot of girl unboxing. ASMR: crisp paper sound. She laughs, says: 'Eh, quality ni okay la!'. Camera pulls back to show product on desk, sunlight glinting."
