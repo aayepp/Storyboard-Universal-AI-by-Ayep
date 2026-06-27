@@ -1488,7 +1488,7 @@ function boardSystemPrompt(){
 
 REPLY LANGUAGE: ${lang}. Be concise, warm, use numbered menus.
 
-The app handles the 6-question flow and image generation itself — you are only invoked for free-form help, clarifications, and the final scene table. Follow the app's instruction in each message. When asked to produce the scene table, output a markdown table with columns: Scene | Time | Visual | Dialog/VO | Overlay Text | Audio/SFX. The final scene MUST be the HERO SHOT (label it clearly). Number of scenes: 10s=8, 20s=12, 30s=9 panels.`;
+The app handles the 6-question flow and image generation itself — you are only invoked for free-form help, clarifications, and the final scene table. Follow the app's instruction in each message. When asked to produce the scene table, output a markdown table with columns: Scene | Time | Visual | Dialog/VO | Overlay Text | Audio/SFX. The final scene MUST be the HERO SHOT (label it clearly) and MUST include a CTA phrase in Dialog/VO (e.g., "Shop Now", "Beli Sekarang"). Number of scenes: 10s=8, 20s=12, 30s=9 panels.`;
 }
 
 function boardImagePrompt(){
@@ -1567,11 +1567,14 @@ STORY STRUCTURE (applies to ALL durations):
    - Example: "Rasa dia macam premium" or "Better than expected la"
 4. **Satisfaction (Panels 8-9 or Climax):** Transformation moment. Clear benefit proven. Strong emotion. Dialog: Simple statement, 3-5 words.
    - Example: "This one is it" or "Definitely worth it"
-5. **Call-to-Action (Final Panel = Hero Shot):** Product hero moment. Must show:
+5. **Call-to-Action (Final Panel = Hero Shot):** Product hero moment. MUST INCLUDE:
    - Product prominently centered/hero pose
-   - Clear CTA text: "Shop Now", "Get Yours", "Dapatkan Sekarang", or "Beli Sekarang"
+   - **MANDATORY CTA WORDS in dialog:** Include ONE of these exact phrases:
+     * English: "Shop Now", "Get Yours", "Get It", "Buy Now"
+     * Malay: "Beli Sekarang", "Dapatkan Sekarang", "Ambil Sekarang"
    - Brand name/logo if applicable
-   - No extra dialog, keep it simple and direct for conversion
+   - Example dialog: "This is it. Shop Now" or "Memang worth it. Beli Sekarang"
+   - Keep simple and direct for conversion
 
 DIALOG TIMING BY DURATION:
 **10 seconds (6 panels):** ~1.67s per panel
@@ -1637,7 +1640,14 @@ DIALOG STRUCTURE:
   * Scene 1 (0:00-0:02): Setup shot, VO: "Eh, ada problem ke tu?" (casual question, hook)
   * Scene 5 (0:07-0:09): Product in hand, VO: "Wah, ni memang okaylah..." (natural reaction)
   * Scene 12 (Hero, 0:17-0:20): Product centered, VO: "This one. Get it." (simple, confident close)
-- **HERO SHOT RULE (FINAL PANEL):** Reserve the last ${Math.max(2, Math.round(parseInt(dur.match(/\d+/)[0])*0.15))}+ seconds EXCLUSIVELY for the hero shot. Panel ${panels} must feature: Product prominently showcased + VISIBLE CTA text ("Shop Now", "Dapatkan Sekarang", "Beli Sekarang", etc) + brand/logo if applicable. Keep simple, clear, prominent. Do NOT use it to finish a sentence from panel ${panels-1}. Complete all narrative by panel ${panels-1}. Ensure CTA text is large and highly readable.
+- **HERO SHOT RULE (FINAL PANEL):** Reserve the last ${Math.max(2, Math.round(parseInt(dur.match(/\d+/)[0])*0.15))}+ seconds EXCLUSIVELY for the hero shot. Panel ${panels} MUST INCLUDE:
+  1. Product prominently centered/hero pose
+  2. **MANDATORY CTA PHRASE in the dialog** — choose ONE:
+     * English: "Shop Now", "Get Yours", "Get It", "Buy Now"
+     * Malay: "Beli Sekarang", "Dapatkan Sekarang", "Ambil Sekarang"
+  3. Brand/logo if applicable
+  4. Example: "This is it. Shop Now." or "Memang bagus. Beli Sekarang."
+  Keep simple, clear, readable. Do NOT use it to finish a sentence from panel ${panels-1}. Complete all narrative by panel ${panels-1}.
 - Include natural dialog ${lang} where appropriate (spoken moments, testimonials, questions, CTAs)
 - Each panel caption must be DESCRIPTIVE + ACTIONABLE for video AI (describe camera movement, sound/ASMR cue, actor emotion, product highlight)
 - Example caption: "Wide shot of girl unboxing. ASMR: crisp paper sound. She laughs, says: 'Eh, quality ni okay la!'. Camera pulls back to show product on desk, sunlight glinting."
